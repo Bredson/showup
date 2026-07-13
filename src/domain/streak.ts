@@ -12,7 +12,8 @@ export function daysBetween(a: ISODate, b: ISODate): number {
 }
 
 function toUtcMs(date: ISODate): number {
-  const [y, m, d] = date.split('-').map(Number);
+  // ISODate is always "YYYY-MM-DD", so the three parts are guaranteed to exist.
+  const [y, m, d] = date.split('-').map(Number) as [number, number, number];
   return Date.UTC(y, m - 1, d);
 }
 
@@ -31,22 +32,18 @@ export function levelFromChallengeId(challengeId: string): DifficultyLevel {
  * - skipped == no entry (no penalty)
  */
 export function computeStreak(entries: DailyEntry[], today: ISODate): number {
-  const completed = completedDatesDesc(entries);
-  if (completed.length === 0) return 0;
+  const [latest, ...rest] = completedDatesDesc(entries);
+  if (latest === undefined) return 0;
 
   // Gap from the last completion to today: >2 means 2+ full missed days (today itself is pending).
-  if (daysBetween(completed[0], today) > 2) return 0;
+  if (daysBetween(latest, today) > 2) return 0;
 
   let streak = 1;
-  let prev = completed[0];
-  for (let i = 1; i < completed.length; i++) {
-    const diff = daysBetween(completed[i], prev);
-    if (diff <= 2) {
-      streak += 1; // diff === 2 → exactly one forgiven day in between
-      prev = completed[i];
-    } else {
-      break; // diff >= 3 → series ended
-    }
+  let prev = latest;
+  for (const current of rest) {
+    if (daysBetween(current, prev) > 2) break; // diff >= 3 → series ended
+    streak += 1; // diff === 2 → exactly one forgiven day in between
+    prev = current;
   }
   return streak;
 }

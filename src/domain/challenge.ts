@@ -43,9 +43,8 @@ export function selectChallenge(
   if (pool.length === 0 && level < 3) {
     pool = unusedAt((level + 1) as DifficultyLevel);
   }
-  if (pool.length > 0) {
-    return pool[fnv1aHash(today) % pool.length];
-  }
+  const picked = pool[fnv1aHash(today) % pool.length];
+  if (picked !== undefined) return picked;
   return leastRecentlyUsed(challenges, entries, level);
 }
 
@@ -55,7 +54,8 @@ function leastRecentlyUsed(
   level: DifficultyLevel,
 ): Challenge {
   const candidates = challenges.filter((c) => c.level === level).sort(byId);
-  if (candidates.length === 0) {
+  const first = candidates[0];
+  if (first === undefined) {
     throw new Error(`No challenges exist for level ${level} — content is broken`);
   }
   const lastUsed = new Map<string, ISODate>();
@@ -64,7 +64,7 @@ function leastRecentlyUsed(
   }
   // NOTE: the '' fallback below is defensive-only — via selectChallenge this branch is reached
   // only when every candidate is used; a never-used candidate ('' sorts first) would win, correctly.
-  let best = candidates[0];
+  let best = first;
   for (const c of candidates) {
     const cUsed = lastUsed.get(c.id) ?? '';
     const bestUsed = lastUsed.get(best.id) ?? '';

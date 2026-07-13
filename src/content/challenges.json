@@ -1,0 +1,158 @@
+{
+  "contentVersion": 1,
+  "challenges": [
+    {
+      "id": "l1-001",
+      "level": 1,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Zasada dwóch minut: jeśli coś zajmuje mniej niż 2 minuty, zrób to od razu. Mózg przecenia koszt małych zadań — a po zrobieniu czujesz ulgę zamiast ciężaru.",
+          "task": "Wybierz jedną rzecz, którą odkładasz, a która zajmie mniej niż 2 minuty (mail, telefon, odłożenie rzeczy na miejsce). Zrób ją teraz.",
+          "reflection": "Jak się czułeś/aś tuż przed zrobieniem, a jak tuż po?"
+        },
+        "en": {
+          "lesson": "The two-minute rule: if something takes less than 2 minutes, do it right away. Your brain overestimates the cost of small tasks — and once done, you feel relief instead of weight.",
+          "task": "Pick one thing you've been putting off that takes under 2 minutes (an email, a call, putting something back in its place). Do it now.",
+          "reflection": "How did you feel right before doing it, and right after?"
+        }
+      }
+    },
+    {
+      "id": "l1-002",
+      "level": 1,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Najtrudniejszy jest start, nie zadanie. Umowa z samym sobą: „pracuję tylko 5 minut” obniża próg wejścia — a zaczęte zadanie zwykle samo się ciągnie.",
+          "task": "Ustaw minutnik na 5 minut i zacznij zadanie, które odkładasz. Po 5 minutach masz pełne prawo przerwać.",
+          "reflection": "Czy po 5 minutach chciało Ci się kontynuować?"
+        },
+        "en": {
+          "lesson": "Starting is the hard part, not the task. A deal with yourself — \"I'll work for just 5 minutes\" — lowers the entry barrier, and a started task tends to carry itself.",
+          "task": "Set a timer for 5 minutes and start the task you've been avoiding. After 5 minutes you have full permission to stop.",
+          "reflection": "Did you feel like continuing after the 5 minutes?"
+        }
+      }
+    },
+    {
+      "id": "l1-003",
+      "level": 1,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Prokrastynacja to nie lenistwo — to ucieczka od nieprzyjemnej emocji. Samo nazwanie emocji („boję się, że wyjdzie słabo”) zmniejsza jej siłę.",
+          "task": "Pomyśl o zadaniu, które odkładasz. Dokończ na głos lub na kartce zdanie: „Odkładam to, bo czuję…”.",
+          "reflection": "Co się zmieniło, gdy nazwałeś/aś tę emocję wprost?"
+        },
+        "en": {
+          "lesson": "Procrastination isn't laziness — it's an escape from an unpleasant emotion. Simply naming the emotion (\"I'm afraid it will turn out badly\") weakens its grip.",
+          "task": "Think of the task you're avoiding. Finish this sentence out loud or on paper: \"I'm putting this off because I feel…\".",
+          "reflection": "What changed once you named the emotion directly?"
+        }
+      }
+    },
+    {
+      "id": "l2-001",
+      "level": 2,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Duże zadanie paraliżuje, bo mózg widzi całość naraz. Podział na kroki tak małe, że aż śmieszne („otwórz dokument”), zamienia górę w schody.",
+          "task": "Weź jedno duże odkładane zadanie i rozpisz je na 5–7 absurdalnie małych kroków. Zrób dziś tylko pierwszy krok.",
+          "reflection": "Który krok okazał się mniejszy, niż się wydawał?"
+        },
+        "en": {
+          "lesson": "A big task paralyzes because your brain sees the whole thing at once. Breaking it into laughably small steps (\"open the document\") turns a mountain into stairs.",
+          "task": "Take one big task you've been avoiding and write out 5–7 absurdly small steps. Today, do only the first step.",
+          "reflection": "Which step turned out smaller than it seemed?"
+        }
+      }
+    },
+    {
+      "id": "l2-002",
+      "level": 2,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Plan „jeśli–to” (Gollwitzer) zdejmuje decyzję z przyszłego Ciebie: „JEŚLI zrobię kawę o 9:00, TO od razu otworzę raport”. Decyzja podjęta wcześniej nie wymaga silnej woli w trudnym momencie.",
+          "task": "Zapisz jeden konkretny plan „jeśli–to” na jutro rano dla zadania, które odkładasz. Użyj sytuacji, która na pewno nastąpi.",
+          "reflection": "Jaką sytuację-kotwicę wybrałeś/aś i dlaczego?"
+        },
+        "en": {
+          "lesson": "An \"if–then\" plan (Gollwitzer) takes the decision off future-you: \"IF I make coffee at 9:00, THEN I open the report right away.\" A decision made in advance needs no willpower in the hard moment.",
+          "task": "Write down one concrete \"if–then\" plan for tomorrow morning for a task you've been avoiding. Anchor it to a situation that will definitely happen.",
+          "reflection": "What anchor situation did you choose, and why?"
+        }
+      }
+    },
+    {
+      "id": "l2-003",
+      "level": 2,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Samowspółczucie działa lepiej niż samokrytyka: badanie Wohl (2010) pokazało, że studenci, którzy wybaczyli sobie prokrastynację, odkładali potem MNIEJ, nie więcej.",
+          "task": "Przypomnij sobie ostatnią rzecz, którą odłożyłeś/aś i za którą się krytykujesz. Napisz do siebie jedno zdanie tak, jakbyś pisał(a) do przyjaciela w tej samej sytuacji.",
+          "reflection": "Czym różniło się to zdanie od tego, co zwykle mówisz sobie w głowie?"
+        },
+        "en": {
+          "lesson": "Self-compassion works better than self-criticism: Wohl (2010) showed that students who forgave themselves for procrastinating procrastinated LESS afterwards, not more.",
+          "task": "Recall the last thing you put off and still criticize yourself for. Write yourself one sentence as if you were writing to a friend in the same situation.",
+          "reflection": "How was that sentence different from what you usually tell yourself?"
+        }
+      }
+    },
+    {
+      "id": "l3-001",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Najtrudniejsze zadania to te bez wyraźnego końca. Definicja „zrobione na dziś” (konkretna, mierzalna) daje mecie kształt — a mózg lubi zamykać pętle.",
+          "task": "Dla najbardziej odkładanego projektu zapisz, co DOKŁADNIE będzie znaczyć „zrobione na dziś”. Pracuj tylko do tej mety, ani kroku dalej.",
+          "reflection": "Czy wyraźna meta zmieniła sposób, w jaki pracowałeś/aś?"
+        },
+        "en": {
+          "lesson": "The hardest tasks are the ones with no clear end. A definition of \"done for today\" (concrete, measurable) gives the finish line a shape — and brains love closing loops.",
+          "task": "For your most-avoided project, write down EXACTLY what \"done for today\" means. Work only to that line, not a step further.",
+          "reflection": "Did the clear finish line change how you worked?"
+        }
+      }
+    },
+    {
+      "id": "l3-002",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Znasz już plan „jeśli–to” na start. Wersja zaawansowana celuje w moment ucieczki: „JEŚLI poczuję odruch, by odłożyć zadanie, TO najpierw zrobię jeden 2-minutowy krok”. Plan na pokusę działa, zanim pokusa wygra.",
+          "task": "Zapisz plan „jeśli–to” na swój NAJCZĘSTSZY odruch ucieczki (sięgnięcie po telefon, „jeszcze tylko sprawdzę…”). Użyj go przy najbliższej pracy nad odkładanym zadaniem.",
+          "reflection": "Czy plan zadziałał w momencie odruchu? Co byś w nim poprawił(a)?"
+        },
+        "en": {
+          "lesson": "You already know the \"if–then\" plan for starting. The advanced version targets the escape moment: \"IF I feel the urge to put the task off, THEN I'll first do one 2-minute step.\" A plan for the temptation works before the temptation wins.",
+          "task": "Write an \"if–then\" plan for your MOST FREQUENT escape reflex (reaching for the phone, \"I'll just quickly check…\"). Use it during your next session on an avoided task.",
+          "reflection": "Did the plan fire at the moment of the urge? What would you improve in it?"
+        }
+      }
+    },
+    {
+      "id": "l3-003",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Perfekcjonizm to prokrastynacja w przebraniu: „jeszcze nie jestem gotowy/a” znaczy zwykle „boję się oceny”. Wersja robocza oddana dziś jest lepsza niż idealna nigdy.",
+          "task": "Zrób celowo NIEDOSKONAŁĄ wersję czegoś, co odkładasz: szkic maila, brzydką pierwszą stronę, plan z błędami. Pokaż ją komuś lub odłóż widocznie na jutro.",
+          "reflection": "Co było gorsze w wyobraźni niż w rzeczywistości?"
+        },
+        "en": {
+          "lesson": "Perfectionism is procrastination in disguise: \"I'm not ready yet\" usually means \"I fear being judged.\" A rough draft shipped today beats a perfect one that never exists.",
+          "task": "Deliberately make an IMPERFECT version of something you're avoiding: a draft email, an ugly first page, a flawed plan. Show it to someone or leave it visibly out for tomorrow.",
+          "reflection": "What was worse in your imagination than in reality?"
+        }
+      }
+    }
+  ]
+}
