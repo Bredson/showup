@@ -1,0 +1,193 @@
+# Unstuck — Specyfikacja ekranów MVP (UX)
+
+> Faza 2. Fundament: PRD §4–5, design-direction.md, product-principles.md (wiążące), metoda TITD.
+> Zasady przekrojowe: **jeden główny CTA na ekran**, pętla dzienna < 5 min, zero mechanik winy,
+> mobile-first (~390px), i18n PL/EN, wszystkie dane lokalnie.
+> Status dylematów: **rozstrzygnięcia na końcu dokumentu**.
+
+## Mapa nawigacji
+
+```
+[Pierwsze uruchomienie] → Onboarding (język → quiz → gotowe)
+[Kolejne uruchomienia]  → Dziś (home)
+
+Dolny pasek (max 4 pozycje, pigułka na aktywnej):
+  ☀ Dziś   |   ◔ Progres   |   ✎ Dziennik   |   ⚙ Ustawienia
+
+Pętla dzienna to modalna sekwencja NAD zakładką "Dziś" (fullscreen kroki) —
+pasek nawigacji ukryty w trakcie pętli.
+```
+
+---
+
+## 1. Onboarding (quiz startowy)
+
+**Cel:** lokalny profil (wyzwalacze, pory dnia, typ unikanych zadań) + język. Ton: „to będzie łagodne", nie „to będzie test".
+
+**Struktura:** ekran powitalny + 5 pytań + ekran zamykający. Każde pytanie = osobny ekran, kropki progresu u góry.
+
+### 1.0 Ekran powitalny
+- Ilustracja line-art (styl zenlife)
+- Nagłówek: „Cześć! Tu Unstuck."
+- Tekst: „Prokrastynacja to nie lenistwo — to emocje. Jedno małe wyzwanie dziennie, bez presji."
+- Przełącznik języka PL/EN (tu, bo wszystko dalej zależy od języka)
+- **CTA:** „Zacznijmy"
+
+### 1.1–1.5 Pytania quizu
+Wzorzec: kropki progresu → pytanie (ciepłe, 2. osoba) → duże karty-przyciski → CTA „Dalej" → link „Wróć".
+
+1. **„Co najczęściej sprawia, że odkładasz?"** *(multi, max 2)* — Strach, że nie wyjdzie / Nuda / Za dużo naraz / „Nie chce mi się" / Nie wiem, od czego zacząć *(mapuje na 5 emocji check-inu)*
+2. **„Kiedy najczęściej prokrastynujesz?"** *(single)* — Rano / W środku dnia / Wieczorem / Różnie
+3. **„Jakich zadań unikasz najbardziej?"** *(single)* — Praca/nauka / Urzędy i maile / Dom / Zdrowie i ruch / Kontakty z ludźmi
+4. **„Co się dzieje, gdy odłożysz coś ważnego?"** *(single)* — Wyrzuty sumienia / Odkładam kolejne / Ostatnia chwila / Czasem wcale *(kalibruje ton self-compassion, Wohl 2010)*
+5. **„Ile czasu realnie masz dziennie?"** *(single)* — 2 min / 5 min / 10+ min *(poziom startowy)*
+
+Każde pytanie ma opcję „Trudno powiedzieć" — nigdy nie blokujemy.
+
+### 1.6 Ekran zamykający
+- Ilustracja + „Gotowe. Twoja ścieżka czeka."
+- Karta podsumowania odzwierciedlająca odpowiedzi (quiz miał sens)
+- **CTA:** „Pokaż pierwsze wyzwanie"
+
+**Stany brzegowe:** przerwanie quizu → wznowienie od miejsca przerwania (zapis po każdym pytaniu); ponowny quiz z Ustawień nadpisuje profil, zachowuje progres.
+
+---
+
+## 2. Ekran główny „Dziś"
+
+**Cel:** dokładnie jedno wyzwanie i zaproszenie do pętli.
+
+| Element | Opis |
+|---|---|
+| Powitanie | Zależne od pory dnia; bez daty-kalendarza (to nie planner) |
+| Mikro-status streaka | 1 linia tekstu, tylko gdy streak ≥ 2 („3 dni w rytmie"); nie widget |
+| **Karta wyzwania** (bohater) | Plakietka poziomu, tytuł, 1 zdanie zajawki. Bez pełnej treści |
+| **CTA** | „Zacznij (≈3 min)" — pill, pełna szerokość; estymata obniża próg wejścia (Fogg) |
+| Dolny pasek | Dziś / Progres / Dziennik / Ustawienia |
+
+**Interakcje:** tap CTA lub karta → pętla. Brak listy wyzwań, brak podglądu jutra.
+
+**Stany brzegowe:**
+- Pierwszy raz: „Twoje pierwsze wyzwanie 🌱"
+- Ukończone dziś: karta „zrobione" (zieleń, ✓, „Do zobaczenia jutra"), CTA znika; link „Zobacz swój wpis" → Dziennik
+- Pętla przerwana: CTA „Dokończ (zostało ~2 min)"
+- Powrót po przerwie ≥ 2 dni: najpierw interstitial self-compassion (§7)
+
+---
+
+## 3. Pętla dzienna (6 kroków)
+
+Wspólne: fullscreen, nawigacja ukryta, wskaźnik 6 kropek + „×" (wyjście z zachowaniem stanu). Cel: < 5 min, typowo ~3.
+
+### 3.1 Check emocji — **OBOWIĄZKOWY (decyzja: Dylemat 1 = wariant A)**
+- Pytanie: „Co czujesz, myśląc o dzisiejszym wyzwaniu?"
+- 5 kart: 😰 Lęk / 😑 Nuda / 🌊 Przytłoczenie / 😤 Niechęć / 🌫 Niejasność
+- Tap = akcja (bez osobnego CTA); mikro-walidacja 1 zdanie → auto-advance
+- Bez opcji „pomiń" — wentyl bezpieczeństwa to „×" całej pętli
+- Pierwszy raz: dopisek „Nazwanie emocji to połowa roboty"
+
+### 3.2 Treść wyzwania
+- Plakietka poziomu + tytuł; mini-lekcja (max 3–4 zdania, jedna myśl CBT)
+- Blok „Twoje zadanie" (surface-alt): 1–2 zdania konkretnej akcji
+- Opcjonalny 1-zdaniowy dopisek adaptowany do emocji z 3.1
+- **CTA:** „Dalej"
+
+### 3.3 IF-THEN (opcjonalne w wypełnieniu, stałe w obecności)
+- „Kiedy i gdzie to zrobisz?" + 1 zdanie: „Jedno zdanie podnosi szansę wykonania ~2×. Ale to opcja."
+- Szablon: „Kiedy **[sytuacja]**, zrobię **[akcja]**." + 3 chipy podpowiedzi dla [sytuacji]
+- **CTA:** „Zapisz i dalej"; link muted „Pomiń ten krok" (bez dark-patternu winy)
+- Po 3× pominięciu z rzędu: znika tekst edukacyjny (krok zostaje)
+
+### 3.4 Wykonanie (zasada 2 minut)
+- „Teraz tylko pierwsze 2 minuty." + „Nie musisz kończyć. Zacznij — i możesz przestać po 2 minutach."
+- Opcjonalny timer 2:00 (miękki ring, nie alarm); timer to pomoc, nie bramka
+- Przypomnienie IF-THEN jeśli wypełnione
+- **CTA:** „Zrobione ✓"; link „Wrócę później" (stan zachowany)
+- Po upływie timera: „2 minuty za tobą. Chcesz jeszcze chwilę, czy klikasz Zrobione?" Zero auto-fail
+
+### 3.5 Refleksja — **OBOWIĄZKOWA Z CHIPAMI (decyzja: Dylemat 2 = wariant A)**
+- 1 pytanie dobrane do wyzwania/emocji; pole tekstowe „Wystarczy jedno zdanie…"
+- 3 chipy szybkiej odpowiedzi 1-tap („Start był najtrudniejszy" / „Poszło lepiej niż myślałem" / „Nadal było ciężko")
+- Nie da się zamknąć pętli bez odpowiedzi, ale chip = jedno tapnięcie
+- **CTA:** „Zapisz"
+
+### 3.6 Wzmocnienie
+- Krótka ciepła animacja (~1,5 s; nie konfetti-fajerwerki)
+- Komunikat konkretny: „Zrobił_ś dziś krok mimo [emocja]. Tak buduje się zmianę."
+- Mały pasek progresu: „Dzień 4 · Poziom 1: ●●●○○"
+- **CTA:** „Do jutra 👋"; link „Zobacz progres"
+- Warianty: odblokowanie poziomu / pierwszy dzień w ogóle
+
+---
+
+## 4. Ekran „Progres"
+
+**Cel:** „patrz, co już masz", nie „czego ci brakuje".
+
+- Nagłówek „Twoja droga"
+- **Karta streaka:** duża liczba + „dni w rytmie" (nie „z rzędu"), miękki ring
+- Karta kalendarza: kropki (zieleń = ukończony, kremowa = brak, **bez czerwieni i X**);
+  **dzień wybaczony = jawny marker** (pusta zielona obwódka + tooltip „dzień odpoczynku — passa trwa")
+  — **decyzja: Dylemat 3 = wariant A**
+- Karta poziomu: „Poziom 2 · wyzwanie 4 z 10"
+- CTA kontekstowy „Wróć do dzisiejszego wyzwania" (tylko gdy nieukończone)
+- Tap w kropkę ukończoną → bottom-sheet z podglądem; tap w pustą → nic
+- **Bez** historycznego rekordu streaka (porównanie z rekordem = ukryta mechanika winy)
+- Po długiej przerwie: „Wracasz — to się liczy najbardziej."
+
+---
+
+## 5. Ekran „Dziennik"
+
+- Lista odwrotnie chronologiczna: data relatywna, ikona emocji, tytuł wyzwania, 2 linie refleksji
+- Tap → rozwinięcie/bottom-sheet z pełnym wpisem (emocja + IF-THEN + refleksja)
+- Bez edycji/usuwania pojedynczych wpisów, bez wyszukiwarki, bez przycisku „nowy wpis" (scope creep)
+- Pusty stan: ilustracja + „Tu pojawią się twoje refleksje po pierwszym wyzwaniu."
+- Wpis bez refleksji: „—" (nie „brak refleksji")
+
+---
+
+## 6. Ekran „Ustawienia"
+
+- **Język:** segmentowany PL/EN, zmiana natychmiastowa
+- **Moja ścieżka:** „Dostosuj moją ścieżkę" → ponowny quiz (zachowuje progres)
+- **Twoje dane:** „Eksportuj dane" (JSON); „Usuń wszystkie dane" (dwustopniowe potwierdzenie, bez alarmowej czerwieni)
+- Notka prywatności: „Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia."
+- **O aplikacji:** wersja + krótka strona „Jak działa Unstuck"
+
+---
+
+## 7. Stan „dzień pominięty" (self-compassion)
+
+Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem Dziś (raz na powrót).
+
+- Ilustracja ciepła, spokojna (dominanta)
+- „Hej, dobrze, że jesteś."
+- Przerwa 1 dzień: „Wczoraj się nie złożyło — zdarza się każdemu. Twoja passa jest bezpieczna. Dziś jest nowy dzień."
+- Przerwa 2+ dni: „Trochę cię nie było — i to jest OK. Badania są jasne: wybaczenie sobie działa lepiej niż wyrzuty." (**bez liczby opuszczonych dni** — liczba = wyrzut)
+- **CTA:** „Pokaż dzisiejsze wyzwanie". Bez linku drugorzędnego — jedna droga: naprzód
+- Przerwa 30+ dni: dodatkowo wyzwanie o poziom łagodniejsze („miękki restart")
+
+---
+
+## Checklist zgodności z product-principles
+
+| Zasada | Realizacja |
+|---|---|
+| One challenge per day | Dziś = 1 karta; po ukończeniu brak „następnego" |
+| Not a todo-list | Brak plannera, własnych zadań, przycisku „nowy wpis" |
+| Self-compassion | Interstitial, brak czerwieni, brak liczby dni, brak rekordu, kalendarz bez X |
+| Pętla < 5 min | 3.1 = 1 tap, 3.3 pomijalny, 3.5 chipy 1-tap |
+| Privacy first | Notka, eksport JSON, zero analityki |
+| i18n | Przełącznik 1.0 + Ustawienia; treści dwujęzyczne |
+| Jeden CTA na ekran | Wszędzie dokładnie jeden primary |
+
+---
+
+## Rozstrzygnięcia dylematów (decyzje użytkownika, Faza 2)
+
+| # | Dylemat | Decyzja użytkownika |
+|---|---|---|
+| 1 | Check emocji pomijalny? | **Obowiązkowy, bez „pomiń"** — 1 tap, auto-advance; wentyl = „×" całej pętli |
+| 2 | Refleksja obowiązkowa? | **Obowiązkowa z chipami 1-tap** — chip = pełnoprawna odpowiedź |
+| 3 | Marker dnia wybaczonego? | **Jawny ciepły marker** — pusta zielona obwódka + „dzień odpoczynku — passa trwa" |

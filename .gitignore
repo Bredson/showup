@@ -1,0 +1,22 @@
+# Dependencies & build
+node_modules/
+dist/
+dist-ssr/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+
+# Local AI-assistant files (private, not for the team repo)
+CLAUDE.local.md
+.claude/settings.local.json
+
+# Env
+*.local
+.env

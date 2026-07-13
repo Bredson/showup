@@ -1,0 +1,47 @@
+/* Unstuck — design tokens. Source of truth: docs/design-direction.md
+   RULE: components use only these variables — no raw hex values in component CSS. */
+
+:root {
+  /* Palette: warm cream + orange (zenlife direction) */
+  --bg: #fdf6ec;
+  --surface: #fffdf9;
+  --surface-alt: #fbeed9;
+  --primary: #f08a3c;
+  --primary-soft: #f5a623;
+  --text: #3d3428;
+  --text-muted: #8c7f6d;
+  --success: #7bb662;
+
+  /* NOTE: deliberately no alarm-red token — self-compassion rule (product-principles #3) */
+
+  /* Shape & elevation */
+  --radius-card: 24px;
+  --radius-pill: 999px;
+  --shadow-card: 0 4px 20px rgba(61, 52, 40, 0.08);
+
+  /* Spacing */
+  --gap-cards: 16px;
+  --pad-screen: 24px;
+
+  /* Typography */
+  --font-sans: 'Nunito', 'Quicksand', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Mobile-first: content constrained to a centered column on larger screens */
+#root {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100dvh;
+}

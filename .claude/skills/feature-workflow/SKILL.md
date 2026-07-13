@@ -1,0 +1,25 @@
+---
+name: feature-workflow
+description: Standardowy przepływ implementacji pojedynczego feature'u MVP w projekcie Unstuck. Używaj przy każdym zadaniu typu "zaimplementuj ekran X / algorytm Y / przepływ Z" w Fazie 4 i późniejszych.
+---
+
+# Feature Workflow — Unstuck
+
+Jeden feature = jedna pełna iteracja tego przepływu. Nie zaczynaj kolejnego feature'u przed domknięciem poprzedniego.
+
+## Kroki
+
+1. **Przeczytaj spec przed kodem.** Odpowiednie sekcje `docs/ux-spec.md` (ekrany, dylematy rozstrzygnięte) i `docs/data-model.md` (encje, algorytmy). Jeśli spec milczy w istotnej kwestii — dylemat do użytkownika (rule: `ai-workflow.md`), nie zgaduj.
+2. **Domena najpierw.** Logika w `src/domain/` jako czyste funkcje + testy jednostkowe (`*.test.ts` obok pliku). Data/zegar jako parametr, nie `new Date()` w środku.
+3. **Storage, jeśli potrzebny.** Rozszerz `StorageAdapter` w `src/storage/` — reszta kodu nie dotyka IndexedDB bezpośrednio.
+4. **UI na końcu.** Ekran w `src/ui/screens/` (jeden plik), współdzielone kawałki w `src/ui/components/`. Stringi tylko przez i18n (dodaj klucze do `pl.ts` i `en.ts` naraz), style tylko przez tokeny.
+5. **Weryfikacja.** `npm test` + `npm run build` muszą przechodzić. Przepływy UI sprawdź wizualnie w przeglądarce (dev server + screenshot).
+6. **Code review.** Uruchom subagenta `code-reviewer` na diffie feature'u; napraw uwagi istotne.
+7. **Post-stage analysis.** Nowy wzorzec/pułapka → aktualizacja `.claude/rules/` lub tego skilla (wymóg z `CLAUDE.md`).
+
+## Antywzorce
+
+- Budowanie UI przed przetestowaną domeną.
+- "Tymczasowe" stringi po polsku wpisane na sztywno w JSX.
+- Dodawanie zależności npm bez decyzji użytkownika.
+- Persystowanie czegoś, co da się wyliczyć z `DailyEntry`.
