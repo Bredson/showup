@@ -21,5 +21,6 @@ Jeden feature = jedna pełna iteracja tego przepływu. Nie zaczynaj kolejnego fe
 
 - Budowanie UI przed przetestowaną domeną.
 - "Tymczasowe" stringi po polsku wpisane na sztywno w JSX.
-- Dodawanie zależności npm bez decyzji użytkownika.
+- Dodawanie zależności **runtime** (trafiających do bundle'a appki) bez decyzji użytkownika.
+  Zależności dev-only (narzędzia testowe/buildowe) wolno dodać samodzielnie — zgłosić w podsumowaniu.
 - Persystowanie czegoś, co da się wyliczyć z `DailyEntry`.
