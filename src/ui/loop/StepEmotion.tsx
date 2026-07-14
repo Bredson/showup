@@ -44,6 +44,7 @@ export default function StepEmotion({ isFirstTime, onPersist, onAdvance }: Props
           <button
             key={emotion}
             className={`emotion-row${picked === emotion ? ' emotion-row--selected' : ''}`}
+            aria-pressed={picked === emotion}
             onClick={() => pick(emotion)}
           >
             <span className="emotion-chip" aria-hidden>

@@ -30,7 +30,8 @@ export default function TodayScreen({ challenge, entry, progress, hour, onStartL
   const isFirstTime = progress.totalCompleted === 0 && !isDone;
   const loopStarted = entry.emotionBefore !== null;
 
-  const doneInLevel = progress.completedByLevel[progress.currentLevel];
+  // Clamped: at max level completedByLevel keeps growing but the pill/ring must cap at 7/7.
+  const doneInLevel = Math.min(progress.completedByLevel[progress.currentLevel], COMPLETIONS_TO_ADVANCE);
   // Ring fill mirrors the level pill (e.g. 3/7 ≈ 43% — exactly the mock's value).
   const ringFill = Math.round((doneInLevel / COMPLETIONS_TO_ADVANCE) * 100);
 
