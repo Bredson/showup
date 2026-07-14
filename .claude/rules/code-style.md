@@ -94,6 +94,14 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
 - **Współdzielona klasa zamiast bliźniaczych** (`.screen-art` dla onboardingu i comeback) — wzorzec F6 „wydziel, nie kopiuj" dotyczy też CSS.
 - Interstitial pełnoekranowy renderowany PRZED wszystkimi innymi gałęziami Shell (requiz/loop/taby); zamknięcie = `setState(null)`, zero zapisu.
 
+## UI (React) — wzorce z Fazy 7 (redesign 1c/1f/1h)
+
+- **Liczniki poziomu w UI zawsze clampowane**: `completedByLevel[currentLevel]` rośnie bez ograniczeń na maksymalnym poziomie (domena inkrementuje zawsze, poziom stoi) — każdy odczyt do pilla/ringa to `Math.min(x, COMPLETIONS_TO_ADVANCE)` (finding BLOCKER z review F7-redesign; ProgressScreen i TodayScreen muszą liczyć identycznie).
+- **Ring conic przez CSS custom property**: `background: conic-gradient(var(--primary) 0 var(--ring-fill, 0%), var(--surface-alt) ...)`, komponent ustawia `style={{ '--ring-fill': '43%' } as CSSProperties}` — fallback `0%` obowiązkowy; ring dekoracyjny (`aria-hidden`), dane liczbowe żyją w tekście obok.
+- **Litery dni tygodnia wyliczane z dat kolumn, nie hardcodowane**: kalendarz to kroczące 28 dni NIE wyrównane do poniedziałku — nagłówek bierze `calendar.slice(0, 7)` i formatuje `formatWeekdayNarrow(date, lang)`; 28 ≡ 0 (mod 7) gwarantuje zgodność każdego wiersza. Nagłówek `aria-hidden` (pełne daty niosą aria-labels kropek).
+- **Stan zaznaczenia = klasa + `aria-pressed`**: wizualny wyróżnik (ramka, kropka `aria-hidden`) bez `aria-pressed` jest niewidoczny dla czytnika (finding MINOR z review; konwencja jak OnboardingScreen/SettingsScreen).
+- **Usuwanie kluczy i18n przy redesignie**: usuwaj z OBU locale naraz (parity wymusza typ `en.ts`), ale najpierw grep po wszystkich konsumentach — klucz „nieużywany na tym ekranie" może żyć gdzie indziej (`today.level` używa StepChallenge). To samo z klasami CSS (`.level-dots` zostało dla StepReinforce).
+
 ## Deploy i produkcja (Faza 6)
 
 - **`base: '/unstuck/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/unstuck/` w kodzie aplikacji.

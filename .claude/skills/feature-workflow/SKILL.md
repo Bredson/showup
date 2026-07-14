@@ -13,7 +13,7 @@ Jeden feature = jedna pełna iteracja tego przepływu. Nie zaczynaj kolejnego fe
 2. **Domena najpierw.** Logika w `src/domain/` jako czyste funkcje + testy jednostkowe (`*.test.ts` obok pliku). Data/zegar jako parametr, nie `new Date()` w środku.
 3. **Storage, jeśli potrzebny.** Rozszerz `StorageAdapter` w `src/storage/` — reszta kodu nie dotyka IndexedDB bezpośrednio.
 4. **UI na końcu.** Ekran w `src/ui/screens/` (jeden plik), współdzielone kawałki w `src/ui/components/`. Stringi tylko przez i18n (dodaj klucze do `pl.ts` i `en.ts` naraz), style tylko przez tokeny.
-5. **Weryfikacja.** `npm test` + `npm run build` muszą przechodzić. Przepływy UI sprawdź wizualnie w przeglądarce (dev server + screenshot).
+5. **Weryfikacja.** `npm test` + `npm run build` muszą przechodzić. Przepływy UI sprawdź wizualnie w przeglądarce (dev server + screenshot), w PL i EN. Gdy stan ekranu zależy od danych w IndexedDB lub timera auto-advance → skill `visual-verification` (chirurgia bazy z backupem, zamrożenie setTimeout, obowiązkowy checklist sprzątania).
 6. **Code review.** Uruchom subagenta `code-reviewer` na diffie feature'u; napraw uwagi istotne.
 7. **Post-stage analysis.** Nowy wzorzec/pułapka → aktualizacja `.claude/rules/` lub tego skilla (wymóg z `CLAUDE.md`).
 
