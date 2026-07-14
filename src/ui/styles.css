@@ -94,6 +94,169 @@
   gap: 8px;
 }
 
+/* Today screen — design variant 1c ("zenlife hero") */
+.today-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.today-hero h1 {
+  margin: 0;
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.hero-accent {
+  color: var(--primary);
+}
+
+/* decorative 3-shape illustration (mock 1c) */
+.today-art {
+  position: relative;
+  width: 96px;
+  height: 96px;
+  flex: none;
+}
+
+.today-art div:nth-child(1) {
+  position: absolute;
+  right: 0;
+  top: 6px;
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+}
+
+.today-art div:nth-child(2) {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--primary-soft);
+  opacity: 0.85;
+}
+
+.today-art div:nth-child(3) {
+  position: absolute;
+  right: 10px;
+  bottom: 2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 5px solid var(--success);
+}
+
+.pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  border-radius: var(--radius-pill);
+  padding: 8px 14px;
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.pill--soft {
+  background: var(--surface-alt);
+  box-shadow: none;
+  color: var(--text-muted);
+}
+
+.today-first {
+  margin: 0;
+}
+
+.today-card {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.today-card-row {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+/* 2:00 ring — conic-gradient donut; fill driven by --ring-fill (level progress) */
+.ring {
+  width: 74px;
+  height: 74px;
+  flex: none;
+  border-radius: 50%;
+  background: conic-gradient(var(--primary) 0 var(--ring-fill, 0%), var(--surface-alt) var(--ring-fill, 0%) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-center {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 800;
+  font-size: 1.1rem;
+  line-height: 1.1;
+}
+
+.ring-center span {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.today-card-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.today-card-text h2 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.today-card-text p {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+}
+
+.today-motto {
+  margin: 0;
+  margin-top: auto;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
 /* Bottom navigation */
 .bottom-nav {
   position: fixed;

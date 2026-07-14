@@ -11,10 +11,15 @@ export const pl = {
   'nav.settings': 'Ustawienia',
 
   // Today screen (ux-spec §2)
-  'today.greeting.morning': 'Dzień dobry!',
-  'today.greeting.midday': 'Cześć!',
-  'today.greeting.evening': 'Dobry wieczór!',
+  'today.greeting.morning': 'Dzień dobry,',
+  'today.greeting.midday': 'Cześć,',
+  'today.greeting.evening': 'Dobry wieczór,',
+  'today.greeting.warm': 'dobrze, że jesteś.',
   'today.streak': '{days} dni w rytmie',
+  'today.levelPill': 'Poziom {level} · {done}/{total}',
+  'today.challengeEyebrow': 'Dzisiejsze wyzwanie',
+  'today.ring.time': '2:00',
+  'today.ring.minutes': 'minuty',
   'today.firstTime': 'Twoje pierwsze wyzwanie 🌱',
   'today.level': 'Poziom {level}',
   'today.start': 'Zacznij (≈3 min)',
