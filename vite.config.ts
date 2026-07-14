@@ -19,6 +19,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // Extra static files to precache (icons referenced from index.html / iOS).
+      includeAssets: ['favicon.ico', 'icon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
         name: 'Unstuck',
         short_name: 'Unstuck',
@@ -26,7 +28,13 @@ export default defineConfig({
         theme_color: '#fdf6ec',
         background_color: '#fdf6ec',
         display: 'standalone',
-        // icons: added in Faza 4 (need generated assets first)
+        // Generated from public/icon.svg via `npm run generate-pwa-assets`.
+        icons: [
+          { src: 'pwa-64x64.png', sizes: '64x64', type: 'image/png' },
+          { src: 'pwa-192x192.png', sizes: '192x192', type: 'image/png' },
+          { src: 'pwa-512x512.png', sizes: '512x512', type: 'image/png' },
+          { src: 'maskable-icon-512x512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+        ],
       },
     }),
   ],

@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Unstuck app icon — sprout motif (🌿 "passa trwa"), palette from src/tokens.css.
+       Full-bleed design: OS applies its own mask (rounded corners / circle).
+       Motif kept inside the central 80% safe zone for maskable icons.
+       Draw order matters: mound is painted LAST so the stem grows out of the soil. -->
+  <rect width="512" height="512" fill="#fdf6ec"/>
+  <!-- stem (bottom hidden behind the mound) -->
+  <path d="M256 360 L256 176" stroke="#7bb662" stroke-width="26" stroke-linecap="round" fill="none"/>
+  <!-- right leaf -->
+  <path d="M262 222 C 320 226, 364 190, 374 126 C 312 126, 268 164, 262 222 Z" fill="#7bb662"/>
+  <!-- left leaf -->
+  <path d="M250 282 C 192 286, 148 250, 138 186 C 200 186, 244 224, 250 282 Z" fill="#7bb662"/>
+  <!-- soil mound (on top, occludes stem base) -->
+  <path d="M96 400 Q 256 262 416 400 Z" fill="#f08a3c"/>
+</svg>
