@@ -51,6 +51,15 @@ Każde pytanie ma opcję „Trudno powiedzieć" — nigdy nie blokujemy.
 
 **Stany brzegowe:** przerwanie quizu → wznowienie od miejsca przerwania (zapis po każdym pytaniu); ponowny quiz z Ustawień nadpisuje profil, zachowuje progres.
 
+### Ustalenia techniczne (wiążące, Faza 4 / Feature 8)
+
+- **ID pytań:** `triggers`, `timeOfDay`, `taskType`, `aftermath`, `dailyTime`. **ID opcji** po angielsku, stałe na zawsze (surowe odpowiedzi w `QuizResult.answers` mają być przeliczalne po zmianie quizu).
+- **Mapowanie pyt. 1 → emocje check-inu:** `fear→anxiety`, `boredom→boredom`, `too-much→overwhelm`, `no-energy→aversion`, `dont-know-where→confusion`. `dominantTriggers` = zmapowane odpowiedzi z pyt. 1 (0–2 emocji; „Trudno powiedzieć" → pusta lista).
+- **„Trudno powiedzieć"** = opcja `unsure` w każdym pytaniu; w pyt. 1 wyklucza się z innymi wyborami.
+- **Poziom startowy (Dylemat 5 = NIE):** pyt. 5 nie zmienia poziomu — zapis wyłącznie w `answers.dailyTime`.
+- **Draft quizu** (wznowienie po przerwaniu) trzymany przez StorageAdapter w store `meta` (rekord `quizDraft`), czyszczony po ukończeniu quizu.
+- Onboarding pokazywany, gdy `getProfile()` zwraca `null`; wybór języka na ekranie powitalnym działa natychmiast (całego quizu dotyczy).
+
 ---
 
 ## 2. Ekran główny „Dziś"
@@ -194,3 +203,5 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 | 1 | Check emocji pomijalny? | **Obowiązkowy, bez „pomiń"** — 1 tap, auto-advance; wentyl = „×" całej pętli |
 | 2 | Refleksja obowiązkowa? | **Obowiązkowa z chipami 1-tap** — chip = pełnoprawna odpowiedź |
 | 3 | Marker dnia wybaczonego? | **Jawny ciepły marker** — pusta zielona obwódka + „dzień odpoczynku — passa trwa" |
+| 4 | Zakres Dziennika | **Wariant A** — każdy wpis z zapisaną emocją, także dni niedokończone; bez oceniania wykonania |
+| 5 | Poziom startowy z quizu (pyt. 5)? | **Nie** — wszyscy startują z poziomu 1 (progresja tylko z ukończeń, data-model §4); odpowiedź zapisana w surowych danych na przyszłość |

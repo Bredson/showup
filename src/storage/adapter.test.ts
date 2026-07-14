@@ -3,7 +3,7 @@
 
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry, UserProfile } from '../domain/types';
+import type { ChallengeStatus, DailyEntry, QuizDraft, UserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 import { createIdbAdapter } from './idbAdapter';
 import { createMemoryAdapter } from './memoryAdapter';
@@ -104,15 +104,43 @@ describe.each(implementations)('StorageAdapter contract: %s', (_name, createAdap
     expect((await adapter.getMeta()).schemaVersion).toBe(2);
   });
 
-  it('clearAll wipes profile, entries and meta', async () => {
+  const draft: QuizDraft = {
+    id: 'quizDraft',
+    language: 'en',
+    answers: { triggers: ['fear', 'too-much'], timeOfDay: 'evening' },
+    updatedAt: '2026-07-13T09:30:00.000Z',
+  };
+
+  it('returns null quiz draft when none is in progress, then round-trips it', async () => {
+    expect(await adapter.getQuizDraft()).toBeNull();
+    await adapter.saveQuizDraft(draft);
+    expect(await adapter.getQuizDraft()).toEqual(draft);
+  });
+
+  it('quiz draft does not clobber meta despite sharing the store', async () => {
+    const metaBefore = await adapter.getMeta();
+    await adapter.saveQuizDraft(draft);
+    expect(await adapter.getMeta()).toEqual(metaBefore);
+    await adapter.clearQuizDraft();
+    expect(await adapter.getQuizDraft()).toBeNull();
+    expect(await adapter.getMeta()).toEqual(metaBefore);
+  });
+
+  it('clearQuizDraft on an empty store is a no-op, not an error', async () => {
+    await expect(adapter.clearQuizDraft()).resolves.toBeUndefined();
+  });
+
+  it('clearAll wipes profile, entries, meta and quiz draft', async () => {
     await adapter.saveProfile(profile);
     await adapter.putEntry(entry('2026-07-13'));
     await adapter.getMeta();
+    await adapter.saveQuizDraft(draft);
 
     await adapter.clearAll();
 
     expect(await adapter.getProfile()).toBeNull();
     expect(await adapter.getAllEntries()).toEqual([]);
+    expect(await adapter.getQuizDraft()).toBeNull();
     // meta re-seeds after wipe instead of returning stale data
     expect((await adapter.getMeta()).schemaVersion).toBe(CURRENT_SCHEMA_VERSION);
   });

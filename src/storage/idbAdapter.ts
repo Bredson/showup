@@ -2,7 +2,7 @@
 // The ONLY module in the app allowed to talk to IndexedDB.
 
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
-import type { DailyEntry, Meta, UserProfile } from '../domain/types';
+import type { DailyEntry, Meta, QuizDraft, UserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
 const DB_NAME = 'unstuck';
@@ -11,7 +11,8 @@ interface UnstuckDb extends DBSchema {
   profile: { key: string; value: UserProfile };
   /** Key "YYYY-MM-DD" sorts lexicographically == chronologically (calendar range queries). */
   entries: { key: string; value: DailyEntry };
-  meta: { key: string; value: Meta };
+  /** Two singleton records share this store: "meta" (Meta) and "quizDraft" (QuizDraft). */
+  meta: { key: string; value: Meta | QuizDraft };
 }
 
 export async function createIdbAdapter(
@@ -64,7 +65,8 @@ export async function createIdbAdapter(
     async getMeta() {
       // Get-then-put seed is not race-safe across calls, but this is a single-user local app;
       // worst case two first calls seed installedAt a few ms apart. Accepted, do not "fix".
-      const existing = await db.get('meta', 'meta');
+      // Key "meta" only ever holds a Meta record (key<->type pairing is this module's invariant).
+      const existing = (await db.get('meta', 'meta')) as Meta | undefined;
       if (existing) return existing;
       const seeded: Meta = {
         id: 'meta',
@@ -76,6 +78,15 @@ export async function createIdbAdapter(
     },
     async saveMeta(m) {
       await db.put('meta', m);
+    },
+    async getQuizDraft() {
+      return ((await db.get('meta', 'quizDraft')) as QuizDraft | undefined) ?? null;
+    },
+    async saveQuizDraft(d) {
+      await db.put('meta', d);
+    },
+    async clearQuizDraft() {
+      await db.delete('meta', 'quizDraft');
     },
     // FUTURE: when the blob-migration runner lands (§5), add a transactional replaceAll(blob)
     // to StorageAdapter — composing clearAll + putEntry loops is not atomic and could lose the journal.

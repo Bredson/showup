@@ -478,3 +478,111 @@ button.cal-dot::after {
   font-weight: 700;
   color: var(--text);
 }
+
+/* Onboarding quiz (ux-spec §1) */
+.onb {
+  padding-bottom: var(--pad-screen); /* no bottom nav during onboarding */
+  justify-content: center;
+}
+
+.onb-art {
+  font-size: 3rem;
+  text-align: center;
+}
+
+/* headings receive programmatic focus on step change (screen-reader announcement) */
+.onb h1:focus {
+  outline: none;
+}
+
+.onb-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.onb-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+}
+
+.onb-dots span.active {
+  background: var(--primary);
+}
+
+.lang-switch {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.lang-btn {
+  background: var(--surface-alt);
+  border: 2px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  cursor: pointer;
+  position: relative;
+}
+
+/* invisible touch-target extension: ~40px visual pill, ≥44px tappable area (WCAG 2.5.8) */
+.lang-btn::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+}
+
+.lang-btn--selected {
+  border-color: var(--primary);
+  background: var(--surface);
+}
+
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.quiz-card {
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-sans);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 16px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.quiz-card--selected {
+  border-color: var(--primary);
+}
+
+.onb-summary {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.onb-summary h2 {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.onb-summary p {
+  margin: 0;
+  font-size: 0.92rem;
+  color: var(--text-muted);
+}

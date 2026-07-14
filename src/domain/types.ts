@@ -71,6 +71,19 @@ export interface ProgressState {
   lastCompletedDate: ISODate | null;
 }
 
+/**
+ * Persisted mid-quiz state — onboarding resumes where it stopped (ux-spec §1).
+ * Lives in the "meta" store as a separate record; deleted once the profile is built.
+ */
+export interface QuizDraft {
+  id: 'quizDraft';
+  /** Language picked on the welcome screen — must survive an interrupted quiz. */
+  language: Lang;
+  /** Same raw shape as QuizResult.answers, but partial while the quiz is in progress. */
+  answers: Record<string, string | string[]>;
+  updatedAt: ISODateTime;
+}
+
 export interface Meta {
   id: 'meta';
   schemaVersion: number;
