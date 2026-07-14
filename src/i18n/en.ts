@@ -165,6 +165,14 @@ export const en: Record<keyof typeof pl, string> = {
   'settings.path.doneCta': 'Save my path',
   'settings.data.heading': 'Your data',
   'settings.data.export': 'Export data',
+  'settings.data.import': 'Import data',
+  'settings.data.importConfirm.body':
+    'This will replace all current data with the file contents (exported {date}, entries: {count}). It cannot be undone.',
+  'settings.data.importConfirm.yes': 'Replace data',
+  'settings.data.importConfirm.no': 'Keep it',
+  'settings.data.importInvalid': "This doesn't look like an Unstuck export file.",
+  'settings.data.importNewer': 'This file comes from a newer version of Unstuck. Update the app and try again.',
+  'settings.data.importError': 'Could not import the data. Your current data is unchanged.',
   'settings.data.delete': 'Delete all data',
   'settings.data.deleteConfirm.body':
     'This will remove your profile, entries and progress from this device. It cannot be undone.',

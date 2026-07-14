@@ -58,6 +58,12 @@ export function createMemoryAdapter(now: () => Date = () => new Date()): Storage
     async clearQuizDraft() {
       quizDraft = null;
     },
+    async replaceAll(newProfile, newEntries) {
+      profile = structuredClone(newProfile);
+      quizDraft = null; // meta stays — same contract as idbAdapter
+      entries.clear();
+      for (const e of newEntries) entries.set(e.date, structuredClone(e));
+    },
     async clearAll() {
       profile = null;
       meta = null;

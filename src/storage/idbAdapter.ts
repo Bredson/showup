@@ -88,8 +88,19 @@ export async function createIdbAdapter(
     async clearQuizDraft() {
       await db.delete('meta', 'quizDraft');
     },
-    // FUTURE: when the blob-migration runner lands (§5), add a transactional replaceAll(blob)
-    // to StorageAdapter — composing clearAll + putEntry loops is not atomic and could lose the journal.
+    async replaceAll(newProfile, newEntries) {
+      // Single readwrite transaction = atomic: if anything throws, IndexedDB rolls back
+      // and the current journal survives (the reason this is not clearAll + putEntry loops).
+      const tx = db.transaction(['profile', 'entries', 'meta'], 'readwrite');
+      const profileStore = tx.objectStore('profile');
+      const entriesStore = tx.objectStore('entries');
+      await Promise.all([
+        profileStore.clear().then(() => profileStore.put(newProfile)),
+        entriesStore.clear().then(() => Promise.all(newEntries.map((e) => entriesStore.put(e)))),
+        tx.objectStore('meta').delete('quizDraft'),
+        tx.done,
+      ]);
+    },
     async clearAll() {
       const tx = db.transaction(['profile', 'entries', 'meta'], 'readwrite');
       await Promise.all([

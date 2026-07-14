@@ -195,6 +195,12 @@ interface ExportBlob {
   Jedna ścieżka dla upgrade'u appki i importu starego pliku.
 - Eksport: `unstuck-export-YYYY-MM-DD.json` (Blob + `<a download>`). Bez treści wyzwań.
 - Import = **replace** (nie merge); walidacja `app` + `schemaVersion <= CURRENT`.
+  Zaimplementowane (F8.1): `validateExportBlob` w `src/domain/import.ts` (result type,
+  zbiera wszystkie błędy; `schemaVersion > CURRENT` → osobny powód `newer`),
+  `replaceAll` w adapterach (jedna transakcja: profil+wpisy zastąpione, `meta`
+  zachowane — `installedAt` opisuje to urządzenie, `quizDraft` czyszczony),
+  UI w Ustawieniach (file picker → inline confirm z datą i liczbą wpisów).
+  Po imporcie App remountuje Shell — boot czyta stan na nowo z IndexedDB.
 - Eksport = jedyny backup; delikatne przypomnienie co ~30 dni.
 
 ## 6. Treści: `challenges.json`

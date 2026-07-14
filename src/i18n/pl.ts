@@ -178,6 +178,14 @@ export const pl = {
   'settings.path.doneCta': 'Zapisz moją ścieżkę',
   'settings.data.heading': 'Twoje dane',
   'settings.data.export': 'Eksportuj dane',
+  'settings.data.import': 'Importuj dane',
+  'settings.data.importConfirm.body':
+    'To zastąpi wszystkie obecne dane zawartością pliku (eksport z {date}, wpisów: {count}). Nie da się tego cofnąć.',
+  'settings.data.importConfirm.yes': 'Zastąp dane',
+  'settings.data.importConfirm.no': 'Zostaw',
+  'settings.data.importInvalid': 'To nie wygląda na plik eksportu Unstuck.',
+  'settings.data.importNewer': 'Ten plik pochodzi z nowszej wersji Unstuck. Zaktualizuj aplikację i spróbuj ponownie.',
+  'settings.data.importError': 'Nie udało się zaimportować danych. Twoje obecne dane są bez zmian.',
   'settings.data.delete': 'Usuń wszystkie dane',
   'settings.data.deleteConfirm.body':
     'To usunie twój profil, wpisy i progres z tego urządzenia. Nie da się tego cofnąć.',

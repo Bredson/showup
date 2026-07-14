@@ -130,6 +130,35 @@ describe.each(implementations)('StorageAdapter contract: %s', (_name, createAdap
     await expect(adapter.clearQuizDraft()).resolves.toBeUndefined();
   });
 
+  it('replaceAll swaps profile and entries wholesale (import = replace, not merge)', async () => {
+    await adapter.saveProfile(profile);
+    await adapter.putEntry(entry('2026-07-13'));
+
+    const imported: UserProfile = { ...profile, language: 'en', startDate: '2026-01-01' };
+    await adapter.replaceAll(imported, [entry('2026-01-01'), entry('2026-01-02')]);
+
+    expect((await adapter.getProfile())?.language).toBe('en');
+    // The old entry is GONE — no merging of current data with the backup.
+    expect((await adapter.getAllEntries()).map((e) => e.date)).toEqual(['2026-01-01', '2026-01-02']);
+  });
+
+  it('replaceAll drops an in-flight quiz draft but preserves meta (device identity)', async () => {
+    const metaBefore = await adapter.getMeta();
+    await adapter.saveQuizDraft(draft);
+
+    await adapter.replaceAll(profile, []);
+
+    expect(await adapter.getQuizDraft()).toBeNull();
+    expect(await adapter.getMeta()).toEqual(metaBefore);
+  });
+
+  it('replaceAll does not keep references to caller data', async () => {
+    const imported = entry('2026-02-01');
+    await adapter.replaceAll(profile, [imported]);
+    imported.status = 'skipped';
+    expect((await adapter.getEntry('2026-02-01'))!.status).toBe('completed');
+  });
+
   it('clearAll wipes profile, entries, meta and quiz draft', async () => {
     await adapter.saveProfile(profile);
     await adapter.putEntry(entry('2026-07-13'));

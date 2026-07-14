@@ -1,7 +1,7 @@
 // App shell (Feature 5): tab routing + owning today's entry/progress state.
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Challenge, DailyEntry, Lang, QuizDraft, UserProfile } from './domain/types';
+import type { Challenge, DailyEntry, ExportBlob, Lang, QuizDraft, UserProfile } from './domain/types';
 import { computeProgress, computeStreak } from './domain/streak';
 import { getTodaysChallenge } from './domain/challenge';
 import { shouldHideIfThenEducation } from './domain/dailyLoop';
@@ -28,9 +28,11 @@ interface ShellProps {
   onProfileChange: (updated: UserProfile) => void;
   /** Clears IndexedDB and returns the app to onboarding (ux-spec §6, dylemat 7). */
   onDeleteAll: () => Promise<void>;
+  /** Replaces all data with an imported backup; on success App remounts this Shell. */
+  onImportAll: (blob: ExportBlob) => Promise<void>;
 }
 
-function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
+function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: ShellProps) {
   const [tab, setTab] = useState<Tab>('today');
   const [loopOpen, setLoopOpen] = useState(false);
   const [requizOpen, setRequizOpen] = useState(false);
@@ -160,6 +162,7 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
             }}
             onRetakeQuiz={() => setRequizOpen(true)}
             onDeleteAll={onDeleteAll}
+            onImportAll={onImportAll}
           />
         ) : (
           <div className="screen">
@@ -242,6 +245,24 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
     adapter.saveProfile(updated).catch((err: unknown) => console.error('Unstuck: profile save failed', err));
   }
 
+  // Bumped after a successful import: the new key remounts Shell, whose boot effect
+  // re-reads IndexedDB — today's entry, progress and the comeback check all reflect the
+  // imported data without any manual state surgery (import = replace, data-model §5).
+  const [importGeneration, setImportGeneration] = useState(0);
+
+  /** "Importuj dane" (F8.1): atomic replace of everything, then a fresh Shell boot. */
+  async function handleImportAll(blob: ExportBlob) {
+    wipingRef.current = true; // same race guard as delete: no save may land mid-replace
+    try {
+      await adapter.replaceAll(blob.profile, blob.entries);
+      setProfile(blob.profile);
+      setLang(blob.profile.language);
+      setImportGeneration((g) => g + 1);
+    } finally {
+      wipingRef.current = false;
+    }
+  }
+
   /** "Usuń wszystkie dane" (dylemat 7): awaited — only a confirmed wipe returns to onboarding. */
   async function handleDeleteAll() {
     wipingRef.current = true;
@@ -269,7 +290,14 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
           onComplete={completeOnboarding}
         />
       ) : (
-        <Shell adapter={adapter} profile={profile} onProfileChange={handleProfileChange} onDeleteAll={handleDeleteAll} />
+        <Shell
+          key={importGeneration}
+          adapter={adapter}
+          profile={profile}
+          onProfileChange={handleProfileChange}
+          onDeleteAll={handleDeleteAll}
+          onImportAll={handleImportAll}
+        />
       )}
     </LangContext.Provider>
   );

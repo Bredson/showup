@@ -23,5 +23,11 @@ export interface StorageAdapter {
   getQuizDraft(): Promise<QuizDraft | null>;
   saveQuizDraft(d: QuizDraft): Promise<void>;
   clearQuizDraft(): Promise<void>;
+  /**
+   * Import = REPLACE (data-model §5): atomically swap profile + all entries for the
+   * given ones and drop any in-flight quiz draft. Meta stays — installedAt describes
+   * THIS device, not the backup. All-or-nothing: a failed import must not eat the journal.
+   */
+  replaceAll(profile: UserProfile, entries: readonly DailyEntry[]): Promise<void>;
   clearAll(): Promise<void>;
 }
