@@ -164,6 +164,25 @@ export const pl = {
   'onboarding.summary.aftermath': 'Po odłożeniu: {value}',
   'onboarding.summary.dailyTime': 'Twój dzienny czas: {value}',
 
-  // Stub screens (filled by later features)
-  'stub.settings': 'Ustawienia pojawią się wkrótce.',
+  // Settings screen (ux-spec §6) — spokojny ton, bez alarmowej czerwieni
+  'settings.title': 'Ustawienia',
+  'settings.lang.heading': 'Język',
+  'settings.path.heading': 'Moja ścieżka',
+  'settings.path.body': 'Odpowiedz jeszcze raz na 5 pytań. Twój progres i wpisy zostają.',
+  'settings.path.cta': 'Dostosuj moją ścieżkę',
+  'settings.path.doneCta': 'Zapisz moją ścieżkę',
+  'settings.data.heading': 'Twoje dane',
+  'settings.data.export': 'Eksportuj dane',
+  'settings.data.delete': 'Usuń wszystkie dane',
+  'settings.data.deleteConfirm.body':
+    'To usunie twój profil, wpisy i progres z tego urządzenia. Nie da się tego cofnąć.',
+  'settings.data.deleteConfirm.yes': 'Usuń na zawsze',
+  'settings.data.deleteConfirm.no': 'Zostaw',
+  'settings.data.deleteError': 'Nie udało się usunąć danych. Spróbuj ponownie.',
+  'settings.privacy': 'Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia.',
+  'settings.about.heading': 'O aplikacji',
+  'settings.about.version': 'Unstuck {version}',
+  'settings.about.how': 'Jak działa Unstuck',
+  'settings.about.howBody':
+    'Prokrastynacja to nie lenistwo — to sposób radzenia sobie z emocjami. Dlatego Unstuck nie zarządza twoim czasem, tylko pomaga zacząć: jedno małe wyzwanie dziennie. Nazywasz emocję, robisz pierwsze 2 minuty i zapisujesz jedno zdanie refleksji. Powtarzane codziennie małe kroki budują nawyk startowania — a passa wybacza dni odpoczynku.',
 } as const;

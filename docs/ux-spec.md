@@ -167,6 +167,14 @@ Wspólne: fullscreen, nawigacja ukryta, wskaźnik 6 kropek + „×" (wyjście z 
 - Notka prywatności: „Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia."
 - **O aplikacji:** wersja + krótka strona „Jak działa Unstuck"
 
+**Ustalenia techniczne (Feature 9):**
+
+- Zmiana języka zapisuje `profile.language` natychmiast (fire-and-forget) i przełącza cały UI bez restartu.
+- Ponowny quiz (dylemat 6): OnboardingScreen w trybie `retake` — start od pytania 1, świeże odpowiedzi (bez prefillu — stare zostają w profilu do momentu ukończenia), „Wróć" na pytaniu 1 = anuluj; ukończenie nadpisuje `quiz` i zachowuje `startDate`/`createdAt` (progres nietknięty — wpisy bez zmian). Draft ponownego quizu NIE jest persystowany (przerwanie = anulowanie).
+- Eksport: `ExportBlob` z data-model §5 (`app:'unstuck'`, `schemaVersion`, `exportedAt`, `profile`, `entries`), plik `unstuck-export-YYYY-MM-DD.json` przez Blob + `<a download>`. Bez importu w MVP (§6 go nie wymienia).
+- Usunięcie danych (dylemat 7): krok 1 „Usuń wszystkie dane" → inline potwierdzenie (opis konsekwencji + „Usuń na zawsze" / „Zostaw"); po `clearAll()` powrót do onboardingu.
+- Wersja z `package.json` wstrzykiwana w build (Vite `define`), nie hardkodowana.
+
 ---
 
 ## 7. Stan „dzień pominięty" (self-compassion)
@@ -192,7 +200,7 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 | Pętla < 5 min | 3.1 = 1 tap, 3.3 pomijalny, 3.5 chipy 1-tap |
 | Privacy first | Notka, eksport JSON, zero analityki |
 | i18n | Przełącznik 1.0 + Ustawienia; treści dwujęzyczne |
-| Jeden CTA na ekran | Wszędzie dokładnie jeden primary |
+| Jeden CTA na ekran | Maks. jeden primary na ekran (Ustawienia celowo nie mają żadnego — brak „tej jednej akcji") |
 
 ---
 
@@ -205,3 +213,6 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 | 3 | Marker dnia wybaczonego? | **Jawny ciepły marker** — pusta zielona obwódka + „dzień odpoczynku — passa trwa" |
 | 4 | Zakres Dziennika | **Wariant A** — każdy wpis z zapisaną emocją, także dni niedokończone; bez oceniania wykonania |
 | 5 | Poziom startowy z quizu (pyt. 5)? | **Nie** — wszyscy startują z poziomu 1 (progresja tylko z ukończeń, data-model §4); odpowiedź zapisana w surowych danych na przyszłość |
+| 6 | Przebieg ponownego quizu („Dostosuj moją ścieżkę") | **Od pytania 1, z anulowaniem** — bez powitania (język zmienia się w Ustawieniach); „Wróć" na pytaniu 1 wraca do Ustawień bez zapisu; podsumowanie zostaje; profil nadpisany dopiero na końcowym CTA |
+| 7 | Co po „Usuń wszystkie dane"? | **Powrót do onboardingu** — jak świeża instalacja, bez dodatkowego ekranu pożegnalnego |
+| 8 | „Jak działa Unstuck" | **Rozwijana sekcja w Ustawieniach** — tap rozwija treść na miejscu, bez pod-ekranu |

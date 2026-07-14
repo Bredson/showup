@@ -1,10 +1,11 @@
 // App shell (Feature 5): tab routing + owning today's entry/progress state.
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Challenge, DailyEntry, Lang, QuizDraft, UserProfile } from './domain/types';
 import { computeProgress } from './domain/streak';
 import { getTodaysChallenge } from './domain/challenge';
 import { shouldHideIfThenEducation } from './domain/dailyLoop';
+import { buildProfile, updateProfileFromQuiz, type QuizAnswers } from './domain/quiz';
 import { challenges } from './content';
 import type { StorageAdapter } from './storage/adapter';
 import { currentHour, localToday, nowISO } from './ui/clock';
@@ -14,20 +15,23 @@ import TodayScreen from './ui/screens/TodayScreen';
 import OnboardingScreen from './ui/screens/OnboardingScreen';
 import ProgressScreen from './ui/screens/ProgressScreen';
 import JournalScreen from './ui/screens/JournalScreen';
+import SettingsScreen from './ui/screens/SettingsScreen';
 import DailyLoop from './ui/loop/DailyLoop';
 
-function StubScreen({ textKey }: { textKey: 'stub.settings' }) {
-  const t = useT();
-  return (
-    <div className="screen">
-      <p className="muted">{t(textKey)}</p>
-    </div>
-  );
+interface ShellProps {
+  adapter: StorageAdapter;
+  /** Null only if the profile read failed at boot — Settings then degrades to the load error. */
+  profile: UserProfile | null;
+  /** Single write path for profile updates (language change, quiz retake): persists + applies. */
+  onProfileChange: (updated: UserProfile) => void;
+  /** Clears IndexedDB and returns the app to onboarding (ux-spec §6, dylemat 7). */
+  onDeleteAll: () => Promise<void>;
 }
 
-function Shell({ adapter }: { adapter: StorageAdapter }) {
+function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
   const [tab, setTab] = useState<Tab>('today');
   const [loopOpen, setLoopOpen] = useState(false);
+  const [requizOpen, setRequizOpen] = useState(false);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [entry, setEntry] = useState<DailyEntry | null>(null);
   const [pastEntries, setPastEntries] = useState<DailyEntry[]>([]); // everything except today
@@ -76,6 +80,22 @@ function Shell({ adapter }: { adapter: StorageAdapter }) {
 
   if (!entry) return null; // one-frame boot; IndexedDB open already happened in main.tsx
 
+  // Quiz retake (ux-spec §6, dylemat 6) — full-screen like DailyLoop, so the tab state survives.
+  if (requizOpen && profile) {
+    return (
+      <OnboardingScreen
+        initialDraft={null}
+        onLanguageChange={() => undefined} // welcome screen never renders in retake mode
+        onSaveDraft={() => undefined} // retake has no draft; interruption = cancel
+        onCancel={() => setRequizOpen(false)}
+        onComplete={(answers: QuizAnswers) => {
+          onProfileChange(updateProfileFromQuiz(profile, answers, nowISO()));
+          setRequizOpen(false);
+        }}
+      />
+    );
+  }
+
   if (loopOpen && challenge) {
     return (
       <DailyLoop
@@ -111,7 +131,22 @@ function Shell({ adapter }: { adapter: StorageAdapter }) {
         <ProgressScreen entries={allEntries} progress={progress} today={today} onBackToToday={() => setTab('today')} />
       )}
       {tab === 'journal' && <JournalScreen entries={allEntries} today={today} />}
-      {tab === 'settings' && <StubScreen textKey="stub.settings" />}
+      {tab === 'settings' &&
+        (profile ? (
+          <SettingsScreen
+            profile={profile}
+            entries={allEntries}
+            onChangeLanguage={(l) => {
+              if (profile.language !== l) onProfileChange({ ...profile, language: l });
+            }}
+            onRetakeQuiz={() => setRequizOpen(true)}
+            onDeleteAll={onDeleteAll}
+          />
+        ) : (
+          <div className="screen">
+            <p className="muted">{t('app.loadError')}</p>
+          </div>
+        ))}
       <BottomNav active={tab} onChange={setTab} />
     </>
   );
@@ -130,15 +165,17 @@ function detectLang(): Lang {
 export default function App({ adapter }: { adapter: StorageAdapter }) {
   const [boot, setBoot] = useState<BootPhase>({ phase: 'loading' });
   const [lang, setLang] = useState<Lang>(detectLang);
+  const [profile, setProfile] = useState<UserProfile | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
-        const profile = await adapter.getProfile();
+        const stored = await adapter.getProfile();
         if (cancelled) return;
-        if (profile) {
-          setLang(profile.language);
+        if (stored) {
+          setProfile(stored);
+          setLang(stored.language);
           setBoot({ phase: 'ready' });
           return;
         }
@@ -161,15 +198,42 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
     };
   }, [adapter]);
 
-  function completeOnboarding(profile: UserProfile) {
+  function completeOnboarding(answers: QuizAnswers) {
+    const created = buildProfile(answers, lang, localToday(), nowISO());
     // Enter the app immediately; persistence is fire-and-forget like every tap-time save.
-    setLang(profile.language);
+    setProfile(created);
+    setLang(created.language);
     setBoot({ phase: 'ready' });
-    adapter.saveProfile(profile).then(
+    adapter.saveProfile(created).then(
       () =>
         adapter.clearQuizDraft().catch((err: unknown) => console.error('Unstuck: quiz draft clear failed', err)),
       (err: unknown) => console.error('Unstuck: profile save failed', err),
     );
+  }
+
+  // True only while clearAll() is in flight — a save landing after the wipe would resurrect
+  // "deleted" data, breaking the privacy promise ("Nie da się tego cofnąć").
+  const wipingRef = useRef(false);
+
+  /** Single write path for later profile edits (Settings: language, quiz retake). */
+  function handleProfileChange(updated: UserProfile) {
+    if (wipingRef.current) return; // never write during a wipe
+    setProfile(updated);
+    setLang(updated.language);
+    adapter.saveProfile(updated).catch((err: unknown) => console.error('Unstuck: profile save failed', err));
+  }
+
+  /** "Usuń wszystkie dane" (dylemat 7): awaited — only a confirmed wipe returns to onboarding. */
+  async function handleDeleteAll() {
+    wipingRef.current = true;
+    try {
+      await adapter.clearAll();
+      setProfile(null);
+      setLang(detectLang());
+      setBoot({ phase: 'onboarding', draft: null }); // fresh install experience
+    } finally {
+      wipingRef.current = false;
+    }
   }
 
   if (boot.phase === 'loading') return null; // one-frame boot; IndexedDB open already happened in main.tsx
@@ -186,7 +250,7 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
           onComplete={completeOnboarding}
         />
       ) : (
-        <Shell adapter={adapter} />
+        <Shell adapter={adapter} profile={profile} onProfileChange={handleProfileChange} onDeleteAll={handleDeleteAll} />
       )}
     </LangContext.Provider>
   );

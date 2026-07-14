@@ -6,6 +6,7 @@ import {
   firstUnansweredIndex,
   isQuizComplete,
   toggleMultiOption,
+  updateProfileFromQuiz,
   type QuizAnswers,
 } from './quiz';
 
@@ -119,5 +120,35 @@ describe('buildProfile', () => {
     triggers.push('boredom'); // deep copy: mutating the caller's array must not leak into the profile
     expect(profile.quiz.answers['dailyTime']).toBe('5min');
     expect(profile.quiz.answers['triggers']).toEqual(['fear']);
+  });
+});
+
+describe('updateProfileFromQuiz (retake, ux-spec §6 dylemat 6)', () => {
+  const existing = buildProfile(COMPLETE, 'pl', '2026-07-01', '2026-07-01T10:00:00.000Z');
+  const later = '2026-07-14T09:00:00.000Z';
+
+  it('replaces only the quiz result, preserving identity and progress anchors', () => {
+    const retaken: QuizAnswers = { ...COMPLETE, triggers: ['boredom'], aftermath: 'relief' };
+    const updated = updateProfileFromQuiz(existing, retaken, later);
+    expect(updated.quiz).toEqual({
+      answers: retaken,
+      dominantTriggers: ['boredom'],
+      completedAt: later,
+    });
+    // language/startDate/createdAt untouched — progress lives in entries, profile stays anchored
+    expect(updated.language).toBe('pl');
+    expect(updated.startDate).toBe('2026-07-01');
+    expect(updated.createdAt).toBe('2026-07-01T10:00:00.000Z');
+  });
+
+  it('does not mutate the existing profile (returns a new object)', () => {
+    const before = structuredClone(existing);
+    const updated = updateProfileFromQuiz(existing, { ...COMPLETE, triggers: ['no-energy'] }, later);
+    expect(updated).not.toBe(existing);
+    expect(existing).toEqual(before);
+  });
+
+  it('throws on incomplete answers, same gate as buildProfile', () => {
+    expect(() => updateProfileFromQuiz(existing, { triggers: ['fear'] }, later)).toThrow();
   });
 });

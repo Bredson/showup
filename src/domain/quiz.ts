@@ -2,7 +2,7 @@
 // RULE: no React/storage imports; time is injected. Question/option ids are IMMUTABLE FOREVER —
 // raw answers in QuizResult must stay recomputable after future quiz changes (data-model §1).
 
-import type { Emotion, ISODate, ISODateTime, Lang, UserProfile } from './types';
+import type { Emotion, ISODate, ISODateTime, Lang, QuizResult, UserProfile } from './types';
 
 export type QuizQuestionId = 'triggers' | 'timeOfDay' | 'taskType' | 'aftermath' | 'dailyTime';
 
@@ -82,25 +82,38 @@ export function deriveDominantTriggers(answers: QuizAnswers): Emotion[] {
   return result;
 }
 
+/** Shared by buildProfile/updateProfileFromQuiz — one place enforcing the completeness invariant. */
+function buildQuizResult(answers: QuizAnswers, now: ISODateTime): QuizResult {
+  if (!isQuizComplete(answers)) {
+    throw new Error('Unstuck quiz: cannot build profile from incomplete answers');
+  }
+  return {
+    // Deep copy: array answers must not stay aliased to the caller's draft state.
+    answers: structuredClone(answers) as Record<string, string | string[]>,
+    dominantTriggers: deriveDominantTriggers(answers),
+    completedAt: now,
+  };
+}
+
 /**
  * Build the singleton profile from a completed quiz. Throws on incomplete answers —
  * the UI must not offer the closing CTA before isQuizComplete() (untrusted-input rule).
  * Dylemat 5 = NO: dailyTime is stored raw only, everyone starts at level 1.
  */
 export function buildProfile(answers: QuizAnswers, language: Lang, today: ISODate, now: ISODateTime): UserProfile {
-  if (!isQuizComplete(answers)) {
-    throw new Error('Unstuck quiz: cannot build profile from incomplete answers');
-  }
   return {
     id: 'singleton',
     language,
     startDate: today,
-    quiz: {
-      // Deep copy: array answers must not stay aliased to the caller's draft state.
-      answers: structuredClone(answers) as Record<string, string | string[]>,
-      dominantTriggers: deriveDominantTriggers(answers),
-      completedAt: now,
-    },
+    quiz: buildQuizResult(answers, now),
     createdAt: now,
   };
+}
+
+/**
+ * Retake ("Dostosuj moją ścieżkę", ux-spec §6, dylemat 6): only the quiz result changes.
+ * language/startDate/createdAt stay — progress lives in entries and is untouched by design.
+ */
+export function updateProfileFromQuiz(existing: UserProfile, answers: QuizAnswers, now: ISODateTime): UserProfile {
+  return { ...existing, quiz: buildQuizResult(answers, now) };
 }

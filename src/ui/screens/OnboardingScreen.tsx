@@ -1,18 +1,19 @@
 // Onboarding quiz (ux-spec §1): welcome (language) → 5 questions → closing summary.
 // Every selection persists the draft synchronously (tap-time save rule), so an interrupted
 // quiz resumes exactly where it stopped. The profile itself is built only on the final CTA.
+// Retake mode (ux-spec §6, dylemat 6): `onCancel` present → start at question 1 (no welcome),
+// no draft persistence (interruption = cancel), "Back" on question 1 cancels to Settings.
 import { useEffect, useRef, useState } from 'react';
-import type { Lang, QuizDraft, UserProfile } from '../../domain/types';
+import type { Lang, QuizDraft } from '../../domain/types';
 import {
   QUIZ_QUESTIONS,
-  buildProfile,
   firstUnansweredIndex,
   isQuizComplete,
   toggleMultiOption,
   type QuizAnswers,
   type QuizQuestionId,
 } from '../../domain/quiz';
-import { localToday, nowISO } from '../clock';
+import { nowISO } from '../clock';
 import { useLang, useT } from '../LangContext';
 
 /** Step 0 = welcome, 1..N = questions, N+1 = closing screen. */
@@ -47,18 +48,23 @@ interface Props {
   onLanguageChange: (lang: Lang) => void;
   /** Fire-and-forget persistence — called synchronously on every selection. */
   onSaveDraft: (draft: QuizDraft) => void;
-  /** Quiz finished: the caller persists the profile and swaps in the app shell. */
-  onComplete: (profile: UserProfile) => void;
+  /** Quiz finished: complete answers — the caller builds/updates the profile and persists it. */
+  onComplete: (answers: QuizAnswers) => void;
+  /** Present = retake mode (dylemat 6). Called by "Back" on question 1; nothing was saved. */
+  onCancel?: () => void;
 }
 
-export default function OnboardingScreen({ initialDraft, onLanguageChange, onSaveDraft, onComplete }: Props) {
+export default function OnboardingScreen({ initialDraft, onLanguageChange, onSaveDraft, onComplete, onCancel }: Props) {
   const t = useT();
   const lang = useLang();
+  const retake = onCancel !== undefined;
   const [answers, setAnswers] = useState<QuizAnswers>(() => initialDraft?.answers ?? {});
   // Resume at the first unanswered question; a draft with complete answers reopens the closing screen.
-  const [step, setStep] = useState(() =>
-    initialDraft ? Math.min(firstUnansweredIndex(initialDraft.answers) + 1, DONE_STEP) : 0,
-  );
+  // Retake starts fresh at question 1 — old answers stay in the profile until the final CTA.
+  const [step, setStep] = useState(() => {
+    if (retake) return 1;
+    return initialDraft ? Math.min(firstUnansweredIndex(initialDraft.answers) + 1, DONE_STEP) : 0;
+  });
 
   // React reuses the same DOM between steps, so focus would silently stay on the "Next" button
   // and screen readers would never announce the new question. Move focus to the heading instead.
@@ -71,6 +77,7 @@ export default function OnboardingScreen({ initialDraft, onLanguageChange, onSav
   }, [step]);
 
   function persistDraft(next: QuizAnswers) {
+    if (retake) return; // retake has no draft: an interrupted retake is simply a cancel (dylemat 6)
     onSaveDraft({
       id: 'quizDraft',
       language: lang,
@@ -164,7 +171,8 @@ export default function OnboardingScreen({ initialDraft, onLanguageChange, onSav
         <button className="btn-primary" disabled={!answered} onClick={() => setStep(step + 1)}>
           {t('onboarding.next')}
         </button>
-        <button className="btn-link" onClick={() => setStep(step - 1)}>
+        {/* Retake: "Back" on question 1 cancels to Settings instead of showing the welcome screen. */}
+        <button className="btn-link" onClick={() => (retake && step === 1 ? onCancel?.() : setStep(step - 1))}>
           {t('onboarding.back')}
         </button>
       </div>
@@ -191,12 +199,8 @@ export default function OnboardingScreen({ initialDraft, onLanguageChange, onSav
           return <p key={q.id}>{t(`onboarding.summary.${q.id}`, { value: labels })}</p>;
         })}
       </section>
-      <button
-        className="btn-primary"
-        disabled={!complete}
-        onClick={() => complete && onComplete(buildProfile(answers, lang, localToday(), nowISO()))}
-      >
-        {t('onboarding.done.cta')}
+      <button className="btn-primary" disabled={!complete} onClick={() => complete && onComplete(answers)}>
+        {t(retake ? 'settings.path.doneCta' : 'onboarding.done.cta')}
       </button>
     </div>
   );

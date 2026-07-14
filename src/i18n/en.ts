@@ -152,5 +152,24 @@ export const en: Record<keyof typeof pl, string> = {
   'onboarding.summary.aftermath': 'After putting it off: {value}',
   'onboarding.summary.dailyTime': 'Your daily time: {value}',
 
-  'stub.settings': 'Settings are coming soon.',
+  'settings.title': 'Settings',
+  'settings.lang.heading': 'Language',
+  'settings.path.heading': 'My path',
+  'settings.path.body': 'Answer the 5 questions again. Your progress and entries stay.',
+  'settings.path.cta': 'Adjust my path',
+  'settings.path.doneCta': 'Save my path',
+  'settings.data.heading': 'Your data',
+  'settings.data.export': 'Export data',
+  'settings.data.delete': 'Delete all data',
+  'settings.data.deleteConfirm.body':
+    'This will remove your profile, entries and progress from this device. It cannot be undone.',
+  'settings.data.deleteConfirm.yes': 'Delete forever',
+  'settings.data.deleteConfirm.no': 'Keep it',
+  'settings.data.deleteError': 'Could not delete your data. Please try again.',
+  'settings.privacy': 'Everything stays on this device. No accounts, no cloud, no tracking.',
+  'settings.about.heading': 'About',
+  'settings.about.version': 'Unstuck {version}',
+  'settings.about.how': 'How Unstuck works',
+  'settings.about.howBody':
+    'Procrastination is not laziness — it is how we cope with emotions. That is why Unstuck does not manage your time; it helps you start: one small challenge a day. You name the emotion, do the first 2 minutes and write one sentence of reflection. Small steps repeated daily build a habit of starting — and the streak forgives rest days.',
 };
