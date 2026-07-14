@@ -94,6 +94,12 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
 - **Współdzielona klasa zamiast bliźniaczych** (`.screen-art` dla onboardingu i comeback) — wzorzec F6 „wydziel, nie kopiuj" dotyczy też CSS.
 - Interstitial pełnoekranowy renderowany PRZED wszystkimi innymi gałęziami Shell (requiz/loop/taby); zamknięcie = `setState(null)`, zero zapisu.
 
+## Deploy i produkcja (Faza 6)
+
+- **`base: '/unstuck/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/unstuck/` w kodzie aplikacji.
+- **Pola formularzy (`textarea`, `input`) zawsze z atrybutem `name`** — brak `name`/`id` to issue w DevTools (autofill); `aria-label` nie wystarcza.
+- Szczegóły procesu deployu i triki testowe (offline PWA, przechwycenie eksportu) → `.claude/skills/deploy/SKILL.md`.
+
 ## Treści statyczne (challenges.json)
 
 - Ręcznie edytowany JSON = dane niezaufane: walidator sprawdza typy w runtime (`typeof`), zbiera WSZYSTKIE błędy w jeden throw, bez cichych fallbacków.
