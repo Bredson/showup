@@ -4,15 +4,8 @@
 import { useEffect, useState } from 'react';
 import type { Emotion } from '../../domain/types';
 import { EMOTIONS } from '../../domain/dailyLoop';
+import { EMOTION_EMOJI } from '../emotions';
 import { useT } from '../LangContext';
-
-const EMOJI: Record<Emotion, string> = {
-  anxiety: '😰',
-  boredom: '😑',
-  overwhelm: '🌊',
-  aversion: '😤',
-  confusion: '🌫',
-};
 
 const ADVANCE_DELAY_MS = 900; // just enough to read the one-line acknowledgement
 
@@ -53,7 +46,7 @@ export default function StepEmotion({ isFirstTime, onPersist, onAdvance }: Props
             onClick={() => pick(emotion)}
           >
             <span className="emoji" aria-hidden>
-              {EMOJI[emotion]}
+              {EMOTION_EMOJI[emotion]}
             </span>
             {t(`loop.emotion.${emotion}`)}
           </button>

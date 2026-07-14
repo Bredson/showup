@@ -11,9 +11,10 @@ import { currentHour, localToday, nowISO } from './ui/clock';
 import { LangContext, useT } from './ui/LangContext';
 import BottomNav, { type Tab } from './ui/components/BottomNav';
 import TodayScreen from './ui/screens/TodayScreen';
+import ProgressScreen from './ui/screens/ProgressScreen';
 import DailyLoop from './ui/loop/DailyLoop';
 
-function StubScreen({ textKey }: { textKey: 'stub.progress' | 'stub.journal' | 'stub.settings' }) {
+function StubScreen({ textKey }: { textKey: 'stub.journal' | 'stub.settings' }) {
   const t = useT();
   return (
     <div className="screen">
@@ -104,7 +105,9 @@ function Shell({ adapter }: { adapter: StorageAdapter }) {
           onSeeJournal={() => setTab('journal')}
         />
       )}
-      {tab === 'progress' && <StubScreen textKey="stub.progress" />}
+      {tab === 'progress' && (
+        <ProgressScreen entries={allEntries} progress={progress} today={today} onBackToToday={() => setTab('today')} />
+      )}
       {tab === 'journal' && <StubScreen textKey="stub.journal" />}
       {tab === 'settings' && <StubScreen textKey="stub.settings" />}
       <BottomNav active={tab} onChange={setTab} />

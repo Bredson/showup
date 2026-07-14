@@ -1,8 +1,7 @@
 // Step 3.6 — reinforcement: warm ~1.5s animation, concrete message, small progress bar.
 import type { DailyEntry, ProgressState } from '../../domain/types';
+import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
 import { useT } from '../LangContext';
-
-const COMPLETIONS_PER_LEVEL = 7;
 
 interface Props {
   entry: DailyEntry;
@@ -15,7 +14,7 @@ export default function StepReinforce({ entry, progress, onClose, onSeeProgress 
   const t = useT();
   const emotion = entry.emotionBefore;
   const isFirstDay = progress.totalCompleted === 1;
-  const inLevel = Math.min(progress.completedByLevel[progress.currentLevel], COMPLETIONS_PER_LEVEL);
+  const inLevel = Math.min(progress.completedByLevel[progress.currentLevel], COMPLETIONS_TO_ADVANCE);
 
   return (
     <div className="loop-body bloom">
@@ -33,7 +32,7 @@ export default function StepReinforce({ entry, progress, onClose, onSeeProgress 
         {t('loop.reinforce.progress', { streak: Math.max(progress.currentStreak, 1), level: progress.currentLevel })}
       </p>
       <div className="level-dots" aria-hidden>
-        {Array.from({ length: COMPLETIONS_PER_LEVEL }, (_, i) => (
+        {Array.from({ length: COMPLETIONS_TO_ADVANCE }, (_, i) => (
           <span key={i} className={i < inLevel ? 'filled' : ''} />
         ))}
       </div>

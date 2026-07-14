@@ -84,7 +84,22 @@ export const en: Record<keyof typeof pl, string> = {
   'category.emotion': 'Emotions up close',
   'category.starting': 'The art of starting',
 
-  'stub.progress': 'Your path will appear here.',
+  'progress.title': 'Your path',
+  'progress.streak.one': 'day in rhythm',
+  'progress.streak.many': 'days in rhythm',
+  'progress.comeback': 'You’re back — that’s what counts the most.',
+  'progress.calendar.heading': 'Last 4 weeks',
+  'progress.calendar.rest': '{date}: rest day — the streak lives on 🌿',
+  'progress.calendar.completedAria': '{date} — completed, show details',
+  'progress.calendar.forgivenAria': '{date} — rest day',
+  'progress.calendar.todayAria': '{date} — today, still ahead of you',
+  'progress.level.heading': 'Level {level}',
+  'progress.level.count': '{done} of {total} at this level',
+  'progress.cta.backToToday': 'Back to today’s challenge',
+  'progress.sheet.close': 'Close preview',
+  'progress.sheet.plan': 'Your plan: {value}',
+  'progress.sheet.reflection': 'Reflection: {value}',
+
   'stub.journal': 'Your reflections will appear here after your first challenge.',
   'stub.settings': 'Settings are coming soon.',
 };

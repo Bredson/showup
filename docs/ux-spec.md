@@ -129,7 +129,7 @@ Wspólne: fullscreen, nawigacja ukryta, wskaźnik 6 kropek + „×" (wyjście z 
 - Karta kalendarza: kropki (zieleń = ukończony, kremowa = brak, **bez czerwieni i X**);
   **dzień wybaczony = jawny marker** (pusta zielona obwódka + tooltip „dzień odpoczynku — passa trwa")
   — **decyzja: Dylemat 3 = wariant A**
-- Karta poziomu: „Poziom 2 · wyzwanie 4 z 10"
+- Karta poziomu: „Poziom 2 · 4 z 7 na tym poziomie" (awans po 7 ukończeniach — data-model §4)
 - CTA kontekstowy „Wróć do dzisiejszego wyzwania" (tylko gdy nieukończone)
 - Tap w kropkę ukończoną → bottom-sheet z podglądem; tap w pustą → nic
 - **Bez** historycznego rekordu streaka (porównanie z rekordem = ukryta mechanika winy)

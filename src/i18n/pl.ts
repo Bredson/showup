@@ -92,8 +92,24 @@ export const pl = {
   'category.emotion': 'Emocje pod lupą',
   'category.starting': 'Sztuka startu',
 
+  // Progress screen (ux-spec §4) — "patrz, co już masz", nigdy czego brakuje
+  'progress.title': 'Twoja droga',
+  'progress.streak.one': 'dzień w rytmie',
+  'progress.streak.many': 'dni w rytmie',
+  'progress.comeback': 'Wracasz — to się liczy najbardziej.',
+  'progress.calendar.heading': 'Ostatnie 4 tygodnie',
+  'progress.calendar.rest': '{date}: dzień odpoczynku — passa trwa 🌿',
+  'progress.calendar.completedAria': '{date} — ukończone, pokaż szczegóły',
+  'progress.calendar.forgivenAria': '{date} — dzień odpoczynku',
+  'progress.calendar.todayAria': '{date} — dziś, jeszcze przed tobą',
+  'progress.level.heading': 'Poziom {level}',
+  'progress.level.count': '{done} z {total} na tym poziomie',
+  'progress.cta.backToToday': 'Wróć do dzisiejszego wyzwania',
+  'progress.sheet.close': 'Zamknij podgląd',
+  'progress.sheet.plan': 'Twój plan: {value}',
+  'progress.sheet.reflection': 'Refleksja: {value}',
+
   // Stub screens (filled by later features)
-  'stub.progress': 'Twoja droga pojawi się tutaj.',
   'stub.journal': 'Tu pojawią się twoje refleksje po pierwszym wyzwaniu.',
   'stub.settings': 'Ustawienia pojawią się wkrótce.',
 } as const;

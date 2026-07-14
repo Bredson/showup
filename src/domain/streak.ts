@@ -4,14 +4,16 @@
 import type { DailyEntry, DifficultyLevel, ISODate, ProgressState } from './types';
 
 const MS_PER_DAY = 86_400_000;
-const COMPLETIONS_TO_ADVANCE = 7;
+/** Completions needed to advance a level — also drives the 7-dot progress UI. */
+export const COMPLETIONS_TO_ADVANCE = 7;
 
 /** Whole days between two local calendar dates. Uses UTC internally so DST can never skew the result. */
 export function daysBetween(a: ISODate, b: ISODate): number {
   return Math.round((toUtcMs(b) - toUtcMs(a)) / MS_PER_DAY);
 }
 
-function toUtcMs(date: ISODate): number {
+/** Shared date parsing for domain modules (calendar.ts reuses it in addDays). */
+export function toUtcMs(date: ISODate): number {
   // ISODate is always "YYYY-MM-DD", so the three parts are guaranteed to exist.
   const [y, m, d] = date.split('-').map(Number) as [number, number, number];
   return Date.UTC(y, m - 1, d);
