@@ -95,11 +95,11 @@ export const en: Record<keyof typeof pl, string> = {
   'progress.comeback': 'You’re back — that’s what counts the most.',
   'progress.calendar.heading': 'Last 4 weeks',
   'progress.calendar.rest': '{date}: rest day — the streak lives on 🌿',
+  'progress.calendar.legend': '🌿 = rest day — the streak lives on',
   'progress.calendar.completedAria': '{date} — completed, show details',
   'progress.calendar.forgivenAria': '{date} — rest day',
   'progress.calendar.todayAria': '{date} — today, still ahead of you',
-  'progress.level.heading': 'Level {level}',
-  'progress.level.count': '{done} of {total} at this level',
+  'progress.level.line': 'Level {level} · {done} of {total}',
   'progress.cta.backToToday': 'Back to today’s challenge',
 
   'sheet.close': 'Close preview',

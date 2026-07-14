@@ -481,45 +481,114 @@
   }
 }
 
-/* Progress screen (ux-spec §4) */
-.streak-card {
+/* Progress screen (ux-spec §4) — variant 1h: conic ring + weekday heatmap */
+.progress-hero {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 20px;
 }
 
+/* Streak ring — same conic-donut technique as the Today card's 2:00 ring */
 .streak-ring {
-  width: 120px;
-  height: 120px;
+  width: 110px;
+  height: 110px;
+  flex: none;
   border-radius: 50%;
-  border: 6px solid var(--primary-soft);
+  background: conic-gradient(var(--primary) 0 var(--ring-fill, 0%), var(--surface-alt) var(--ring-fill, 0%) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
+.streak-ring-center {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
 .streak-number {
-  font-size: 2.6rem;
+  font-size: 2.1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.streak-caption {
+  font-size: 0.7rem;
   font-weight: 700;
+  color: var(--text-muted);
+}
+
+.progress-hero-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+
+.progress-hero-info p {
+  margin: 0;
+}
+
+.progress-level-line {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.level-bar {
+  width: 150px;
+  max-width: 100%;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--surface-alt);
+  overflow: hidden;
+}
+
+.level-bar-fill {
+  height: 100%;
+  background: var(--success);
+  border-radius: 999px;
+}
+
+.calendar-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  justify-items: center;
+  margin-top: 12px;
+}
+
+.calendar-weekdays span {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
 }
 
 .calendar-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 8px;
   justify-items: center;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .cal-dot {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  border-radius: 12px;
   background: var(--surface-alt);
   border: 2px solid transparent;
   padding: 0;
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
 }
 
 button.cal-dot {
@@ -527,24 +596,30 @@ button.cal-dot {
   position: relative;
 }
 
-/* invisible touch-target extension: 22px visual dot, 44px tappable area (WCAG 2.5.8) */
+/* invisible touch-target extension: 30px visual cell, 44px tappable area (WCAG 2.5.8) */
 button.cal-dot::after {
   content: '';
   position: absolute;
-  inset: -11px;
+  inset: -7px;
 }
 
 .cal-dot--completed {
   background: var(--success);
+  color: var(--surface);
+  font-weight: 800;
 }
 
-/* forgiven day = explicit marker: empty dot with a green outline (Dylemat 3 = wariant A) */
+/* forgiven day = explicit marker: leaf on a green outline (Dylemat 3 = wariant A) */
 .cal-dot--forgiven {
-  background: transparent;
+  background: var(--surface);
   border-color: var(--success);
+  font-size: 0.8rem;
 }
 
+/* today, still open — dashed soft-amber outline, never a miss marker */
 .cal-dot--pending {
+  background: var(--surface);
+  border-style: dashed;
   border-color: var(--primary-soft);
 }
 

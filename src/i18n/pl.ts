@@ -104,11 +104,11 @@ export const pl = {
   'progress.comeback': 'Wracasz — to się liczy najbardziej.',
   'progress.calendar.heading': 'Ostatnie 4 tygodnie',
   'progress.calendar.rest': '{date}: dzień odpoczynku — passa trwa 🌿',
+  'progress.calendar.legend': '🌿 = dzień odpoczynku — passa trwa',
   'progress.calendar.completedAria': '{date} — ukończone, pokaż szczegóły',
   'progress.calendar.forgivenAria': '{date} — dzień odpoczynku',
   'progress.calendar.todayAria': '{date} — dziś, jeszcze przed tobą',
-  'progress.level.heading': 'Poziom {level}',
-  'progress.level.count': '{done} z {total} na tym poziomie',
+  'progress.level.line': 'Poziom {level} · {done} z {total}',
   'progress.cta.backToToday': 'Wróć do dzisiejszego wyzwania',
 
   // Entry preview bottom sheet (shared: Progress + Journal)

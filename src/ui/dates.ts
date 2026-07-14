@@ -18,3 +18,12 @@ export function formatDayLong(date: ISODate, lang: Lang, today?: ISODate): strin
     ...(differentYear ? { year: 'numeric' } : {}),
   });
 }
+
+/**
+ * Single-letter weekday ("P", "Ś" / "M", "W") — Progress calendar column headers.
+ * Computed from the actual column dates: the 28-day window is rolling (ends today),
+ * so hardcoded Mon–Sun letters would lie about the columns.
+ */
+export function formatWeekdayNarrow(date: ISODate, lang: Lang): string {
+  return new Date(`${date}T00:00:00`).toLocaleDateString(LOCALES[lang], { weekday: 'narrow' });
+}

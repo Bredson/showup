@@ -1,11 +1,11 @@
-// Progress screen (ux-spec §4): "look what you already have" — never what's missing.
-// No historical streak record here (comparing to a record is a hidden guilt mechanic).
-import { useMemo, useState } from 'react';
+// Progress screen (ux-spec §4, design variant 1h): "look what you already have" — never
+// what's missing. No historical streak record here (a record is a hidden guilt mechanic).
+import { useMemo, useState, type CSSProperties } from 'react';
 import type { DailyEntry, ISODate, ProgressState } from '../../domain/types';
 import { computeCalendar, type CalendarDay } from '../../domain/calendar';
 import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
 import EntrySheet from '../components/EntrySheet';
-import { formatDayLong } from '../dates';
+import { formatDayLong, formatWeekdayNarrow } from '../dates';
 import { useLang, useT } from '../LangContext';
 
 interface Props {
@@ -31,18 +31,40 @@ export default function ProgressScreen({ entries, progress, today, onBackToToday
     <div className="screen">
       <h1>{t('progress.title')}</h1>
 
-      {/* Streak card: big number + "days in rhythm" (never "in a row") inside a soft ring */}
-      <div className="card streak-card">
-        <div className="streak-ring">
-          <span className="streak-number">{progress.currentStreak}</span>
+      {/* Hero card (1h): streak number + "days in rhythm" inside a conic ring; ring fill and
+          the green bar both show level progress — the numbers live in the text line */}
+      <div className="card progress-hero">
+        <div
+          className="streak-ring"
+          style={{ '--ring-fill': `${Math.round((inLevel / COMPLETIONS_TO_ADVANCE) * 100)}%` } as CSSProperties}
+        >
+          <div className="streak-ring-center">
+            <span className="streak-number">{progress.currentStreak}</span>
+            <span className="streak-caption">
+              {t(progress.currentStreak === 1 ? 'progress.streak.one' : 'progress.streak.many')}
+            </span>
+          </div>
         </div>
-        <p className="muted">{t(progress.currentStreak === 1 ? 'progress.streak.one' : 'progress.streak.many')}</p>
-        {isComeback && <p className="center">{t('progress.comeback')}</p>}
+        <div className="progress-hero-info">
+          <p className="progress-level-line">
+            {t('progress.level.line', { level: progress.currentLevel, done: inLevel, total: COMPLETIONS_TO_ADVANCE })}
+          </p>
+          <div className="level-bar" aria-hidden>
+            <div className="level-bar-fill" style={{ width: `${(inLevel / COMPLETIONS_TO_ADVANCE) * 100}%` }} />
+          </div>
+          {isComeback && <p className="muted">{t('progress.comeback')}</p>}
+        </div>
       </div>
 
-      {/* Calendar card: green = done, cream = nothing, forgiven = explicit green outline (Dylemat 3 = A) */}
+      {/* Calendar card: green ✓ = done, cream = nothing, forgiven = green outline + 🌿 (Dylemat 3 = A).
+          Weekday letters come from the actual column dates — the window rolls, it is not Mon-aligned. */}
       <div className="card">
         <p className="muted">{t('progress.calendar.heading')}</p>
+        <div className="calendar-weekdays" aria-hidden>
+          {calendar.slice(0, 7).map((day) => (
+            <span key={day.date}>{formatWeekdayNarrow(day.date, lang)}</span>
+          ))}
+        </div>
         <div className="calendar-grid" role="group" aria-label={t('progress.calendar.heading')}>
           {calendar.map((day) => (
             <CalendarDot
@@ -53,6 +75,9 @@ export default function ProgressScreen({ entries, progress, today, onBackToToday
             />
           ))}
         </div>
+        {calendar.some((day) => day.status === 'forgiven') && (
+          <p className="muted center">{t('progress.calendar.legend')}</p>
+        )}
         {/* tooltip substitute that also works on touch — content includes the date, so tapping
             another forgiven dot changes the text and the status region re-announces it */}
         {restNote && (
@@ -60,17 +85,6 @@ export default function ProgressScreen({ entries, progress, today, onBackToToday
             {t('progress.calendar.rest', { date: formatDayLong(restNote, lang) })}
           </p>
         )}
-      </div>
-
-      {/* Level card + the same 7 dots the loop's reinforcement step uses */}
-      <div className="card center">
-        <h2>{t('progress.level.heading', { level: progress.currentLevel })}</h2>
-        <div className="level-dots" aria-hidden>
-          {Array.from({ length: COMPLETIONS_TO_ADVANCE }, (_, i) => (
-            <span key={i} className={i < inLevel ? 'filled' : ''} />
-          ))}
-        </div>
-        <p className="muted">{t('progress.level.count', { done: inLevel, total: COMPLETIONS_TO_ADVANCE })}</p>
       </div>
 
       {/* Contextual CTA — only while today's challenge is still open (ux-spec §4) */}
@@ -97,7 +111,9 @@ function CalendarDot({ day, onPreview, onRestTap }: { day: CalendarDay; onPrevie
         className="cal-dot cal-dot--completed"
         aria-label={t('progress.calendar.completedAria', { date: formatDayLong(day.date, lang) })}
         onClick={onPreview}
-      />
+      >
+        ✓
+      </button>
     );
   }
   if (day.status === 'forgiven') {
@@ -106,7 +122,9 @@ function CalendarDot({ day, onPreview, onRestTap }: { day: CalendarDay; onPrevie
         className="cal-dot cal-dot--forgiven"
         aria-label={t('progress.calendar.forgivenAria', { date: formatDayLong(day.date, lang) })}
         onClick={onRestTap}
-      />
+      >
+        🌿
+      </button>
     );
   }
   if (day.status === 'pending') {
