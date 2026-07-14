@@ -404,6 +404,67 @@ button.cal-dot::after {
   }
 }
 
+/* Journal (ux-spec §5) — reverse-chronological list of emotion + reflection rows */
+.journal-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-cards);
+}
+
+.journal-row {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  text-align: left;
+  background: var(--surface);
+  border: none;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 16px 18px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.journal-row-emoji {
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.journal-row-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0; /* allow the reflection line to clamp instead of stretching the row */
+}
+
+.journal-row-body .muted {
+  font-size: 0.85rem;
+}
+
+.journal-row-title {
+  font-weight: 700;
+}
+
+/* max 2 lines of reflection in the list (full text lives in the sheet) */
+.journal-row-reflection {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.journal-empty-art {
+  font-size: 3rem;
+  margin: 0;
+}
+
 .done-check {
   color: var(--success);
   font-size: 3rem;

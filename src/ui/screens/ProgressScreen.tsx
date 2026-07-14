@@ -1,15 +1,12 @@
 // Progress screen (ux-spec §4): "look what you already have" — never what's missing.
 // No historical streak record here (comparing to a record is a hidden guilt mechanic).
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 import type { DailyEntry, ISODate, ProgressState } from '../../domain/types';
 import { computeCalendar, type CalendarDay } from '../../domain/calendar';
 import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
-import { challenges } from '../../content';
-import { EMOTION_EMOJI } from '../emotions';
+import EntrySheet from '../components/EntrySheet';
 import { formatDayLong } from '../dates';
 import { useLang, useT } from '../LangContext';
-
-const challengeById = new Map(challenges.map((c) => [c.id, c]));
 
 interface Props {
   /** All entries including today's — calendar and progress are derived, never stored. */
@@ -124,58 +121,4 @@ function CalendarDot({ day, onPreview, onRestTap }: { day: CalendarDay; onPrevie
   }
   // empty: nothing happens on tap (ux-spec §4) — non-interactive and hidden (no guilt markers)
   return <span className="cal-dot" aria-hidden />;
-}
-
-/** Bottom sheet with a read-only entry preview (emotion + IF-THEN + reflection). */
-function EntrySheet({ entry, date, onClose }: { entry: DailyEntry; date: string; onClose: () => void }) {
-  const t = useT();
-  const lang = useLang();
-  const panelRef = useRef<HTMLDivElement>(null);
-  const challenge = challengeById.get(entry.challengeId) ?? null;
-
-  // Same modal basics as DailyLoop, plus focus restore: unlike the fullscreen loop,
-  // the sheet has interactive content behind it, so focus must return to the invoking dot.
-  useEffect(() => {
-    const invoker = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    panelRef.current?.focus();
-    return () => invoker?.focus();
-  }, []);
-
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
-
-  return (
-    <div className="sheet-overlay" onClick={onClose}>
-      <div
-        className="sheet-panel"
-        role="dialog"
-        aria-modal="true"
-        aria-label={date}
-        ref={panelRef}
-        tabIndex={-1}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sheet-header">
-          <p className="muted">{date}</p>
-          <button className="loop-close" aria-label={t('progress.sheet.close')} onClick={onClose}>
-            ×
-          </button>
-        </div>
-        {challenge && <h2>{t(`category.${challenge.category}`)}</h2>}
-        {entry.emotionBefore && (
-          <p>
-            <span aria-hidden>{EMOTION_EMOJI[entry.emotionBefore]}</span> {t(`loop.emotion.${entry.emotionBefore}`)}
-          </p>
-        )}
-        {entry.ifThen && <p className="muted">{t('progress.sheet.plan', { value: entry.ifThen })}</p>}
-        <p>{t('progress.sheet.reflection', { value: entry.reflection ?? '—' })}</p>
-        {challenge && <p className="muted">{challenge.i18n[lang].task}</p>}
-      </div>
-    </div>
-  );
 }

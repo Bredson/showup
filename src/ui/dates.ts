@@ -4,11 +4,17 @@ import type { ISODate, Lang } from '../domain/types';
 
 const LOCALES: Record<Lang, string> = { pl: 'pl-PL', en: 'en-GB' };
 
-/** "niedziela, 12 lipca" / "Sunday, 12 July" — for entry previews and journal rows. */
-export function formatDayLong(date: ISODate, lang: Lang): string {
+/**
+ * "niedziela, 12 lipca" / "Sunday, 12 July" — for entry previews and journal rows.
+ * Pass `today` for unbounded lists (journal): entries from another year then include the year.
+ * The Progress calendar (35-day window) can safely omit it.
+ */
+export function formatDayLong(date: ISODate, lang: Lang, today?: ISODate): string {
+  const differentYear = today !== undefined && date.slice(0, 4) !== today.slice(0, 4);
   return new Date(`${date}T00:00:00`).toLocaleDateString(LOCALES[lang], {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
+    ...(differentYear ? { year: 'numeric' } : {}),
   });
 }

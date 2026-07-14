@@ -96,10 +96,15 @@ export const en: Record<keyof typeof pl, string> = {
   'progress.level.heading': 'Level {level}',
   'progress.level.count': '{done} of {total} at this level',
   'progress.cta.backToToday': 'Back to today’s challenge',
-  'progress.sheet.close': 'Close preview',
-  'progress.sheet.plan': 'Your plan: {value}',
-  'progress.sheet.reflection': 'Reflection: {value}',
 
-  'stub.journal': 'Your reflections will appear here after your first challenge.',
+  'sheet.close': 'Close preview',
+  'sheet.plan': 'Your plan: {value}',
+  'sheet.reflection': 'Reflection: {value}',
+
+  'journal.title': 'Journal',
+  'journal.empty': 'Your reflections will appear here after your first challenge.',
+  'journal.date.today': 'Today',
+  'journal.date.yesterday': 'Yesterday',
+
   'stub.settings': 'Settings are coming soon.',
 };

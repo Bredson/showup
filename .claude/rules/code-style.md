@@ -53,6 +53,14 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
 - **`role="status"` z unikalną treścią**: komunikat zdarzenia zawiera identyfikator (np. datę) — tap w kolejny element zmienia tekst, więc czytnik ogłasza ponownie; statyczny tekst by zamilkł.
 - **Elementy dekoracyjne vs informacyjne w siatce**: kropka „pusta" = `aria-hidden` (brak informacji, brak poczucia winy), kropka „dziś/pending" = `role="img"` + aria-label (niesie informację, choć nieinteraktywna).
 
+## UI (React) — wzorce z Feature 7 (Dziennik)
+
+- **`aria-label` na przycisku z treścią NADPISUJE jego dostępną nazwę** — czytnik traci wszystko, co widzi użytkownik widzący (finding MAJOR z review F7). Przycisk-wiersz listy: ŻADNEGO `aria-label`, tekst wiersza jest nazwą; emoji-dane w środku = `role="img"` + label z i18n. `aria-label` tylko na przyciskach bez tekstu (ikony, kropki).
+- **Lookupy treści eksportuje `src/content/index.ts`** (`challengeById: ReadonlyMap`) — ekrany importują, nie budują własnych `new Map(challenges...)`.
+- **Niezmienniki domeny w typach, nie w fallbackach UI**: filtr z predykatem typu (`.filter((e): e is JournalEntry => ...)`) + typ zawężony (`DailyEntry & { emotionBefore: Emotion }`) zamiast martwych gałęzi `?:` w JSX.
+- **Formatery dat dla list bez ograniczenia czasowego** dostają opcjonalne `today` i dodają rok, gdy inny niż bieżący (`formatDayLong(date, lang, today?)`); okna stałe (kalendarz 28 dni) pomijają parametr.
+- **Clamp tekstu**: `-webkit-line-clamp` zawsze w parze ze standardowym `line-clamp`.
+
 ## Treści statyczne (challenges.json)
 
 - Ręcznie edytowany JSON = dane niezaufane: walidator sprawdza typy w runtime (`typeof`), zbiera WSZYSTKIE błędy w jeden throw, bez cichych fallbacków.

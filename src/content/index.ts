@@ -91,3 +91,6 @@ export const contentVersion: number = validateContentVersion(raw.contentVersion)
 
 /** The validated catalog — import this, never challenges.json directly. */
 export const challenges: Challenge[] = validateChallenges(raw.challenges as Challenge[]);
+
+/** Shared id lookup — screens must import this instead of rebuilding their own Map. */
+export const challengeById: ReadonlyMap<string, Challenge> = new Map(challenges.map((c) => [c.id, c]));

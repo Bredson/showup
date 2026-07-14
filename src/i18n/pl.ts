@@ -105,11 +105,18 @@ export const pl = {
   'progress.level.heading': 'Poziom {level}',
   'progress.level.count': '{done} z {total} na tym poziomie',
   'progress.cta.backToToday': 'Wróć do dzisiejszego wyzwania',
-  'progress.sheet.close': 'Zamknij podgląd',
-  'progress.sheet.plan': 'Twój plan: {value}',
-  'progress.sheet.reflection': 'Refleksja: {value}',
+
+  // Entry preview bottom sheet (shared: Progress + Journal)
+  'sheet.close': 'Zamknij podgląd',
+  'sheet.plan': 'Twój plan: {value}',
+  'sheet.reflection': 'Refleksja: {value}',
+
+  // Journal screen (ux-spec §5) — zapis emocji i refleksji, bez oceniania wykonania
+  'journal.title': 'Dziennik',
+  'journal.empty': 'Tu pojawią się twoje refleksje po pierwszym wyzwaniu.',
+  'journal.date.today': 'Dziś',
+  'journal.date.yesterday': 'Wczoraj',
 
   // Stub screens (filled by later features)
-  'stub.journal': 'Tu pojawią się twoje refleksje po pierwszym wyzwaniu.',
   'stub.settings': 'Ustawienia pojawią się wkrótce.',
 } as const;

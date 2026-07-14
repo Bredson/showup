@@ -139,7 +139,10 @@ Wspólne: fullscreen, nawigacja ukryta, wskaźnik 6 kropek + „×" (wyjście z 
 
 ## 5. Ekran „Dziennik"
 
-- Lista odwrotnie chronologiczna: data relatywna, ikona emocji, tytuł wyzwania, 2 linie refleksji
+- **Zakres (decyzja: Dylemat 4 = wariant A):** widoczny jest każdy wpis z zapisaną emocją —
+  także dni rozpoczęte i niedokończone (check emocji jest obowiązkowy, więc taki dzień ma emocję, ale nie refleksję).
+  Dziennik NIE ocenia wykonania (od tego jest Progres): bez etykiet „niedokończone", bez markerów statusu.
+- Lista odwrotnie chronologiczna: data relatywna („dziś" / „wczoraj", starsze — pełna data), ikona emocji, tytuł wyzwania, 2 linie refleksji
 - Tap → rozwinięcie/bottom-sheet z pełnym wpisem (emocja + IF-THEN + refleksja)
 - Bez edycji/usuwania pojedynczych wpisów, bez wyszukiwarki, bez przycisku „nowy wpis" (scope creep)
 - Pusty stan: ilustracja + „Tu pojawią się twoje refleksje po pierwszym wyzwaniu."
