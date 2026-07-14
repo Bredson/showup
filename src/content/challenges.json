@@ -1,5 +1,5 @@
 {
-  "contentVersion": 2,
+  "contentVersion": 3,
   "challenges": [
     {
       "id": "l1-001",
@@ -26,12 +26,12 @@
         "pl": {
           "lesson": "Najtrudniejszy jest start, nie zadanie. Umowa z samym sobą: „pracuję tylko 5 minut” obniża próg wejścia — a zaczęte zadanie zwykle samo się ciągnie.",
           "task": "Ustaw minutnik na 5 minut i zacznij zadanie, które odkładasz. Po 5 minutach masz pełne prawo przerwać.",
-          "reflection": "Czy po 5 minutach chciało Ci się kontynuować?"
+          "reflection": "Co działo się z Twoją chęcią kontynuowania po tych 5 minutach?"
         },
         "en": {
           "lesson": "Starting is the hard part, not the task. A deal with yourself — \"I'll work for just 5 minutes\" — lowers the entry barrier, and a started task tends to carry itself.",
           "task": "Set a timer for 5 minutes and start the task you've been avoiding. After 5 minutes you have full permission to stop.",
-          "reflection": "Did you feel like continuing after the 5 minutes?"
+          "reflection": "What happened to your urge to continue after the 5 minutes?"
         }
       }
     },
@@ -94,12 +94,12 @@
         "pl": {
           "lesson": "Zasada dwóch minut działa też na duże projekty: prawie każdy ma jakiś 2-minutowy kawałek. Otworzyć plik, przeczytać ostatni akapit, znaleźć numer telefonu — małe drzwi do dużego pokoju.",
           "task": "Znajdź w swoim najbardziej odkładanym projekcie jedną czynność na mniej niż 2 minuty i zrób ją teraz. Potem możesz skończyć.",
-          "reflection": "Czy po tych 2 minutach projekt wydaje się choć trochę mniejszy?"
+          "reflection": "Jak te 2 minuty zmieniły Twoje poczucie wielkości projektu?"
         },
         "en": {
           "lesson": "The two-minute rule works on big projects too: almost every one has some 2-minute piece. Opening the file, rereading the last paragraph, finding a phone number — a small door into a big room.",
           "task": "Find one under-2-minute action inside your most-avoided project and do it now. Then you're free to stop.",
-          "reflection": "Does the project feel even a little smaller after those 2 minutes?"
+          "reflection": "How did those 2 minutes change the way the project feels?"
         }
       }
     },
@@ -168,6 +168,91 @@
           "lesson": "The smallest possible start is just opening: the file, the app, the toolbox. Zero work — and yet the task stops being a closed door.",
           "task": "Open the thing you've been avoiding today — the document, the email, the notebook — and just look at it for a minute. You have full permission to close it and walk away.",
           "reflection": "What did you feel once it was finally open?"
+        }
+      }
+    },
+    {
+      "id": "l1-011",
+      "level": 1,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Mózg mierzy czas zadań uczuciem, nie zegarem — i nieprzyjemnym sprawom dopisuje minuty, których nie mają. Kilka porównań szacunku z zegarem uczy go mierzyć uczciwiej — także wtedy, gdy następnym razem powie Ci, że coś jest „za duże na teraz”.",
+          "task": "Zanim zrobisz dziś coś, co i tak Cię czeka — naczynia, odpowiedź na wiadomość — zgadnij w myślach, ile to potrwa, i zerknij potem na zegar. Powtórz przy dwóch, trzech okazjach.",
+          "reflection": "Co zauważyłeś/aś w tym, jak Twoje poczucie czasu mija się z zegarem?"
+        },
+        "en": {
+          "lesson": "Your brain measures task time by feeling, not by the clock — and it adds minutes to unpleasant things that they don't have. A few guess-versus-clock comparisons teach it to measure more honestly — including the next time it tells you something is \"too big for now\".",
+          "task": "Before doing something today that's happening anyway — the dishes, replying to a message — guess in your head how long it will take, then glance at the clock after. Repeat at two or three occasions.",
+          "reflection": "What did you notice about how your sense of time differs from the clock?"
+        }
+      }
+    },
+    {
+      "id": "l1-012",
+      "level": 1,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Drobne obowiązki najczęściej odkładamy dokładnie w chwili, gdy o nich myślimy — i właśnie wtedy dopisują się do niewidzialnej listy w głowie. Zrobione od razu, nie zdążą stać się ciężarem.",
+          "task": "Gdy dziś przyjdzie Ci do głowy jakaś sprawa na mniej niż 2 minuty, zrób ją od razu, zamiast odkładać na potem. Wystarczy jeden taki moment.",
+          "reflection": "Jak to było zareagować od razu, zamiast dopisywać sprawę do listy w głowie?"
+        },
+        "en": {
+          "lesson": "Small obligations usually get postponed at the very moment we think of them — and that's when they join the invisible list in your head. Done right away, they never get the chance to become weight.",
+          "task": "Today, when an under-2-minute thing crosses your mind, do it right then instead of shelving it for later. One such moment is enough.",
+          "reflection": "What was it like to act right away instead of adding the thing to your mental list?"
+        }
+      }
+    },
+    {
+      "id": "l1-013",
+      "level": 1,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Jeśli pierwszy krok budzi opór, jest po prostu za duży — a każdy krok da się podzielić na pół. Gdzieś na końcu tego dzielenia czeka wersja tak mała, że opór znika — i właśnie od niej najłatwiej zacząć naprawdę.",
+          "task": "Weź pierwszy krok odkładanego zadania i dziel go w myślach na pół tak długo, aż przestanie budzić opór. Zrób tę najmniejszą wersję od razu — to kwestia chwili.",
+          "reflection": "Jak mały musiał być ten krok i co Cię w tym zaskoczyło?"
+        },
+        "en": {
+          "lesson": "If the first step triggers resistance, it's simply too big — and every step can be cut in half. Somewhere down that halving waits a version so small the resistance disappears — and that's the easiest place to actually begin.",
+          "task": "Take the first step of a task you've been avoiding and keep halving it in your head until it stops putting you off. Do that smallest version right away — it takes only a moment.",
+          "reflection": "How small did that step have to get, and what surprised you about it?"
+        }
+      }
+    },
+    {
+      "id": "l1-014",
+      "level": 1,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Odkładane zadanie wydaje się startem od zera — ale prawie nigdy nim nie jest. Zwykle masz już coś: wiedzę, materiały, wcześniejszą próbę — a widok tego, co już jest, zmniejsza górę przed Tobą.",
+          "task": "Pomyśl o zadaniu, które odkładasz, i wymień — na głos lub na kartce — trzy rzeczy, które już masz na jego rzecz: coś, co wiesz, masz albo kiedyś zacząłeś/aś. Nic więcej nie musisz dziś robić.",
+          "reflection": "Jak zmieniło się Twoje poczucie ciężaru zadania, gdy zobaczyłeś/aś, że nie zaczynasz od zera?"
+        },
+        "en": {
+          "lesson": "An avoided task feels like starting from zero — but it almost never is. You usually have something already: knowledge, materials, an earlier attempt — and seeing what's there shrinks the mountain ahead.",
+          "task": "Think of a task you've been avoiding and name — out loud or on paper — three things you already have going for it: something you know, own, or once started. That's all you need to do today.",
+          "reflection": "How did the task's weight change once you saw you're not starting from zero?"
+        }
+      }
+    },
+    {
+      "id": "l1-015",
+      "level": 1,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Emocja, przed którą uciekasz, mieszka też w ciele — jako ścisk w brzuchu, spięte barki, płytki oddech. Zauważenie jej w ciele bywa łatwiejsze niż nazwanie słowem — i bywa pierwszym krokiem do tego, by ją nazwać.",
+          "task": "Pomyśl o zadaniu, którego unikasz, i przez 10 sekund sprawdź, gdzie w ciele czujesz opór. Tylko zauważ — nic nie musisz z tym robić.",
+          "reflection": "Gdzie w ciele mieszkał dziś Twój opór i jaki miał kształt?"
+        },
+        "en": {
+          "lesson": "The emotion you're running from also lives in your body — a tight stomach, tense shoulders, shallow breath. Noticing it there can be easier than naming it with a word — and can be a first step toward naming it.",
+          "task": "Think of the task you're avoiding and spend 10 seconds checking where in your body the resistance sits. Just notice — you don't have to do anything about it.",
+          "reflection": "Where in your body did the resistance live today, and what shape did it have?"
         }
       }
     },
@@ -247,12 +332,12 @@
         "pl": {
           "lesson": "Nazwana emocja traci moc, a zapisana — jeszcze bardziej. Jedno zdanie przed startem przenosi uczucie z brzucha na papier, gdzie łatwiej mu się przyjrzeć.",
           "task": "Zanim zaczniesz dziś pracę nad odkładanym zadaniem, zapisz zdanie: „Wobec tego zadania czuję…, bo…”. Dopiero potem zacznij.",
-          "reflection": "Czy start był inny niż zwykle, gdy emocja była już zapisana?"
+          "reflection": "Jak wyglądał start, gdy emocja była już zapisana?"
         },
         "en": {
           "lesson": "A named emotion loses power — a written one, even more. One sentence before starting moves the feeling from your gut onto paper, where it's easier to look at.",
           "task": "Before you start today's work on an avoided task, write: \"About this task I feel…, because…\". Only then begin.",
-          "reflection": "Was starting different than usual, with the emotion already on paper?"
+          "reflection": "How was starting different, with the emotion already on paper?"
         }
       }
     },
@@ -342,6 +427,142 @@
       }
     },
     {
+      "id": "l2-011",
+      "level": 2,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Kreska stawiana od razu, w chwili zrobienia, robi coś więcej niż liczenie — uczy mózg zauważać moment „zrobione od ręki” dokładnie wtedy, gdy się wydarza. A to, co zauważane na bieżąco, łatwiej powtórzyć.",
+          "task": "Noś dziś przy sobie kartkę i stawiaj kreskę za każdą sprawę poniżej 2 minut, którą zrobisz od razu. Wieczorem policz kreski.",
+          "reflection": "Co poczułeś/aś, widząc wieczorem, ile tych małych rzeczy naprawdę było?"
+        },
+        "en": {
+          "lesson": "A tally mark made right away, the moment something gets done, does more than count — it trains your brain to notice the \"done on the spot\" moment exactly when it happens. And what gets noticed in real time is easier to repeat.",
+          "task": "Carry a note with you today and add a tally mark for every under-2-minute thing you do right away. Count the marks tonight.",
+          "reflection": "How did it feel to see tonight how many of those small things there really were?"
+        }
+      }
+    },
+    {
+      "id": "l2-012",
+      "level": 2,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Zwykle drobna sprawa czeka na nas o wiele dłużej, niż trwa jej zrobienie — dni noszenia w głowie kontra minuty pracy. Te dwie liczby zapisane obok siebie pokazują prawdziwą cenę odkładania lepiej niż jakiekolwiek postanowienie.",
+          "task": "Wybierz jedną małą sprawę, którą nosisz od dłuższego czasu, i zapisz obok siebie dwie liczby: ile dni już czeka i ile minut zajęłoby jej zrobienie. Możesz ją potem zrobić, ale same liczby wystarczą.",
+          "reflection": "Co poczułeś/aś na widok tych dwóch liczb obok siebie?"
+        },
+        "en": {
+          "lesson": "A small chore usually waits for us far longer than it takes to do — days of carrying it in your head versus minutes of work. Those two numbers written side by side show the real price of postponing better than any resolution.",
+          "task": "Pick one small thing you've been carrying for a while and write two numbers side by side: how many days it has already waited and how many minutes it would take to do. You may do it afterwards, but the numbers alone are enough.",
+          "reflection": "How did it feel to see those two numbers next to each other?"
+        }
+      }
+    },
+    {
+      "id": "l2-013",
+      "level": 2,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Niektóre sprawy wiszą tygodniami nie dlatego, że są trudne, tylko dlatego, że nikt o nich nie zdecydował. Decyzja — zrobić, zaplanować albo świadomie odpuścić — zajmuje 2 minuty i zdejmuje sprawę z głowy niezależnie od wyniku.",
+          "task": "Wybierz jedną sprawę, która wisi nad Tobą od dawna, i w 2 minuty podejmij decyzję: robię teraz, planuję na konkretny dzień albo świadomie odpuszczam. Zapisz tę decyzję jednym zdaniem.",
+          "reflection": "Którą decyzję podjąłeś/aś i co poczułeś/aś tuż po jej zapisaniu?"
+        },
+        "en": {
+          "lesson": "Some things hang around for weeks not because they're hard, but because no one has decided about them. The decision — do it, schedule it, or consciously let it go — takes 2 minutes and clears your head whatever the outcome.",
+          "task": "Pick one thing that has been hanging over you for a long time and make the call in 2 minutes: do it now, schedule it for a specific day, or consciously let it go. Write the decision down in one sentence.",
+          "reflection": "Which decision did you make, and what did you feel right after writing it down?"
+        }
+      }
+    },
+    {
+      "id": "l2-014",
+      "level": 2,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Puste miejsce, w którym ma powstać tekst, mail czy plan, onieśmiela bardziej niż sama praca. Jedno zapisane zdanie — nawet nieudane — sprawia, że rzecz już istnieje, a do istniejącej rzeczy wraca się łatwiej.",
+          "task": "Napisz dziś pierwsze zdanie tej rzeczy, którą odkładasz: początek maila, tytuł i pierwszą linijkę dokumentu. Jakość nie gra roli — i na tym jednym zdaniu możesz skończyć.",
+          "reflection": "Co czułeś/aś tuż po tym, jak pierwsze zdanie już istniało?"
+        },
+        "en": {
+          "lesson": "The blank space where a text, email, or plan is supposed to appear intimidates more than the work itself. One written sentence — even a bad one — means the thing now exists, and returning to something that exists is easier.",
+          "task": "Today, write the first sentence of the thing you've been avoiding: the opening of the email, the title and first line of the document. Quality doesn't matter — and you're allowed to stop at that one sentence.",
+          "reflection": "What did you feel right after the first sentence existed?"
+        }
+      }
+    },
+    {
+      "id": "l2-015",
+      "level": 2,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Zamiar wypowiedziany drugiemu człowiekowi waży więcej niż obietnica złożona sobie w myślach. Nie chodzi o kontrolę — chodzi o to, że słowa wysłane do kogoś stają się odrobinę bardziej prawdziwe.",
+          "task": "Napisz jednej życzliwej osobie krótką wiadomość: co zamierzasz dziś zrobić i kiedy. Wyślij ją przed startem.",
+          "reflection": "Jak zmieniło się zaczynanie, gdy ktoś o Twoim zamiarze wiedział?"
+        },
+        "en": {
+          "lesson": "An intention spoken to another person weighs more than a promise made silently to yourself. It's not about being policed — it's that words sent to someone become a little more real.",
+          "task": "Write a short message to one kind person: what you intend to do today and when. Send it before you start.",
+          "reflection": "How did starting change once someone knew about your intention?"
+        }
+      }
+    },
+    {
+      "id": "l2-016",
+      "level": 2,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Kiedy wszystko wydaje się równie pilne, mózg wybiera ucieczkę — bo nie wie, od czego zacząć. Ponumerowana lista zdejmuje ten wybór: zostaje tylko punkt pierwszy.",
+          "task": "Zapisz wszystko, co dziś nad Tobą wisi (najwyżej 5–6 pozycji), i ponumeruj według ważności. Poświęć teraz kilka minut wyłącznie punktowi numer jeden.",
+          "reflection": "Co poczułeś/aś, gdy z całej listy został tylko jeden punkt do myślenia?"
+        },
+        "en": {
+          "lesson": "When everything feels equally urgent, your brain picks escape — because it doesn't know where to begin. A numbered list removes that choice: only item one remains.",
+          "task": "Write down everything hanging over you today (5–6 items at most) and number the items by importance. Now give a few minutes to item number one only.",
+          "reflection": "What did you feel once the whole list shrank to a single item to think about?"
+        }
+      }
+    },
+    {
+      "id": "l2-017",
+      "level": 2,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Część zadań stoi w miejscu, bo nie wiadomo, czego do nich potrzeba — a niejasność jest jednym z najcichszych powodów odkładania. Spisana lista potrzebnych rzeczy zamienia mgłę w konkret.",
+          "task": "Dla jednego utkniętego zadania zapisz, czego potrzebujesz, żeby je zrobić: jakich informacji, plików, odpowiedzi od ludzi. Sama lista wystarczy — nic więcej dziś nie musisz.",
+          "reflection": "Czego na tej liście okazało się mniej, niż podpowiadała mgła?"
+        },
+        "en": {
+          "lesson": "Some tasks stall because it's unclear what they even require — and ambiguity is one of the quietest reasons for putting things off. A written list of what's needed turns fog into specifics.",
+          "task": "For one stuck task, write down what you need in order to do it: which pieces of information, files, answers from people. The list alone is enough — nothing more today.",
+          "reflection": "What turned out to be less on that list than the fog suggested?"
+        }
+      }
+    },
+    {
+      "id": "l2-018",
+      "level": 2,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Momenty ucieczki — nagła ochota na przekąskę, telefon, porządki — mijają niezauważone, a to właśnie w nich kryje się mapa Twojej prokrastynacji. Jedna zapisana linijka łapie taki moment, zanim wyparuje.",
+          "task": "Gdy dziś złapiesz się na ucieczce od zadania, zapisz jedną linijkę: od czego uciekałem/am i co wtedy czułem/am. Bez oceniania — sama notatka wystarczy.",
+          "reflection": "Co Cię zaskoczyło w tym, od czego dziś uciekałeś/aś?"
+        },
+        "en": {
+          "lesson": "Escape moments — a sudden craving for a snack, the phone, tidying up — pass unnoticed, yet they hold the map of your procrastination. One written line catches such a moment before it evaporates.",
+          "task": "When you catch yourself escaping a task today, write one line: what I was escaping from and what I felt right then. No judging — the note alone is enough.",
+          "reflection": "What surprised you about the thing you were escaping from today?"
+        }
+      }
+    },
+    {
       "id": "l3-001",
       "level": 3,
       "category": "small-steps",
@@ -349,12 +570,12 @@
         "pl": {
           "lesson": "Najtrudniejsze zadania to te bez wyraźnego końca. Definicja „zrobione na dziś” (konkretna, mierzalna) daje mecie kształt — a mózg lubi zamykać pętle.",
           "task": "Dla najbardziej odkładanego projektu zapisz, co DOKŁADNIE będzie znaczyć „zrobione na dziś”. Pracuj tylko do tej mety, ani kroku dalej.",
-          "reflection": "Czy wyraźna meta zmieniła sposób, w jaki pracowałeś/aś?"
+          "reflection": "Jak wyraźna meta zmieniła sposób, w jaki pracowałeś/aś?"
         },
         "en": {
           "lesson": "The hardest tasks are the ones with no clear end. A definition of \"done for today\" (concrete, measurable) gives the finish line a shape — and brains love closing loops.",
           "task": "For your most-avoided project, write down EXACTLY what \"done for today\" means. Work only to that line, not a step further.",
-          "reflection": "Did the clear finish line change how you worked?"
+          "reflection": "How did the clear finish line change the way you worked?"
         }
       }
     },
@@ -366,12 +587,12 @@
         "pl": {
           "lesson": "Znasz już plan „jeśli–to” na start. Wersja zaawansowana celuje w moment ucieczki: „JEŚLI poczuję odruch, by odłożyć zadanie, TO najpierw zrobię jeden 2-minutowy krok”. Plan na pokusę działa, zanim pokusa wygra.",
           "task": "Zapisz plan „jeśli–to” na swój NAJCZĘSTSZY odruch ucieczki (sięgnięcie po telefon, „jeszcze tylko sprawdzę…”). Użyj go przy najbliższej pracy nad odkładanym zadaniem.",
-          "reflection": "Czy plan zadziałał w momencie odruchu? Co byś w nim poprawił(a)?"
+          "reflection": "Jak plan zadziałał w momencie odruchu i co byś w nim poprawił(a)?"
         },
         "en": {
           "lesson": "You already know the \"if–then\" plan for starting. The advanced version targets the escape moment: \"IF I feel the urge to put the task off, THEN I'll first do one 2-minute step.\" A plan for the temptation works before the temptation wins.",
           "task": "Write an \"if–then\" plan for your MOST FREQUENT escape reflex (reaching for the phone, \"I'll just quickly check…\"). Use it during your next session on an avoided task.",
-          "reflection": "Did the plan fire at the moment of the urge? What would you improve in it?"
+          "reflection": "How did the plan hold up at the moment of the urge, and what would you improve in it?"
         }
       }
     },
@@ -508,6 +729,210 @@
           "lesson": "The most-avoided thing usually lands at the end of the day — when energy and courage are lowest. Reversing the order (\"the hardest goes first\") gives it the best version of you, and the rest of the day runs downhill.",
           "task": "Tomorrow, before you look at messages and other business, do the first step of your most-avoided task. Tonight, write down EXACTLY what that step will be.",
           "reflection": "What was the rest of the day like with the hardest thing already behind you?"
+        }
+      }
+    },
+    {
+      "id": "l3-011",
+      "level": 3,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Najdłużej wiszą wiadomości, których napisanie zajmuje 2 minuty, ale kosztuje emocje: przeprosiny, odmowa, przypomnienie o zaległości. Ich ciężar nie siedzi w klawiaturze, tylko w wyobrażonej reakcji odbiorcy — a ta prawie zawsze jest łagodniejsza niż w głowie.",
+          "task": "Znajdź jedną wiadomość, którą odkładasz od dawna, choć jej napisanie zajmie mniej niż 2 minuty. Napisz ją prosto i wyślij dziś.",
+          "reflection": "Co okazało się lżejsze niż w wyobraźni — pisanie czy chwila po wysłaniu?"
+        },
+        "en": {
+          "lesson": "The longest-hanging messages are the ones that take 2 minutes to write but cost emotion: an apology, a refusal, a reminder about something owed. Their weight isn't in the typing but in the imagined reaction — which is almost always gentler than the one in your head.",
+          "task": "Find one message you've been putting off for ages even though writing it takes under 2 minutes. Write it plainly and send it today.",
+          "reflection": "Which turned out lighter than imagined — the writing, or the moment after sending?"
+        }
+      }
+    },
+    {
+      "id": "l3-012",
+      "level": 3,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Ćwiczyłeś/aś już zaczynanie od kawałka o najmniejszym oporze — i to zwykle działa. Ale czasem to właśnie ten jeden kawałek, którego naprawdę się boisz, trzyma całą resztę w miejscu — a dwie minuty kontaktu z nim odbierają mu tę władzę.",
+          "task": "Nazwij kawałek zadania, którego boisz się najbardziej, i zajmij się nim dokładnie 2 minuty — zanim zrobisz cokolwiek łatwiejszego. Po 2 minutach możesz przerwać.",
+          "reflection": "Jak wyglądał najgorszy kawałek z bliska, po tych 2 minutach?"
+        },
+        "en": {
+          "lesson": "You've already practiced starting with the piece of least resistance — and that usually works. But sometimes it's the one piece you truly dread that keeps everything else stuck — and two minutes of contact with it strips it of that power.",
+          "task": "Name the piece of the task you dread most and spend exactly 2 minutes on it — before doing anything easier. After 2 minutes you may stop.",
+          "reflection": "What did the worst piece look like up close, after those 2 minutes?"
+        }
+      }
+    },
+    {
+      "id": "l3-013",
+      "level": 3,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Rzeczy skończone w 95 procentach potrafią czekać miesiącami na ostatnie 2 minuty: wysłanie, oddanie, publikację. Wstrzymuje je nie brak czasu, lecz cicha zasada: dopóki nieskończone, nikt nie może ocenić.",
+          "task": "Znajdź jedną rzecz, której do końca brakuje mniej niż 2 minut, i domknij ją dziś: wyślij, oddaj, opublikuj. Właśnie tę, przy której coś się w Tobie wzdraga.",
+          "reflection": "Co poczułeś/aś w chwili, gdy to naprawdę wyszło w świat?"
+        },
+        "en": {
+          "lesson": "Things that are 95 percent done can wait months for their last 2 minutes: sending, handing over, publishing. What holds them back isn't lack of time but a quiet rule — as long as it's unfinished, no one can judge it.",
+          "task": "Find one thing that needs less than 2 minutes to be truly done and close it today: send it, hand it over, publish it. Pick the one that makes something in you flinch.",
+          "reflection": "What did you feel the moment it was actually out in the world?"
+        }
+      }
+    },
+    {
+      "id": "l3-014",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Emocja stojąca za unikaniem nie jest wrogiem — ona próbuje Cię przed czymś chronić: przed oceną, porażką, nudą bez końca. Gdy wiesz, czego pilnuje, możesz z nią negocjować zamiast od niej uciekać.",
+          "task": "Dla zadania, którego unikasz najbardziej, zapisz, które z pięciu słów pasuje: lęk, nuda, przytłoczenie, niechęć czy niejasność. Potem dopisz jedno zdanie: przed czym ta emocja próbuje mnie chronić.",
+          "reflection": "Czego pilnuje Twoja emocja — i na ile ta ochrona jest Ci dziś jeszcze potrzebna?"
+        },
+        "en": {
+          "lesson": "The emotion behind your avoidance isn't the enemy — it's trying to protect you from something: judgment, failure, endless boredom. Once you know what it's guarding, you can negotiate with it instead of running from it.",
+          "task": "For the task you avoid most, write down which of the five words fits: fear, boredom, overwhelm, resentment, or ambiguity. Then add one sentence: what this emotion is trying to protect me from.",
+          "reflection": "What is your emotion guarding — and how much do you still need that protection today?"
+        }
+      }
+    },
+    {
+      "id": "l3-015",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Stare porzucone sprawy nie znikają — wracają jako ukłucie wstydu i po cichu uczą, że zaczynanie jest niebezpieczne. Badania nad samowybaczeniem pokazują, że to wybaczenie, nie wyrzuty, przerywa ten łańcuch.",
+          "task": "Przypomnij sobie coś, co porzuciłeś/aś dawno temu i co wciąż kłuje, i zacznij od jednego zdania wybaczenia. Potem podejmij tę ważniejszą część: zapisz decyzję — wracam jednym małym krokiem albo zamykam na dobre.",
+          "reflection": "Co poczułeś/aś, gdy ta stara sprawa dostała wreszcie jakieś zakończenie?"
+        },
+        "en": {
+          "lesson": "Old abandoned things don't disappear — they return as a sting of shame and quietly teach you that starting is dangerous. Research on self-forgiveness shows it's forgiveness, not reproach, that breaks this chain.",
+          "task": "Recall something you abandoned long ago that still stings, and open with one sentence of forgiveness. Then take the more important part: write down the decision — I return with one small step, or I close it for good.",
+          "reflection": "What did you feel when that old thing finally got some kind of ending?"
+        }
+      }
+    },
+    {
+      "id": "l3-016",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Wymówka podawana innym — brak czasu, natłok spraw — rzadko jest prawdziwym powodem zwłoki. Prawdziwy powód to zwykle emocja, a rozdzielenie tych dwóch warstw na papierze bywa pierwszym uczciwym spojrzeniem na własne unikanie.",
+          "task": "Dla jednego zaległego zadania zapisz dwa zdania: co mówię innym, dlaczego to jeszcze nie gotowe, i co jest prawdą, gdy nikt nie słucha. Porównaj je w spokoju.",
+          "reflection": "Jak to było zobaczyć obie wersje obok siebie — tę oficjalną i tę prawdziwą?"
+        },
+        "en": {
+          "lesson": "The excuse we give others — no time, too much going on — is rarely the real reason for the delay. The real reason is usually an emotion, and separating the two layers on paper can be the first honest look at your own avoidance.",
+          "task": "For one overdue task, write two sentences: what I tell others about why it isn't done, and what is true when no one is listening. Compare them calmly.",
+          "reflection": "What was it like to see both versions side by side — the official one and the true one?"
+        }
+      }
+    },
+    {
+      "id": "l3-017",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Projekty rzadko utykają całe — utykają w jednym konkretnym kroku, a reszta tylko na niego czeka. Znalezienie tego kroku i rozcięcie go na mniejsze działa jak wyjęcie kamienia, który tarasował strumień.",
+          "task": "Przypomnij sobie, przy którym dokładnie kroku Twój projekt ostatnio stanął, i rozpisz ten jeden krok na 2–3 mniejsze. Zrób dziś pierwszy z nich, jeśli masz siłę — sama operacja też się liczy.",
+          "reflection": "Co takiego było w tym jednym kroku, że zatrzymał całą resztę?"
+        },
+        "en": {
+          "lesson": "Projects rarely get stuck as a whole — they get stuck at one specific step, and everything else just waits behind it. Finding that step and cutting it into smaller ones works like removing the stone that dammed the stream.",
+          "task": "Recall exactly which step your project last stalled at, and split that one step into 2–3 smaller ones. Do the first of them today if you have it in you — the splitting alone counts too.",
+          "reflection": "What was it about that one step that held everything else back?"
+        }
+      }
+    },
+    {
+      "id": "l3-018",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Czasem unikamy nie zadania, lecz jego wyobrażonej, idealnej wersji — z dodatkami, których nikt nie wymaga. Pytanie „co najmniejszego naprawdę wystarczy?” zdejmuje z projektu połowę ciężaru, zanim padnie pierwszy ruch.",
+          "task": "Dla jednego odkładanego projektu zapisz jego najmniejszą wersję, która naprawdę wystarczy — bez ozdobników, których nikt nie zamawiał. Od dziś to ona jest metą.",
+          "reflection": "Które ozdobniki odpadły — i kto tak naprawdę ich wymagał?"
+        },
+        "en": {
+          "lesson": "Sometimes we avoid not the task but its imagined, ideal version — with extras nobody asked for. The question \"what is the smallest thing that truly suffices?\" lifts half the weight off a project before the first move is made.",
+          "task": "For one avoided project, write down its smallest version that truly suffices — without the embellishments nobody ordered. From today, that version is the finish line.",
+          "reflection": "Which embellishments fell away — and who was actually demanding them?"
+        }
+      }
+    },
+    {
+      "id": "l3-019",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Niektóre zadania nie ruszają, bo pod jedną nazwą kryje się kilka różnych prac naraz — napisać raport to zebrać dane, przemyśleć wnioski i ubrać je w słowa. Trzy prace udające jedną są nie do ruszenia; rozdzielone, stają się zwykłymi zadaniami.",
+          "task": "Weź jedno zadanie, które nie rusza od dawna, i sprawdź, ile różnych prac naprawdę się w nim kryje — wypisz je osobno. Wybierz jedną z nich jako całe swoje zadanie na dziś.",
+          "reflection": "Ile prac ukrywało się pod jedną nazwą — i którą było najłatwiej wybrać?"
+        },
+        "en": {
+          "lesson": "Some tasks won't move because one name hides several different jobs at once — writing a report means gathering data, thinking through conclusions, and putting them into words. Three jobs pretending to be one are immovable; separated, they become ordinary tasks.",
+          "task": "Take one task that hasn't moved in a long time and check how many different jobs are really hiding inside it — list them separately. Pick one of them as your entire task for today.",
+          "reflection": "How many jobs were hiding under one name — and which was easiest to pick?"
+        }
+      }
+    },
+    {
+      "id": "l3-020",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Przed trudnym zadaniem prawie każdy odprawia swój rytuał zwłoki: jeszcze jedna kawa, szybkie porządki, ostatni rzut oka na wiadomości. Rytuał udaje przygotowanie, ale jego prawdziwa praca to odsuwanie startu — a zauważony, traci swoją niewinność.",
+          "task": "Wytrop dziś swój rytuał zwłoki i pomiń jedną jego rundę — zacznij od razu, bez ostatniej kawy czy jeszcze jednego zerknięcia. Tylko dziś, tylko jedna runda.",
+          "reflection": "Jak się zaczynało bez rytuału — czego Ci brakowało, a co okazało się zbędne?"
+        },
+        "en": {
+          "lesson": "Before a hard task, almost everyone performs their stalling ritual: one more coffee, a bit of quick tidying, a last glance at messages. The ritual pretends to be preparation, but its real job is pushing back the start — and once noticed, it loses its innocence.",
+          "task": "Track down your stalling ritual today and skip one round of it — start right away, without the last coffee or one more glance. Just today, just one round.",
+          "reflection": "What was starting like without the ritual — what did you miss, and what turned out to be unnecessary?"
+        }
+      }
+    },
+    {
+      "id": "l3-021",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Wieczne przygotowywanie się — jeszcze jeden artykuł, jeszcze jeden poradnik — bywa najelegantszą formą zwłoki: wygląda jak praca, a chroni przed nią. W większości spraw wiesz już wystarczająco dużo, żeby zacząć.",
+          "task": "Zacznij dziś odkładaną rzecz z tym, co już wiesz — na 5 minut zabroń sobie doczytywania, sprawdzania i szukania. Twórz z tego, co masz w głowie.",
+          "reflection": "Czego zabrakło Ci naprawdę, a co okazało się tylko pretekstem do zwłoki?"
+        },
+        "en": {
+          "lesson": "Endless preparing — one more article, one more guide — can be the most elegant form of delay: it looks like work while protecting you from it. For most things, you already know enough to begin.",
+          "task": "Start the thing you've been avoiding with what you already know — for 5 minutes, forbid yourself any further reading, checking, or searching. Create from what's in your head.",
+          "reflection": "What was genuinely missing, and what turned out to be just a pretext for delay?"
+        }
+      }
+    },
+    {
+      "id": "l3-022",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Zwłoka nie jest darmowa, ale jej rachunek płaci się po cichu: w tle, w napięciu, w wieczorach z cieniem niezrobionego. Uczciwie spisany bilans — co odkładanie mi daje i co mi zabiera — nie służy do zawstydzania, tylko do odzyskania wyboru.",
+          "task": "Dla najdłużej odkładanego zadania zapisz po jednym zdaniu: co daje mi odkładanie (na przykład chwilę spokoju) i co mi zabiera. Potem zrób jeden mały krok w stronę zadania — dowolnie mały.",
+          "reflection": "Co poczułeś/aś, widząc obie strony tego bilansu czarno na białym?"
+        },
+        "en": {
+          "lesson": "Delay isn't free, but its bill is paid quietly: in background tension, in evenings shadowed by the undone. An honestly written balance — what postponing gives me and what it takes from me — isn't for shaming yourself, it's for getting your choice back.",
+          "task": "For your longest-avoided task, write one sentence each: what postponing gives me (a moment of peace, say) and what it takes from me. Then take one small step toward the task — any size.",
+          "reflection": "What did you feel seeing both sides of that balance in black and white?"
         }
       }
     }

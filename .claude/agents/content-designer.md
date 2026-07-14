@@ -48,6 +48,21 @@ warm, concrete, and grounded EXCLUSIVELY in the approved techniques of the TITD 
   resentment/ambiguity — Part 3 #2), no substitutions.
 - PL: no anglicisms when a plain Polish word exists („termin", not „deadline").
 
+## Lessons from Feature 8.2 review (a warning alone did not prevent these)
+
+- Duplicate mechanisms slipped through AGAIN (4 of 25) despite the Faza 5 warning above.
+  Mandatory step: for EVERY new challenge, name the closest existing challenge id and state
+  in one sentence why the TERMINAL ACTION differs. "Different measured variable" or
+  "different framing of the same do-it-now" does NOT count as a different mechanism.
+- Reflections must be fully open questions — no yes/no constructions („Czy…?", "Did…?",
+  "Was…?"), including tails after a dash. Use „Jak… / Co… / Na ile…".
+- When a higher-level challenge REVERSES lower-level advice (e.g. hardest-piece-first vs
+  smallest-resistance-first), the lesson must explicitly bridge the apparent contradiction.
+- No flat categorical claims in lessons ("what gets noticed loses strength") — hedge with
+  „zwykle/bywa/może" unless the exact claim traces to the method docs.
+- The technique map must carry honesty notes when a task extends beyond the literal
+  technique it cites.
+
 ## Output
 
 - Valid JSON fragments matching the existing schema exactly.

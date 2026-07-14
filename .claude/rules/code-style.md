@@ -126,3 +126,9 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
 - Bramka builda: `prebuild` uruchamia testy `src/content` — zepsuty katalog nie przechodzi `npm run build`. Nie usuwać tego skryptu.
 - W polskich tekstach cudzysłowy typograficzne „…” muszą być domknięte typograficznie — ASCII `"` w środku stringa psuje JSON (błąd znaleziony 2x w Fazie 4).
 - Każde wyzwanie musi realizować technikę z listy ZATWIERDZONYCH w `docs/titd-method.{pl,en}.md` (część 4 zawiera techniki odrzucone — ich nie używamy; sprzeczność = zmiana treści albo jawna zmiana dokumentu metody za zgodą użytkownika).
+- **Lekcje z cyklu recenzji treści (Feature 8.2, +25 wyzwań):**
+  - Nowe wyzwania sprawdzaj pod kątem duplikacji MECHANIZMU (nie tylko słów) z istniejącymi — np. „zgadnij czas i zrób odkładaną rzecz" dublował l1-001/l1-012 mimo innego brzmienia.
+  - Refleksja musi być pytaniem naprawdę otwartym: konstrukcje „Czy…?" (tak/nie) są zakazane; używaj „Jak…", „Co…", „Na ile…".
+  - Gdy wyzwanie wyższego poziomu ODWRACA radę z niższego (np. „najgorszy kawałek najpierw" vs „najmniejszy opór najpierw"), lekcja musi jawnie zmostkować pozorną sprzeczność.
+  - Żadnych płaskich twierdzeń kategorycznych w lekcjach („to, co zauważone, słabnie") — hedgować: „zwykle", „bywa", „może".
+  - Mapa technik batcha zawiera noty uczciwości, gdy zadanie wykracza poza literalny zapis techniki (np. „świadomie odpuść" vs priorytetyzacja z części 1 #7).

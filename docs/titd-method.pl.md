@@ -83,7 +83,7 @@ i **nie zwiększa złożoności metody.**
 ### 2. Szybki check emocji przed startem
 
 - **Na czym polega:** 1 pytanie przed zadaniem — *"Co czuję wobec tego zadania?"*
-  (lęk / nuda / przytłoczenie / opór / niejasność).
+  (lęk / nuda / przytłoczenie / niechęć / niejasność).
 - **Dlaczego działa:** Sirois & Pychyl (2013) — prokrastynacja to unikanie nieprzyjemnej emocji.
   Nazwanie emocji trafia w prawdziwą przyczynę, nie w objaw ("brak czasu").
 - **Jak wpasować w TITD:** rozszerzenie istniejącego journalingu o jedno pytanie zadawane
