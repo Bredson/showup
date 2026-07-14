@@ -1,5 +1,5 @@
 {
-  "contentVersion": 1,
+  "contentVersion": 2,
   "challenges": [
     {
       "id": "l1-001",
@@ -49,6 +49,125 @@
           "lesson": "Procrastination isn't laziness — it's an escape from an unpleasant emotion. Simply naming the emotion (\"I'm afraid it will turn out badly\") weakens its grip.",
           "task": "Think of the task you're avoiding. Finish this sentence out loud or on paper: \"I'm putting this off because I feel…\".",
           "reflection": "What changed once you named the emotion directly?"
+        }
+      }
+    },
+    {
+      "id": "l1-004",
+      "level": 1,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Wielkie zadanie nie ma przycisku „start” — dlatego mózg go unika. Ale każde zadanie ma jakiś pierwszy, malutki krok — wystarczy go zobaczyć, żeby góra zaczęła wyglądać jak ścieżka.",
+          "task": "Wybierz jedno odkładane zadanie i nazwij — na głos lub na kartce — tylko jego pierwszy krok, tak mały, że nie da się go bać. Nic więcej nie musisz dziś robić.",
+          "reflection": "Jak zmieniło się Twoje nastawienie do zadania, gdy zobaczyłeś/aś tylko pierwszy krok?"
+        },
+        "en": {
+          "lesson": "A big task has no \"start\" button — that's why your brain avoids it. But every task has some first, tiny step — just seeing it makes the mountain look like a path.",
+          "task": "Pick one task you've been avoiding and name — out loud or on paper — only its first step, so small it can't scare you. That's all you need to do today.",
+          "reflection": "How did your feeling about the task change once you saw only the first step?"
+        }
+      }
+    },
+    {
+      "id": "l1-005",
+      "level": 1,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Badacze prokrastynacji odkryli, że odkładanie zaczyna się od emocji, nie od kalendarza. Krótki check przed startem — lęk? nuda? przytłoczenie? — pokazuje, przed czym naprawdę uciekasz.",
+          "task": "Zanim dziś zaczniesz cokolwiek trudnego, zatrzymaj się na 10 sekund i wybierz jedno słowo: lęk, nuda, przytłoczenie, niechęć albo niejasność. Tylko tyle.",
+          "reflection": "Które słowo wybrałeś/aś i czy Cię ono zaskoczyło?"
+        },
+        "en": {
+          "lesson": "Procrastination researchers found that putting things off starts with an emotion, not a calendar. A quick check before starting — fear? boredom? overwhelm? — shows what you're really running from.",
+          "task": "Before you start anything hard today, pause for 10 seconds and pick one word: fear, boredom, overwhelm, resentment, or ambiguity. That's all.",
+          "reflection": "Which word did you pick — and did it surprise you?"
+        }
+      }
+    },
+    {
+      "id": "l1-006",
+      "level": 1,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Zasada dwóch minut działa też na duże projekty: prawie każdy ma jakiś 2-minutowy kawałek. Otworzyć plik, przeczytać ostatni akapit, znaleźć numer telefonu — małe drzwi do dużego pokoju.",
+          "task": "Znajdź w swoim najbardziej odkładanym projekcie jedną czynność na mniej niż 2 minuty i zrób ją teraz. Potem możesz skończyć.",
+          "reflection": "Czy po tych 2 minutach projekt wydaje się choć trochę mniejszy?"
+        },
+        "en": {
+          "lesson": "The two-minute rule works on big projects too: almost every one has some 2-minute piece. Opening the file, rereading the last paragraph, finding a phone number — a small door into a big room.",
+          "task": "Find one under-2-minute action inside your most-avoided project and do it now. Then you're free to stop.",
+          "reflection": "Does the project feel even a little smaller after those 2 minutes?"
+        }
+      }
+    },
+    {
+      "id": "l1-007",
+      "level": 1,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Start nie musi być decyzją — może być sygnałem. Drobny, powtarzalny gest tuż przed zaczęciem (łyk wody, jeden głęboki oddech) działa jak światło startowe: po nim ciało już wie, co następuje.",
+          "task": "Dziś, tuż przed zaczęciem czegoś trudnego, zrób jeden mały gest startowy — oddech, łyk, ciche „zaczynam” — i zacznij od razu po nim.",
+          "reflection": "Jaki gest wybrałeś/aś i jak się po nim zaczynało?"
+        },
+        "en": {
+          "lesson": "Starting doesn't have to be a decision — it can be a signal. A tiny, repeatable gesture right before beginning (a sip of water, one deep breath) works like a starting light: after it, your body knows what comes next.",
+          "task": "Today, right before starting something hard, make one small starting gesture — a breath, a sip, a quiet \"here I go\" — and begin immediately after it.",
+          "reflection": "What gesture did you choose, and how did starting feel after it?"
+        }
+      }
+    },
+    {
+      "id": "l1-008",
+      "level": 1,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Samokrytyka po odłożeniu czegoś nie mobilizuje — nakręca spiralę winy, a wina każe uciekać dalej. Jedno życzliwe zdanie przerywa spiralę szybciej niż sto wyrzutów.",
+          "task": "Gdy dziś złapiesz się na odkładaniu, powiedz sobie w myślach: „To ludzkie. Wracam, kiedy będę gotowy/a” — i wróć choć na chwilę.",
+          "reflection": "Jak zareagowało Twoje ciało na życzliwe zdanie zamiast krytyki?"
+        },
+        "en": {
+          "lesson": "Self-criticism after putting something off doesn't motivate — it spins a guilt spiral, and guilt makes you run further. One kind sentence breaks the spiral faster than a hundred reproaches.",
+          "task": "When you catch yourself procrastinating today, tell yourself: \"That's human. I'll come back when I'm ready\" — then come back, even briefly.",
+          "reflection": "How did your body react to a kind sentence instead of criticism?"
+        }
+      }
+    },
+    {
+      "id": "l1-009",
+      "level": 1,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Badania nad motywacją pokazują, że najsilniej napędza nas widok własnego postępu — nawet malutkiego. Problem w tym, że małe kroki łatwo przeoczyć, jeśli ich nie zauważysz celowo.",
+          "task": "Wieczorem nazwij — na głos lub na kartce — jedną rzecz, którą dziś zrobiłeś/aś, choćby najmniejszą. Nie to, czego nie zrobiłeś/aś. Tylko to, co jest.",
+          "reflection": "Jak to jest kończyć dzień od spojrzenia na to, co się udało?"
+        },
+        "en": {
+          "lesson": "Motivation research shows that nothing fuels us like seeing our own progress — even tiny progress. The catch: small steps are easy to miss unless you notice them on purpose.",
+          "task": "Tonight, name — out loud or on paper — one thing you DID do today, however small. Not what you didn't do. Only what's there.",
+          "reflection": "What is it like to end the day by looking at what worked?"
+        }
+      }
+    },
+    {
+      "id": "l1-010",
+      "level": 1,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Najmniejszy możliwy start to samo otwarcie: pliku, aplikacji, skrzynki z narzędziami. Zero pracy — a jednak zadanie przestaje być zamkniętymi drzwiami.",
+          "task": "Otwórz dziś to, czego unikasz — dokument, mail, zeszyt — i tylko popatrz przez minutę. Masz pełne prawo zamknąć i odejść.",
+          "reflection": "Co poczułeś/aś, gdy to w końcu było otwarte?"
+        },
+        "en": {
+          "lesson": "The smallest possible start is just opening: the file, the app, the toolbox. Zero work — and yet the task stops being a closed door.",
+          "task": "Open the thing you've been avoiding today — the document, the email, the notebook — and just look at it for a minute. You have full permission to close it and walk away.",
+          "reflection": "What did you feel once it was finally open?"
         }
       }
     },
@@ -104,6 +223,125 @@
       }
     },
     {
+      "id": "l2-004",
+      "level": 2,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Małe odkładane sprawy nie są niewinne: każda z nich zajmuje kawałek głowy. Seria kilku 2-minutowych zadań pod rząd zwalnia więcej miejsca, niż sugeruje jej rozmiar.",
+          "task": "Zapisz trzy sprawy poniżej 2 minut, które wiszą nad Tobą od dni. Zrób wszystkie trzy teraz, jedna po drugiej.",
+          "reflection": "Która z tych trzech spraw zajmowała w głowie najwięcej miejsca?"
+        },
+        "en": {
+          "lesson": "Small postponed chores aren't innocent: each one occupies a piece of your head. A run of a few 2-minute tasks in a row frees up more space than their size suggests.",
+          "task": "Write down three under-2-minute chores that have been hanging over you for days. Do all three now, one after another.",
+          "reflection": "Which of the three was taking up the most room in your head?"
+        }
+      }
+    },
+    {
+      "id": "l2-005",
+      "level": 2,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Nazwana emocja traci moc, a zapisana — jeszcze bardziej. Jedno zdanie przed startem przenosi uczucie z brzucha na papier, gdzie łatwiej mu się przyjrzeć.",
+          "task": "Zanim zaczniesz dziś pracę nad odkładanym zadaniem, zapisz zdanie: „Wobec tego zadania czuję…, bo…”. Dopiero potem zacznij.",
+          "reflection": "Czy start był inny niż zwykle, gdy emocja była już zapisana?"
+        },
+        "en": {
+          "lesson": "A named emotion loses power — a written one, even more. One sentence before starting moves the feeling from your gut onto paper, where it's easier to look at.",
+          "task": "Before you start today's work on an avoided task, write: \"About this task I feel…, because…\". Only then begin.",
+          "reflection": "Was starting different than usual, with the emotion already on paper?"
+        }
+      }
+    },
+    {
+      "id": "l2-006",
+      "level": 2,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "„Zrobię to jutro” to nie plan — to mgła. Konkret („jutro 9:30, przy biurku, 10 minut”) zamienia dobrą intencję w spotkanie, a spotkań się pilnuje.",
+          "task": "Umów się z odkładanym zadaniem jak na spotkanie: zapisz dokładną godzinę, miejsce i czas trwania (wystarczy 10 minut). Wpisz je tam, gdzie trzymasz swoje plany.",
+          "reflection": "Czym różni się umówione spotkanie od zwykłego „muszę to zrobić”?"
+        },
+        "en": {
+          "lesson": "\"I'll do it tomorrow\" is not a plan — it's fog. A concrete detail (\"tomorrow, 9:30, at my desk, 10 minutes\") turns a good intention into an appointment, and appointments get kept.",
+          "task": "Book a meeting with your avoided task: write down the exact time, place, and duration (10 minutes is enough). Put it wherever you keep your plans.",
+          "reflection": "How is a booked appointment different from a plain \"I have to do this\"?"
+        }
+      }
+    },
+    {
+      "id": "l2-007",
+      "level": 2,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Cel „ogarnę finanse” nie ma początku ani końca — dlatego nigdzie nie prowadzi. Cel konkretny i mierzalny („w niedzielę spiszę wydatki z miesiąca”) sam podpowiada pierwszy krok.",
+          "task": "Weź jeden swój mglisty cel i przepisz go tak, by miał: konkret, miarę i termin. Jedno zdanie wystarczy.",
+          "reflection": "Co było najtrudniejsze do skonkretyzowania: co, ile czy kiedy?"
+        },
+        "en": {
+          "lesson": "A goal like \"get my finances together\" has no beginning and no end — so it leads nowhere. A concrete, measurable goal (\"on Sunday I'll list this month's expenses\") suggests its own first step.",
+          "task": "Take one of your foggy goals and rewrite it to have: a specific what, a measure, and a deadline. One sentence is enough.",
+          "reflection": "What was hardest to pin down: the what, the how much, or the when?"
+        }
+      }
+    },
+    {
+      "id": "l2-008",
+      "level": 2,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Wewnętrzny krytyk mówi tak często, że przestajesz go słyszeć — ale jego zdania („znowu nic nie zrobiłeś/aś”) sterują Twoimi unikami. Złapane na papier, tracą pozory prawdy.",
+          "task": "Dziś, gdy usłyszysz w głowie krytyczne zdanie o sobie, zapisz je dosłownie. Obok napisz wersję, którą powiedziałby Ci życzliwy przyjaciel.",
+          "reflection": "Jak brzmi Twoje krytyczne zdanie, gdy widzisz je czarno na białym?"
+        },
+        "en": {
+          "lesson": "Your inner critic talks so often you stop hearing it — but its sentences (\"you did nothing again\") steer your avoidance. Caught on paper, they lose their air of truth.",
+          "task": "Today, when you hear a critical sentence about yourself, write it down word for word. Next to it, write the version a kind friend would say.",
+          "reflection": "How does your critical sentence sound when you see it in black and white?"
+        }
+      }
+    },
+    {
+      "id": "l2-009",
+      "level": 2,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Zadanie „przygotować prezentację” utyka, bo nie da się go fizycznie wykonać — to etykieta, nie czynność. Ruszy dopiero pytanie: „jaka jest NASTĘPNA fizyczna czynność?” (np. „otworzyć szablon i wpisać tytuł”).",
+          "task": "Dla jednego utkniętego zadania zapisz następną fizyczną czynność — coś, co robi się rękami lub klawiaturą w kilka minut. Zrób ją dziś.",
+          "reflection": "Jak długo to zadanie stało w miejscu, zanim znalazłeś/aś tę jedną czynność?"
+        },
+        "en": {
+          "lesson": "A task like \"prepare the presentation\" stalls because you can't physically do it — it's a label, not an action. It moves only when you ask: \"what's the NEXT physical action?\" (e.g. \"open the template and type the title\").",
+          "task": "For one stuck task, write down the next physical action — something done with hands or keyboard in a few minutes. Do it today.",
+          "reflection": "How long was the task stuck before you found that one action?"
+        }
+      }
+    },
+    {
+      "id": "l2-010",
+      "level": 2,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Przekonanie, że trzeba zaczynać „od początku”, potrafi zablokować cały start — a początek bywa najtrudniejszym kawałkiem. Zadania wolno zaczynać od środka: od fragmentu, który stawia najmniejszy opór.",
+          "task": "Wybierz w odkładanym zadaniu kawałek, który stawia najmniejszy opór — nawet jeśli to środek albo koniec — i od niego dziś zacznij.",
+          "reflection": "Co się zmieniło, gdy początek przestał być obowiązkowym punktem startu?"
+        },
+        "en": {
+          "lesson": "The belief that you must start \"from the beginning\" can block the whole start — and the beginning is often the hardest piece. You're allowed to start in the middle: with the part that offers the least resistance.",
+          "task": "In a task you've been avoiding, pick the piece with the least resistance — even if it's the middle or the end — and start there today.",
+          "reflection": "What changed once the beginning stopped being the mandatory starting point?"
+        }
+      }
+    },
+    {
       "id": "l3-001",
       "level": 3,
       "category": "small-steps",
@@ -151,6 +389,125 @@
           "lesson": "Perfectionism is procrastination in disguise: \"I'm not ready yet\" usually means \"I fear being judged.\" A rough draft shipped today beats a perfect one that never exists.",
           "task": "Deliberately make an IMPERFECT version of something you're avoiding: a draft email, an ugly first page, a flawed plan. Show it to someone or leave it visibly out for tomorrow.",
           "reflection": "What was worse in your imagination than in reality?"
+        }
+      }
+    },
+    {
+      "id": "l3-004",
+      "level": 3,
+      "category": "two-minute",
+      "i18n": {
+        "pl": {
+          "lesson": "Mózg zawyża rozmiar zadań, których unika — etykieta „to za duże” rośnie z każdym dniem odkładania. Dwie minuty realnego kontaktu z zadaniem mówią o nim więcej niż tydzień myślenia o nim.",
+          "task": "Weź zadanie z etykietą „za duże, żeby zacząć” i pracuj nad nim dokładnie 2 minuty. Potem oceń na nowo, jak duży naprawdę jest pierwszy kawałek.",
+          "reflection": "Jak zmieniło się Twoje odczucie rozmiaru tego zadania po 2 minutach kontaktu z nim?"
+        },
+        "en": {
+          "lesson": "Your brain inflates the size of tasks it avoids — the \"too big\" label grows with every day of postponing. Two minutes of real contact with the task tells you more about it than a week of thinking about it.",
+          "task": "Take a task labeled \"too big to even start\" and work on it for exactly 2 minutes. Then re-estimate how big the first piece really is.",
+          "reflection": "How did your sense of the task's size change after 2 minutes of contact with it?"
+        }
+      }
+    },
+    {
+      "id": "l3-005",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "Za chronicznym unikaniem często stoi niewypowiedziany czarny scenariusz. Wyciągnięty na światło („co NAJGORSZEGO realnie się stanie?”) zwykle okazuje się mniejszy niż jego cień.",
+          "task": "Dla zadania, którego unikasz najdłużej, zapisz odpowiedzi: czego się boję? co najgorszego realnie może się stać? co wtedy zrobię? Trzy krótkie zdania.",
+          "reflection": "Jak duży okazał się czarny scenariusz przy dziennym świetle?"
+        },
+        "en": {
+          "lesson": "Behind chronic avoidance there's often an unspoken worst-case story. Pulled into the light (\"what's the WORST that can realistically happen?\"), it usually turns out smaller than its shadow.",
+          "task": "For the task you've avoided longest, write answers to: what am I afraid of? what's the worst that can realistically happen? what would I do then? Three short sentences.",
+          "reflection": "How big did the worst-case story turn out to be in daylight?"
+        }
+      }
+    },
+    {
+      "id": "l3-006",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Odległy termin nie mówi, co robić dziś — dlatego projekty z terminem czekają do ostatniej chwili. Planowanie wstecz („co musi być gotowe tydzień wcześniej? a dwa?”) zamienia jedną wielką metę w łańcuch małych.",
+          "task": "Weź jeden projekt z terminem i rozpisz go od końca: 2–3 punkty kontrolne z datami, aż do pierwszego kroku, który możesz zrobić w tym tygodniu.",
+          "reflection": "Który punkt kontrolny wypada wcześniej, niż się spodziewałeś/aś?"
+        },
+        "en": {
+          "lesson": "A distant deadline says nothing about today — that's why deadline projects wait until the last minute. Planning backwards (\"what must be ready a week earlier? two weeks?\") turns one big finish line into a chain of small ones.",
+          "task": "Take one deadline project and map it from the end: 2–3 checkpoints with dates, down to a first step you can do this week.",
+          "reflection": "Which checkpoint lands earlier than you expected?"
+        }
+      }
+    },
+    {
+      "id": "l3-007",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "Plan startu na rano to za mało: dzień jest pełen momentów ponownego startu — po przerwie, po telefonie, po obiedzie. To tam praca umiera po cichu, a plan „jeśli–to” na powroty domyka dziury, którymi wycieka dzień.",
+          "task": "Zapisz plan „jeśli–to” na swój najczęstszy moment powrotu, np. „JEŚLI wracam z przerwy, TO przez pierwsze 2 minuty wracam do zadania sprzed przerwy”. Przetestuj go dziś przy każdej przerwie.",
+          "reflection": "Co czułeś/aś w momentach powrotu, gdy plan był pod ręką — a co, gdy przegrał?"
+        },
+        "en": {
+          "lesson": "A morning start plan isn't enough: the day is full of restart moments — after a break, after a call, after lunch. That's where work quietly dies, and an \"if–then\" plan for the comebacks seals the holes the day leaks through.",
+          "task": "Write an \"if–then\" plan for your most frequent comeback moment, e.g. \"IF I return from a break, THEN for the first 2 minutes I go back to the task from before it.\" Test it at every break today.",
+          "reflection": "How did the comeback moments feel with a plan at hand — and how did it feel when the plan lost?"
+        }
+      }
+    },
+    {
+      "id": "l3-008",
+      "level": 3,
+      "category": "emotion",
+      "i18n": {
+        "pl": {
+          "lesson": "W momencie wpadki jesteś najmniej zdolny/a do życzliwości — dlatego protokół na wpadkę pisze się WCZEŚNIEJ. Badania pokazują: samo-wybaczenie zmniejsza kolejną prokrastynację, a przygotowane zawczasu działa nawet wtedy, gdy wstyd jest świeży.",
+          "task": "Napisz swój dwuzdaniowy protokół na wpadkę: pierwsze zdanie wybacza, drugie mówi, jaki będzie następny mały krok. Zachowaj go tam, gdzie łatwo go znaleźć.",
+          "reflection": "Co czułeś/aś, pisząc wybaczenie na zapas, przed jakąkolwiek wpadką?"
+        },
+        "en": {
+          "lesson": "At the moment of a lapse you're least capable of kindness — which is why a lapse protocol is written IN ADVANCE. Research shows self-forgiveness reduces the next round of procrastination, and prepared ahead it works even while the shame is fresh.",
+          "task": "Write your two-sentence lapse protocol: the first sentence forgives, the second names the next small step. Keep it somewhere easy to find.",
+          "reflection": "What did it feel like to write forgiveness in advance, before any lapse?"
+        }
+      }
+    },
+    {
+      "id": "l3-009",
+      "level": 3,
+      "category": "small-steps",
+      "i18n": {
+        "pl": {
+          "lesson": "Plany rosną w wyobraźni („dziś nadrobię wszystko”), a za duży plan przegrywa z pierwszą przeszkodą i zostawia poczucie porażki. Plan skrojony na pół — i DOKOŃCZONY — buduje więcej niż wielki plan porzucony w połowie.",
+          "task": "Weź swój dzisiejszy plan na odkładane zadanie i celowo zetnij go o połowę. Zrób tę połowę do końca i pozwól sobie na tym skończyć.",
+          "reflection": "Co dała Ci dokończona połowa, czego nie dawały niedokończone całości?"
+        },
+        "en": {
+          "lesson": "Plans grow in the imagination (\"today I'll catch up on everything\"), and an oversized plan loses to the first obstacle and leaves a sense of failure. A plan cut in half — and FINISHED — builds more than a grand plan abandoned midway.",
+          "task": "Take today's plan for an avoided task and deliberately cut it in half. Do that half completely, and let yourself stop there.",
+          "reflection": "What did the finished half give you that unfinished wholes never did?"
+        }
+      }
+    },
+    {
+      "id": "l3-010",
+      "level": 3,
+      "category": "starting",
+      "i18n": {
+        "pl": {
+          "lesson": "To, co najbardziej odkładane, zwykle ląduje na końcu dnia — kiedy siły i odwaga są najmniejsze. Odwrócenie kolejności („najtrudniejsze ma pierwszeństwo”) daje mu najlepszą wersję Ciebie, a reszta dnia robi się z górki.",
+          "task": "Jutro, zanim zajrzysz w wiadomości i inne sprawy, zrób pierwszy krok najbardziej odkładanego zadania. Zapisz dziś wieczorem, co DOKŁADNIE to będzie.",
+          "reflection": "Jak wyglądała reszta dnia, gdy najtrudniejsze było już za Tobą?"
+        },
+        "en": {
+          "lesson": "The most-avoided thing usually lands at the end of the day — when energy and courage are lowest. Reversing the order (\"the hardest goes first\") gives it the best version of you, and the rest of the day runs downhill.",
+          "task": "Tomorrow, before you look at messages and other business, do the first step of your most-avoided task. Tonight, write down EXACTLY what that step will be.",
+          "reflection": "What was the rest of the day like with the hardest thing already behind you?"
         }
       }
     }

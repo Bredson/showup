@@ -22,8 +22,8 @@ const CATEGORIES = Object.keys(CATEGORY_SET);
 const LANGS = ['pl', 'en'] as const;
 const FIELDS = ['lesson', 'task', 'reflection'] as const;
 
-// TODO(Faza 5): raise to 10 once the full challenge set lands (spec §6: min 10 per level).
-const MIN_PER_LEVEL = 3;
+// Spec §6: at least 10 challenges per level (Faza 5 catalog).
+const MIN_PER_LEVEL = 10;
 
 /**
  * Validates the challenge catalog. Throws with a list of ALL problems (not just the first) —
