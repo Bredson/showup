@@ -38,23 +38,29 @@ export default function StepEmotion({ isFirstTime, onPersist, onAdvance }: Props
     <div className="loop-body">
       <h2>{t('loop.emotion.question')}</h2>
       {isFirstTime && <p className="muted">{t('loop.emotion.firstTime')}</p>}
-      <div className="emotion-grid">
+      {/* list layout (design variant 1f): bigger touch targets than the old 2-col grid */}
+      <div className="emotion-list">
         {EMOTIONS.map((emotion) => (
           <button
             key={emotion}
-            className={`emotion-card${picked === emotion ? ' emotion-card--selected' : ''}`}
+            className={`emotion-row${picked === emotion ? ' emotion-row--selected' : ''}`}
             onClick={() => pick(emotion)}
           >
-            <span className="emoji" aria-hidden>
+            <span className="emotion-chip" aria-hidden>
               {EMOTION_EMOJI[emotion]}
             </span>
             {t(`loop.emotion.${emotion}`)}
+            {picked === emotion && (
+              <span className="emotion-dot" aria-hidden>
+                ●
+              </span>
+            )}
           </button>
         ))}
       </div>
-      {/* micro-validation, one sentence, then auto-advance (ux-spec §3.1) */}
+      {/* micro-validation as a speech bubble (1f), one sentence, then auto-advance (ux-spec §3.1) */}
       {picked && (
-        <p className="muted center" role="status">
+        <p className="ack-bubble" role="status">
           {t(`loop.emotion.ack.${picked}`)}
         </p>
       )}
