@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#f0eee9;font-family:'Nunito',system-ui,sans-serif}a{color:#f08a3c}a:hover{color:#d97a2e}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:28px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}</style>
+</helmet>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Unstuck — hi-fi, paleta kremowo-pomarańczowa (rekonstrukcja z kodu + warianty)</span></div>
+<div style="max-width:820px;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:10px;padding:16px 20px;margin:0 0 24px;font:12.5px/1.6 system-ui,sans-serif;color:#444">
+<strong>Założenia:</strong> wiernie odtworzone z <code>tokens.css</code> + <code>styles.css</code> (kolory, radius 24, pigułki, Nunito); copy 1:1 z <code>i18n/pl.ts</code>; zenlife jako luźna inspiracja (nastrój, duże nagłówki, karty). Ilustracje = proste abstrakcyjne kształty (do podmiany). Baza = obecny stan kodu; warianty (<a class="dv-oid" href="#1c">1c</a>, <a class="dv-oid" href="#1d">1d</a>, <a class="dv-oid" href="#1f">1f</a>, <a class="dv-oid" href="#1h">1h</a>) = propozycje ewolucji.
+</div>
+<div class="dv-opts">
+
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Dziś — rekonstrukcja obecnego UI</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1">
+<h1 style="margin:0;font-size:30px;font-weight:800">Dzień dobry!</h1>
+<p style="margin:0;color:#8c7f6d;font-size:15px">3 dni w rytmie</p>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px;display:flex;flex-direction:column;gap:10px;align-items:flex-start">
+<span style="background:#fbeed9;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700">Poziom 1</span>
+<h2 style="margin:0;font-size:21px;font-weight:800">Zasada 2 minut</h2>
+<p style="margin:0;color:#8c7f6d;font-size:15px;line-height:1.5">Zasada dwóch minut: jeśli coś zajmuje mniej niż 2 minuty, zrób to od razu.</p>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Zacznij (≈3 min)</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Dziś — wariant „zenlife hero" (duże powitanie, abstrakcyjna ilustracja)</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:28px 24px 96px;display:flex;flex-direction:column;gap:18px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:flex-start">
+<h1 style="margin:0;font-size:34px;font-weight:800;line-height:1.15">Dzień dobry,<br><span style="color:#f08a3c">dobrze, że jesteś.</span></h1>
+<div style="position:relative;width:96px;height:96px;flex:none">
+<div style="position:absolute;right:0;top:6px;width:76px;height:76px;border-radius:50%;background:#fbeed9"></div>
+<div style="position:absolute;left:0;bottom:0;width:44px;height:44px;border-radius:50%;background:#f5a623;opacity:.85"></div>
+<div style="position:absolute;right:10px;bottom:2px;width:24px;height:24px;border-radius:50%;border:5px solid #7bb662"></div>
+</div>
+</div>
+<div style="display:flex;gap:8px">
+<span style="background:#fffdf9;box-shadow:0 4px 20px rgba(61,52,40,.08);border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700">🌿 3 dni w rytmie</span>
+<span style="background:#fbeed9;border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700;color:#8c7f6d">Poziom 1 · 3/7</span>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:24px;display:flex;flex-direction:column;gap:14px">
+<p style="margin:0;font-size:12.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8c7f6d">Dzisiejsze wyzwanie</p>
+<div style="display:flex;gap:16px;align-items:center">
+<div style="width:74px;height:74px;flex:none;border-radius:50%;background:conic-gradient(#f08a3c 0 43%, #fbeed9 43% 100%);display:flex;align-items:center;justify-content:center">
+<div style="width:56px;height:56px;border-radius:50%;background:#fffdf9;display:flex;flex-direction:column;align-items:center;justify-content:center;font-weight:800;font-size:18px">2:00<span style="font-size:9.5px;font-weight:700;color:#8c7f6d">minuty</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<h2 style="margin:0;font-size:20px;font-weight:800">Zasada 2 minut</h2>
+<p style="margin:0;color:#8c7f6d;font-size:14px;line-height:1.45">Jeśli coś zajmuje mniej niż 2 minuty, zrób to od razu.</p>
+</div>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:15px;font-size:16px;font-weight:700;text-align:center">Zacznij (≈3 min)</div>
+</div>
+<p style="margin:0;text-align:center;color:#8c7f6d;font-size:13px">Jedno małe wyzwanie dziennie, bez presji.</p>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:10px 20px 20px;border-radius:24px 24px 0 0;display:flex;align-items:center">
+<div style="flex:1;text-align:center;font-size:20px;color:#3d3428">☀</div>
+<div style="flex:1;text-align:center;font-size:20px;color:#8c7f6d">◔</div>
+<div style="flex:1;display:flex;justify-content:center"><div style="width:52px;height:52px;border-radius:50%;background:#f08a3c;color:#fffdf9;display:flex;align-items:center;justify-content:center;font-size:26px;box-shadow:0 6px 16px rgba(240,138,60,.4);margin-top:-26px">＋</div></div>
+<div style="flex:1;text-align:center;font-size:20px;color:#8c7f6d">✎</div>
+<div style="flex:1;text-align:center;font-size:20px;color:#8c7f6d">⚙</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Dziś — stan „zrobione" (łagodna celebracja)</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center">
+<h1 style="margin:0;font-size:30px;font-weight:800">Cześć!</h1>
+<p style="margin:0;color:#8c7f6d;font-size:15px">4 dni w rytmie</p>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:32px 24px;display:flex;flex-direction:column;gap:10px;align-items:center;text-align:center">
+<div style="width:84px;height:84px;border-radius:50%;background:#eaf3e3;display:flex;align-items:center;justify-content:center;font-size:40px;color:#7bb662;font-weight:800">✓</div>
+<h2 style="margin:0;font-size:22px;font-weight:800">Zrobione na dziś ✓</h2>
+<p style="margin:0;color:#8c7f6d;font-size:15px">Do zobaczenia jutra.</p>
+<div style="display:flex;gap:6px;margin-top:6px">
+<span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span>
+</div>
+<p style="margin:6px 0 0;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Zobacz swój wpis</p>
+</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Onboarding — powitanie · pytanie 1/5 · podsumowanie</div>
+<div style="display:flex;gap:20px">
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center">
+<div style="position:relative;width:150px;height:120px;align-self:center">
+<div style="position:absolute;left:14px;top:0;width:92px;height:92px;border-radius:50%;background:#fbeed9"></div>
+<div style="position:absolute;right:0;bottom:6px;width:56px;height:56px;border-radius:50%;background:#f5a623;opacity:.9"></div>
+<div style="position:absolute;left:0;bottom:0;width:30px;height:30px;border-radius:50%;border:6px solid #7bb662"></div>
+</div>
+<h1 style="margin:0;font-size:30px;font-weight:800;text-align:center">Cześć! Tu Unstuck.</h1>
+<p style="margin:0;color:#8c7f6d;font-size:15.5px;line-height:1.55;text-align:center">Prokrastynacja to nie lenistwo — to emocje. Jedno małe wyzwanie dziennie, bez presji.</p>
+<div style="display:flex;gap:8px;justify-content:center">
+<span style="background:#fffdf9;border:2px solid #f08a3c;border-radius:999px;padding:10px 20px;font-size:15px;font-weight:700">Polski</span>
+<span style="background:#fbeed9;border:2px solid transparent;border-radius:999px;padding:10px 20px;font-size:15px;font-weight:700">English</span>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Zacznijmy</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:14px;flex:1;justify-content:center">
+<div style="display:flex;gap:6px;justify-content:center">
+<span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span>
+</div>
+<h1 style="margin:0;font-size:25px;font-weight:800;line-height:1.25">Co najczęściej sprawia, że odkładasz?</h1>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Możesz wybrać maksymalnie dwie odpowiedzi.</p>
+<div style="display:flex;flex-direction:column;gap:10px">
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px">Strach, że nie wyjdzie</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px">Nuda</div>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px;font-weight:700">Za dużo naraz</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px">„Nie chce mi się”</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px">Nie wiem, od czego zacząć</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:15px 16px;font-size:15.5px;color:#8c7f6d">Trudno powiedzieć</div>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Dalej</div>
+<p style="margin:0;text-align:center;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Wróć</p>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center">
+<div style="font-size:44px;text-align:center">🌿</div>
+<h1 style="margin:0;font-size:27px;font-weight:800;text-align:center">Gotowe. Twoja ścieżka czeka.</h1>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px;display:flex;flex-direction:column;gap:8px">
+<h2 style="margin:0;font-size:16px;font-weight:800">Twoja ścieżka w skrócie</h2>
+<p style="margin:0;font-size:14px;color:#8c7f6d">Najczęściej zatrzymuje cię: Za dużo naraz</p>
+<p style="margin:0;font-size:14px;color:#8c7f6d">Najtrudniejsza pora: Wieczorem</p>
+<p style="margin:0;font-size:14px;color:#8c7f6d">Najczęściej odkładasz: Urzędy i maile</p>
+<p style="margin:0;font-size:14px;color:#8c7f6d">Po odłożeniu: Wyrzuty sumienia</p>
+<p style="margin:0;font-size:14px;color:#8c7f6d">Twój dzienny czas: 5 minut</p>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Pokaż pierwsze wyzwanie</div>
+</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1e"><div class="dv-olabel"><a class="dv-oid" href="#1e">1e</a>Pętla dzienna — 6 kroków (rekonstrukcja)</div>
+<div style="display:flex;gap:20px;flex-wrap:wrap;max-width:1250px">
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:16px;justify-content:center">
+<h2 style="margin:0;font-size:23px;font-weight:800;line-height:1.3">Co czujesz, myśląc o dzisiejszym wyzwaniu?</h2>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Nazwanie emocji to połowa roboty.</p>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px"><span style="font-size:29px">😰</span>Lęk</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px"><span style="font-size:29px">😑</span>Nuda</div>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;font-weight:700"><span style="font-size:29px">🌊</span>Przytłoczenie</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px"><span style="font-size:29px">😤</span>Niechęć</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:15px;grid-column:1 / -1"><span style="font-size:29px">🌫</span>Niejasność</div>
+</div>
+<p style="margin:0;color:#8c7f6d;font-size:14px;text-align:center">Dużo naraz? Zaraz to zmniejszymy.</p>
+</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center;align-items:flex-start">
+<span style="background:#fbeed9;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700">Poziom 1</span>
+<h2 style="margin:0;font-size:23px;font-weight:800">Zasada 2 minut</h2>
+<p style="margin:0;font-size:15.5px;line-height:1.55">Zasada dwóch minut: jeśli coś zajmuje mniej niż 2 minuty, zrób to od razu. Mózg przecenia koszt małych zadań — a po zrobieniu czujesz ulgę zamiast ciężaru.</p>
+<div style="background:#fbeed9;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:6px;align-self:stretch">
+<h3 style="margin:0;font-size:15px;font-weight:800">Twoje zadanie</h3>
+<p style="margin:0;font-size:15px;line-height:1.5">Wybierz jedną rzecz, którą odkładasz, a która zajmie mniej niż 2 minuty (mail, telefon, odłożenie rzeczy na miejsce). Zrób ją teraz.</p>
+</div>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Tylko ten jeden mały kawałek. Reszta może poczekać.</p>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center;align-self:stretch">Dalej</div>
+</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<h2 style="margin:0;font-size:23px;font-weight:800">Kiedy i gdzie to zrobisz?</h2>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Jedno zdanie podnosi szansę wykonania ~2×. Ale to opcja.</p>
+<div style="background:#fffdf9;border:1px solid #fbeed9;border-radius:24px;padding:14px 16px;min-height:72px;font-size:15.5px;color:#8c7f6d">Kiedy zrobię kawę, otworzę dokument.</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<span style="background:#fbeed9;border-radius:999px;padding:8px 14px;font-size:14px">po śniadaniu</span>
+<span style="background:#fbeed9;border-radius:999px;padding:8px 14px;font-size:14px">po powrocie do domu</span>
+<span style="background:#fbeed9;border-radius:999px;padding:8px 14px;font-size:14px">przed wieczorem</span>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Zapisz i dalej</div>
+<p style="margin:0;text-align:center;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Pomiń ten krok</p>
+</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<h2 style="margin:0;font-size:23px;font-weight:800">Teraz tylko pierwsze 2 minuty.</h2>
+<p style="margin:0;color:#8c7f6d;font-size:15px;line-height:1.5">Nie musisz kończyć. Zacznij — i możesz przestać po 2 minutach.</p>
+<div style="background:#fbeed9;border-radius:24px;padding:16px 20px;display:flex;flex-direction:column;gap:4px">
+<p style="margin:0;color:#8c7f6d;font-size:13.5px">Twój plan:</p>
+<p style="margin:0;font-size:15px">Kiedy zrobię kawę, otworzę dokument.</p>
+</div>
+<p style="margin:0;text-align:center;font-size:36px;font-weight:800">1:37</p>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Zrobione ✓</div>
+<p style="margin:0;text-align:center;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Wrócę później</p>
+</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<h2 style="margin:0;font-size:22px;font-weight:800;line-height:1.35">Jak się czułeś/aś tuż przed zrobieniem, a jak tuż po?</h2>
+<div style="background:#fffdf9;border:1px solid #fbeed9;border-radius:24px;padding:14px 16px;min-height:72px;font-size:15.5px">Poszło lepiej niż myślałem</div>
+<div style="display:flex;flex-wrap:wrap;gap:8px">
+<span style="background:#fbeed9;border:1px solid transparent;border-radius:999px;padding:8px 14px;font-size:14px">Start był najtrudniejszy</span>
+<span style="background:#fbeed9;border:1px solid #f08a3c;border-radius:999px;padding:8px 14px;font-size:14px;font-weight:700">Poszło lepiej niż myślałem</span>
+<span style="background:#fbeed9;border:1px solid transparent;border-radius:999px;padding:8px 14px;font-size:14px">Nadal było ciężko</span>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Zapisz</div>
+</div>
+</div>
+</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:14px;justify-content:center">
+<p style="margin:0;text-align:center;font-size:52px;color:#7bb662;font-weight:800">✓</p>
+<h2 style="margin:0;font-size:22px;font-weight:800;text-align:center;line-height:1.35">Zrobione mimo: przytłoczenie. Tak buduje się zmianę.</h2>
+<p style="margin:0;color:#8c7f6d;font-size:15px;text-align:center">Dzień 3 · Poziom 1</p>
+<div style="display:flex;gap:6px;justify-content:center">
+<span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Do jutra 👋</div>
+<p style="margin:0;text-align:center;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Zobacz progres</p>
+</div>
+</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1f"><div class="dv-olabel"><a class="dv-oid" href="#1f">1f</a>Check emocji — wariant listowy (większe cele dotyku, dymek walidacji)</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px;display:flex;flex-direction:column;gap:16px;flex:1">
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div style="display:flex;gap:6px"><span style="width:8px;height:8px;border-radius:50%;background:#f08a3c"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span><span style="width:8px;height:8px;border-radius:50%;background:#fbeed9"></span></div>
+<span style="color:#8c7f6d;font-size:22px">×</span>
+</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:12px;justify-content:center">
+<h2 style="margin:0;font-size:24px;font-weight:800;line-height:1.3">Co czujesz, myśląc<br>o dzisiejszym wyzwaniu?</h2>
+<div style="display:flex;flex-direction:column;gap:10px;margin-top:6px">
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;align-items:center;gap:14px;font-size:16.5px"><span style="width:46px;height:46px;flex:none;border-radius:50%;background:#fbeed9;display:flex;align-items:center;justify-content:center;font-size:24px">😰</span>Lęk</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;align-items:center;gap:14px;font-size:16.5px"><span style="width:46px;height:46px;flex:none;border-radius:50%;background:#fbeed9;display:flex;align-items:center;justify-content:center;font-size:24px">😑</span>Nuda</div>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;align-items:center;gap:14px;font-size:16.5px;font-weight:700"><span style="width:46px;height:46px;flex:none;border-radius:50%;background:#fbeed9;display:flex;align-items:center;justify-content:center;font-size:24px">🌊</span>Przytłoczenie<span style="margin-left:auto;color:#f08a3c;font-size:20px">●</span></div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;align-items:center;gap:14px;font-size:16.5px"><span style="width:46px;height:46px;flex:none;border-radius:50%;background:#fbeed9;display:flex;align-items:center;justify-content:center;font-size:24px">😤</span>Niechęć</div>
+<div style="background:#fffdf9;border:2px solid transparent;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;align-items:center;gap:14px;font-size:16.5px"><span style="width:46px;height:46px;flex:none;border-radius:50%;background:#fbeed9;display:flex;align-items:center;justify-content:center;font-size:24px">🌫</span>Niejasność</div>
+</div>
+<div style="background:#fbeed9;border-radius:20px 20px 20px 6px;padding:12px 16px;align-self:flex-start;font-size:14px;color:#3d3428;margin-top:4px">Dużo naraz? Zaraz to zmniejszymy. 🌿</div>
+</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1g"><div class="dv-olabel"><a class="dv-oid" href="#1g">1g</a>Progres — rekonstrukcja obecnego UI</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1">
+<h1 style="margin:0;font-size:30px;font-weight:800">Twoja droga</h1>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px;display:flex;flex-direction:column;align-items:center;gap:8px">
+<div style="width:120px;height:120px;border-radius:50%;border:6px solid #f5a623;display:flex;align-items:center;justify-content:center"><span style="font-size:42px;font-weight:800">3</span></div>
+<p style="margin:0;color:#8c7f6d;font-size:15px">dni w rytmie</p>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px">
+<p style="margin:0 0 12px;color:#8c7f6d;font-size:14px">Ostatnie 4 tygodnie</p>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:10px;justify-items:center">
+<span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span>
+<span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span>
+<span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:18px;height:18px;border-radius:50%;background:transparent;border:2px solid #7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span>
+<span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:22px;height:22px;border-radius:50%;background:#7bb662"></span><span style="width:18px;height:18px;border-radius:50%;background:transparent;border:2px solid #f5a623"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span><span style="width:22px;height:22px;border-radius:50%;background:#fbeed9"></span>
+</div>
+<p style="margin:12px 0 0;color:#8c7f6d;font-size:13.5px;text-align:center">wtorek, 8 lipca: dzień odpoczynku — passa trwa 🌿</p>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px;text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center">
+<h2 style="margin:0;font-size:18px;font-weight:800">Poziom 1</h2>
+<div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#7bb662"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span><span style="width:10px;height:10px;border-radius:50%;background:#fbeed9"></span></div>
+<p style="margin:0;color:#8c7f6d;font-size:14px">3 z 7 na tym poziomie</p>
+</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1h"><div class="dv-olabel"><a class="dv-oid" href="#1h">1h</a>Progres — wariant „pierścień + tygodnie" (łuk postępu, dni tygodnia)</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1">
+<h1 style="margin:0;font-size:30px;font-weight:800">Twoja droga</h1>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:24px;display:flex;align-items:center;gap:20px">
+<div style="width:110px;height:110px;flex:none;border-radius:50%;background:conic-gradient(#f08a3c 0 43%, #fbeed9 43% 100%);display:flex;align-items:center;justify-content:center">
+<div style="width:86px;height:86px;border-radius:50%;background:#fffdf9;display:flex;flex-direction:column;align-items:center;justify-content:center"><span style="font-size:34px;font-weight:800;line-height:1">3</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">dni w rytmie</span></div>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<p style="margin:0;font-size:15px;font-weight:700">Poziom 1 · 3 z 7</p>
+<div style="width:150px;height:10px;border-radius:999px;background:#fbeed9;overflow:hidden"><div style="width:43%;height:100%;background:#7bb662;border-radius:999px"></div></div>
+<p style="margin:0;color:#8c7f6d;font-size:13px;line-height:1.4">Wracasz — to się liczy najbardziej.</p>
+</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:20px">
+<p style="margin:0 0 12px;color:#8c7f6d;font-size:14px">Ostatnie 4 tygodnie</p>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;justify-items:center;margin-bottom:6px">
+<span style="font-size:11px;color:#8c7f6d;font-weight:700">P</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">W</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">Ś</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">C</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">P</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">S</span><span style="font-size:11px;color:#8c7f6d;font-weight:700">N</span>
+</div>
+<div style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;justify-items:center">
+<span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span>
+<span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span>
+<span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#fffdf9;border:2px solid #7bb662;display:flex;align-items:center;justify-content:center;font-size:13px">🌿</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span>
+<span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#7bb662;display:flex;align-items:center;justify-content:center;color:#fffdf9;font-size:14px;font-weight:800">✓</span><span style="width:30px;height:30px;border-radius:12px;background:#fffdf9;border:2px dashed #f5a623"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span><span style="width:30px;height:30px;border-radius:12px;background:#fbeed9"></span>
+</div>
+<p style="margin:12px 0 0;color:#8c7f6d;font-size:13.5px;text-align:center">🌿 = dzień odpoczynku — passa trwa</p>
+</div>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Wróć do dzisiejszego wyzwania</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1i"><div class="dv-olabel"><a class="dv-oid" href="#1i">1i</a>Dziennik — rekonstrukcja</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1">
+<h1 style="margin:0;font-size:30px;font-weight:800">Dziennik</h1>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:24px;line-height:1.2">🌊</span>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="color:#8c7f6d;font-size:13.5px">Dziś</span>
+<span style="font-weight:800;font-size:15.5px">Zasada 2 minut</span>
+<span style="font-size:14.5px;color:#3d3428;line-height:1.4">Poszło lepiej niż myślałem</span>
+</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:24px;line-height:1.2">😤</span>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="color:#8c7f6d;font-size:13.5px">Wczoraj</span>
+<span style="font-weight:800;font-size:15.5px">Sztuka startu</span>
+<span style="font-size:14.5px;line-height:1.4">Start był najtrudniejszy</span>
+</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:24px;line-height:1.2">😰</span>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="color:#8c7f6d;font-size:13.5px">piątek, 10 lipca</span>
+<span style="font-weight:800;font-size:15.5px">Emocje pod lupą</span>
+<span style="font-size:14.5px;line-height:1.4">Nazwałem to wprost i od razu było lżej. Zadanie czekało od tygodnia, zajęło 4 minuty.</span>
+</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;gap:14px;align-items:flex-start">
+<span style="font-size:24px;line-height:1.2">🌫</span>
+<div style="display:flex;flex-direction:column;gap:2px">
+<span style="color:#8c7f6d;font-size:13.5px">środa, 8 lipca</span>
+<span style="font-weight:800;font-size:15.5px">Małe kroki</span>
+<span style="font-size:14.5px;line-height:1.4">—</span>
+</div>
+</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1j"><div class="dv-olabel"><a class="dv-oid" href="#1j">1j</a>Ustawienia — rekonstrukcja</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;position:relative;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:20px 24px 92px;display:flex;flex-direction:column;gap:12px;flex:1">
+<h1 style="margin:0;font-size:28px;font-weight:800">Ustawienia</h1>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:16px;font-weight:800">Język</h2>
+<div style="display:flex;gap:8px;justify-content:center">
+<span style="background:#fffdf9;border:2px solid #f08a3c;border-radius:999px;padding:10px 20px;font-size:15px;font-weight:700">Polski</span>
+<span style="background:#fbeed9;border:2px solid transparent;border-radius:999px;padding:10px 20px;font-size:15px;font-weight:700">English</span>
+</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:16px;font-weight:800">Moja ścieżka</h2>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Odpowiedz jeszcze raz na 5 pytań. Twój progres i wpisy zostają.</p>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:999px;padding:10px 24px;font-size:15px;font-weight:700;text-align:center">Dostosuj moją ścieżkę</div>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;flex-direction:column;gap:10px">
+<h2 style="margin:0;font-size:16px;font-weight:800">Twoje dane</h2>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:999px;padding:10px 24px;font-size:15px;font-weight:700;text-align:center">Eksportuj dane</div>
+<div style="background:#fffdf9;border:2px solid #f08a3c;border-radius:999px;padding:10px 24px;font-size:15px;font-weight:700;text-align:center">Usuń wszystkie dane</div>
+<p style="margin:0;color:#8c7f6d;font-size:13px">Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia.</p>
+</div>
+<div style="background:#fffdf9;border-radius:24px;box-shadow:0 4px 20px rgba(61,52,40,.08);padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+<h2 style="margin:0;font-size:16px;font-weight:800">O aplikacji</h2>
+<p style="margin:0;color:#8c7f6d;font-size:14px">Unstuck 0.1.0</p>
+<p style="margin:0;color:#8c7f6d;font-size:14.5px;text-decoration:underline">Jak działa Unstuck ▾</p>
+</div>
+</div>
+<div style="position:absolute;bottom:0;left:0;right:0;background:#fffdf9;box-shadow:0 -4px 20px rgba(61,52,40,.08);padding:8px 12px 18px;border-radius:24px 24px 0 0;display:flex">
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">☀</span>Dziś</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">◔</span>Progres</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#8c7f6d"><span style="font-size:19px;padding:4px 14px">✎</span>Dziennik</div>
+<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;color:#3d3428"><span style="font-size:19px;background:#fbeed9;border-radius:999px;padding:4px 14px">⚙</span>Ustawienia</div>
+</div>
+</div></div>
+
+<div class="dv-opt" id="1k"><div class="dv-olabel"><a class="dv-oid" href="#1k">1k</a>Powrót — interstitial self-compassion</div>
+<div style="width:390px;height:800px;background:#fdf6ec;border-radius:36px;box-shadow:0 8px 32px rgba(61,52,40,.14);overflow:hidden;display:flex;flex-direction:column;font-family:'Nunito',sans-serif;color:#3d3428">
+<div style="padding:24px 24px 96px;display:flex;flex-direction:column;gap:16px;flex:1;justify-content:center;text-align:center">
+<div style="position:relative;width:140px;height:110px;align-self:center">
+<div style="position:absolute;left:0;top:10px;width:80px;height:80px;border-radius:50%;background:#f5a623;opacity:.85"></div>
+<div style="position:absolute;right:0;bottom:0;width:96px;height:52px;border-radius:999px;background:#fbeed9"></div>
+</div>
+<h1 style="margin:0;font-size:28px;font-weight:800">Hej, dobrze, że jesteś.</h1>
+<p style="margin:0;color:#8c7f6d;font-size:15.5px;line-height:1.55">Trochę cię nie było — i to jest OK. Badania są jasne: wybaczenie sobie działa lepiej niż wyrzuty.</p>
+<div style="background:#f08a3c;color:#fffdf9;border-radius:999px;padding:16px 24px;font-size:17px;font-weight:700;text-align:center">Pokaż dzisiejsze wyzwanie</div>
+</div>
+</div></div>
+
+</div>
+<p class="dv-next">Spróbuj dalej: „więcej wariantów Dziś w duchu <a class="dv-oid" href="#1c">1c</a>" · „zrób z <a class="dv-oid" href="#1e">1e</a> klikalny prototyp pętli" · „kalendarz z <a class="dv-oid" href="#1h">1h</a> przenieś do <a class="dv-oid" href="#1g">1g</a>"</p>
+</section>
+</x-dc>
+</body>
+</html>

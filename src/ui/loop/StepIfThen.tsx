@@ -21,6 +21,7 @@ export default function StepIfThen({ initialValue, hideEducation, onSave }: Prop
       {!hideEducation && <p className="muted">{t('loop.ifthen.why')}</p>}
       <textarea
         className="text-input"
+        name="ifThenPlan"
         value={text}
         aria-label={t('loop.ifthen.question')}
         placeholder={t('loop.ifthen.placeholder')}

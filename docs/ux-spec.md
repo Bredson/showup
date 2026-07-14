@@ -234,3 +234,4 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 | 7 | Co po „Usuń wszystkie dane"? | **Powrót do onboardingu** — jak świeża instalacja, bez dodatkowego ekranu pożegnalnego |
 | 8 | „Jak działa Unstuck" | **Rozwijana sekcja w Ustawieniach** — tap rozwija treść na miejscu, bez pod-ekranu |
 | 9 | Komunikat „passa bezpieczna" przy martwej passie? | **Sprawdzać passę przed komunikatem** — wariant „1 dzień" tylko gdy `computeStreak > 0`; inaczej zawsze prawdziwy wariant 2+ dni (aplikacja nigdy nie kłamie) |
+| 10 | Hosting produkcyjny (Faza 6) | **GitHub Pages** — repo publiczne `Bredson/unstuck`, adres `https://bredson.github.io/unstuck/`, deploy automatyczny przez GitHub Actions przy pushu na `main`; `base: '/unstuck/'` w vite.config; dane użytkownika nadal 100% lokalnie (hosting serwuje tylko statyczne pliki) |

@@ -21,6 +21,7 @@ export default function StepReflection({ challenge, onSave }: Props) {
       <h2>{challenge ? challenge.i18n[lang].reflection : t('loop.reflect.placeholder')}</h2>
       <textarea
         className="text-input"
+        name="reflection"
         value={text}
         aria-label={challenge ? challenge.i18n[lang].reflection : t('loop.reflect.placeholder')}
         placeholder={t('loop.reflect.placeholder')}

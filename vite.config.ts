@@ -8,6 +8,9 @@ const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 
 
 // https://vite.dev/config/
 export default defineConfig({
+  // Deployed at https://bredson.github.io/unstuck/ (Dylemat 10: GitHub Pages).
+  // vite-plugin-pwa picks this up for the manifest scope and service worker paths.
+  base: '/unstuck/',
   // Version shown in Settings → About; single source of truth is package.json.
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
