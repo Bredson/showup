@@ -1,0 +1,306 @@
+/* Unstuck — shared UI classes. RULE: token variables only, no raw hex (tokens.css). */
+
+.screen {
+  padding: var(--pad-screen);
+  padding-bottom: 96px; /* room for the bottom nav */
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-cards);
+  min-height: 100dvh;
+}
+
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 20px;
+}
+
+.card--alt {
+  background: var(--surface-alt);
+  box-shadow: none;
+}
+
+.badge {
+  display: inline-block;
+  background: var(--surface-alt);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+  padding: 4px 12px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.muted {
+  color: var(--text-muted);
+}
+
+.center {
+  text-align: center;
+}
+
+/* Buttons — exactly one .btn-primary per screen (ux-spec rule) */
+.btn-primary {
+  display: block;
+  width: 100%;
+  background: var(--primary);
+  color: var(--surface);
+  border: none;
+  border-radius: var(--radius-pill);
+  padding: 16px 24px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  cursor: pointer;
+}
+
+.btn-primary:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.btn-link {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  padding: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
+}
+
+.chip {
+  background: var(--surface-alt);
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+.chip--selected {
+  border-color: var(--primary);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Bottom navigation */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+}
+
+.bottom-nav button {
+  flex: 1;
+  background: none;
+  border: none;
+  font-family: var(--font-sans);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  padding: 8px 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.bottom-nav button .nav-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+  padding: 4px 14px;
+  border-radius: var(--radius-pill);
+}
+
+.bottom-nav button[aria-current='true'] {
+  color: var(--text);
+}
+
+.bottom-nav button[aria-current='true'] .nav-icon {
+  background: var(--surface-alt);
+}
+
+/* Daily loop chrome (fullscreen steps, nav hidden) */
+.loop {
+  position: fixed;
+  inset: 0;
+  background: var(--bg);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+}
+
+.loop-inner {
+  width: 100%;
+  max-width: 480px;
+  padding: var(--pad-screen);
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-cards);
+  overflow-y: auto;
+}
+
+.loop-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.loop-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.loop-dots span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+}
+
+.loop-dots span.active {
+  background: var(--primary);
+}
+
+.loop-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 10px;
+}
+
+.loop-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-cards);
+  justify-content: center;
+}
+
+/* Emotion cards (step 3.1) */
+.emotion-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.emotion-card {
+  background: var(--surface);
+  border: 2px solid transparent;
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  font-family: var(--font-sans);
+  color: var(--text);
+  font-size: 1rem;
+  padding: 20px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.emotion-card .emoji {
+  font-size: 1.8rem;
+}
+
+.emotion-card--selected {
+  border-color: var(--primary);
+}
+
+/* Inputs */
+.text-input {
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--surface-alt);
+  border-radius: var(--radius-card);
+  padding: 14px 16px;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  color: var(--text);
+  resize: vertical;
+  min-height: 72px;
+}
+
+.text-input:focus {
+  outline: 2px solid var(--primary-soft);
+}
+
+/* Level progress dots (step 3.6 / Today) */
+.level-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+}
+
+.level-dots span {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--surface-alt);
+}
+
+.level-dots span.filled {
+  background: var(--success);
+}
+
+/* Reinforcement animation — warm, brief (~1.5s), not fireworks */
+@keyframes bloom {
+  0% {
+    transform: scale(0.6);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.08);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.bloom {
+  animation: bloom 1.5s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bloom {
+    animation: none;
+  }
+}
+
+.done-check {
+  color: var(--success);
+  font-size: 3rem;
+  text-align: center;
+}
+
+/* Timer ring (step 3.4) — soft, not an alarm */
+.timer {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+}
