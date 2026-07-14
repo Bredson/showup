@@ -185,4 +185,12 @@ export const pl = {
   'settings.about.how': 'Jak działa Unstuck',
   'settings.about.howBody':
     'Prokrastynacja to nie lenistwo — to sposób radzenia sobie z emocjami. Dlatego Unstuck nie zarządza twoim czasem, tylko pomaga zacząć: jedno małe wyzwanie dziennie. Nazywasz emocję, robisz pierwsze 2 minuty i zapisujesz jedno zdanie refleksji. Powtarzane codziennie małe kroki budują nawyk startowania — a passa wybacza dni odpoczynku.',
+
+  // Comeback interstitial (ux-spec §7) — self-compassion; NIGDY nie pokazuje liczby dni
+  'comeback.title': 'Hej, dobrze, że jesteś.',
+  'comeback.body.oneDay':
+    'Wczoraj się nie złożyło — zdarza się każdemu. Twoja passa jest bezpieczna. Dziś jest nowy dzień.',
+  'comeback.body.multiDay':
+    'Trochę cię nie było — i to jest OK. Badania są jasne: wybaczenie sobie działa lepiej niż wyrzuty.',
+  'comeback.cta': 'Pokaż dzisiejsze wyzwanie',
 } as const;

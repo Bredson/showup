@@ -172,4 +172,12 @@ export const en: Record<keyof typeof pl, string> = {
   'settings.about.how': 'How Unstuck works',
   'settings.about.howBody':
     'Procrastination is not laziness — it is how we cope with emotions. That is why Unstuck does not manage your time; it helps you start: one small challenge a day. You name the emotion, do the first 2 minutes and write one sentence of reflection. Small steps repeated daily build a habit of starting — and the streak forgives rest days.',
+
+  // Comeback interstitial (ux-spec §7) — self-compassion; NEVER shows the number of days
+  'comeback.title': "Hey, it's good to see you.",
+  'comeback.body.oneDay':
+    "Yesterday didn't work out — it happens to everyone. Your streak is safe. Today is a new day.",
+  'comeback.body.multiDay':
+    "You've been away for a while — and that's OK. The research is clear: forgiving yourself works better than guilt.",
+  'comeback.cta': "Show today's challenge",
 };

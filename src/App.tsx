@@ -2,10 +2,11 @@
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
 import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Challenge, DailyEntry, Lang, QuizDraft, UserProfile } from './domain/types';
-import { computeProgress } from './domain/streak';
+import { computeProgress, computeStreak } from './domain/streak';
 import { getTodaysChallenge } from './domain/challenge';
 import { shouldHideIfThenEducation } from './domain/dailyLoop';
 import { buildProfile, updateProfileFromQuiz, type QuizAnswers } from './domain/quiz';
+import { comebackKind, missedDaysBefore, type ComebackKind } from './domain/comeback';
 import { challenges } from './content';
 import type { StorageAdapter } from './storage/adapter';
 import { currentHour, localToday, nowISO } from './ui/clock';
@@ -17,6 +18,7 @@ import ProgressScreen from './ui/screens/ProgressScreen';
 import JournalScreen from './ui/screens/JournalScreen';
 import SettingsScreen from './ui/screens/SettingsScreen';
 import DailyLoop from './ui/loop/DailyLoop';
+import ComebackScreen from './ui/screens/ComebackScreen';
 
 interface ShellProps {
   adapter: StorageAdapter;
@@ -35,6 +37,9 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
   const [challenge, setChallenge] = useState<Challenge | null>(null);
   const [entry, setEntry] = useState<DailyEntry | null>(null);
   const [pastEntries, setPastEntries] = useState<DailyEntry[]>([]); // everything except today
+  // Comeback interstitial (ux-spec §7): derived once at boot, never persisted — "once per
+  // return" holds because only the first open of a day creates the entry.
+  const [comeback, setComeback] = useState<Exclude<ComebackKind, 'none'> | null>(null);
   const [bootError, setBootError] = useState(false);
   const t = useT();
 
@@ -44,12 +49,21 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
     let cancelled = false;
     void (async () => {
       try {
-        const result = await getTodaysChallenge(adapter, challenges, today, nowISO());
+        // Entries are read BEFORE the assignment on purpose: under StrictMode's double effect
+        // the surviving run would otherwise see the entry the cancelled run just created and
+        // silently skip the interstitial (dev-only, but it made manual QA of §7 flaky).
         const all = await adapter.getAllEntries();
+        const firstOpenOfDay = !all.some((e) => e.date === today);
+        const result = await getTodaysChallenge(adapter, challenges, today, nowISO());
         if (cancelled) return;
         setChallenge(result.challenge);
         setEntry(result.entry);
         setPastEntries(all.filter((e) => e.date !== today));
+        if (firstOpenOfDay) {
+          // The streak feeds in so 'oneDay' ("Twoja passa jest bezpieczna") can never lie (dylemat 9).
+          const kind = comebackKind(missedDaysBefore(all, today), computeStreak(all, today));
+          if (kind !== 'none') setComeback(kind);
+        }
       } catch (err) {
         console.error('Unstuck boot failed', err);
         if (!cancelled) setBootError(true);
@@ -79,6 +93,11 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll }: ShellProps) {
   }
 
   if (!entry) return null; // one-frame boot; IndexedDB open already happened in main.tsx
+
+  // Comeback interstitial (ux-spec §7): BEFORE the Today screen, single CTA forward.
+  if (comeback) {
+    return <ComebackScreen kind={comeback} onContinue={() => setComeback(null)} />;
+  }
 
   // Quiz retake (ux-spec §6, dylemat 6) — full-screen like DailyLoop, so the tab state survives.
   if (requizOpen && profile) {

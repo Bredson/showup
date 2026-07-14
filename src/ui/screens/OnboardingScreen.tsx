@@ -91,7 +91,7 @@ export default function OnboardingScreen({ initialDraft, onLanguageChange, onSav
   if (step === 0) {
     return (
       <div className="screen onb">
-        <div className="onb-art" aria-hidden>
+        <div className="screen-art" aria-hidden>
           🌱
         </div>
         <h1 ref={headingRef} tabIndex={-1}>
@@ -183,7 +183,7 @@ export default function OnboardingScreen({ initialDraft, onLanguageChange, onSav
   const complete = isQuizComplete(answers);
   return (
     <div className="screen onb">
-      <div className="onb-art" aria-hidden>
+      <div className="screen-art" aria-hidden>
         🌿
       </div>
       <h1 ref={headingRef} tabIndex={-1}>

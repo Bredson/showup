@@ -4,6 +4,7 @@
 
 import type { Challenge, DailyEntry, DifficultyLevel, ISODate, ISODateTime } from './types';
 import { computeProgress } from './streak';
+import { gentlerLevel, missedDaysBefore, SOFT_RESTART_MISSED_DAYS } from './comeback';
 
 /** The slice of StorageAdapter this module needs (structural typing keeps layers decoupled). */
 export interface DailyEntryStore {
@@ -84,6 +85,9 @@ function byId(a: Challenge, b: Challenge): number {
  * `challenge` is null only when the day is already finished (completed/skipped) AND a content
  * deploy removed its challenge — the journal entry stays untouched per spec §6 ("entry without
  * content") and the UI renders the finished state without task text.
+ *
+ * NOTE: the shell derives "first open of the day" (comeback interstitial, ux-spec §7) from an
+ * entries read taken BEFORE this call — see the boot effect in App.tsx for the why.
  */
 export async function getTodaysChallenge(
   store: DailyEntryStore,
@@ -98,12 +102,20 @@ export async function getTodaysChallenge(
     // Assigned challenge vanished (content deploy, spec §6). Reassigning is allowed ONLY while
     // the day is still in progress — rewriting challengeId on a completed/skipped entry would
     // falsify the journal and skew completedByLevel/level progression.
-    if (existing.status !== 'in_progress') return { challenge: null, entry: existing };
+    if (existing.status !== 'in_progress') {
+      return { challenge: null, entry: existing };
+    }
   }
 
   const entries = await store.getAllEntries();
   const progress = computeProgress(entries, today);
-  const challenge = selectChallenge(challenges, entries, progress.currentLevel, today);
+  // Soft restart (ux-spec §7): after 30+ missed days the comeback day is one level gentler.
+  // Applied at assignment only — the persisted challengeId keeps it stable across restarts.
+  const level =
+    missedDaysBefore(entries, today) >= SOFT_RESTART_MISSED_DAYS
+      ? gentlerLevel(progress.currentLevel)
+      : progress.currentLevel;
+  const challenge = selectChallenge(challenges, entries, level, today);
 
   const entry: DailyEntry = existing
     ? { ...existing, challengeId: challenge.id, updatedAt: now }

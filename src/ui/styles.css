@@ -485,7 +485,19 @@ button.cal-dot::after {
   justify-content: center;
 }
 
-.onb-art {
+/* Comeback interstitial (ux-spec §7) — full-screen before Today, no bottom nav */
+.comeback {
+  padding-bottom: var(--pad-screen);
+  justify-content: center;
+  text-align: center;
+}
+
+.comeback-body {
+  color: var(--text-muted);
+}
+
+/* Shared emoji illustration (onboarding, comeback) — extract, don't copy (rule F6). */
+.screen-art {
   font-size: 3rem;
   text-align: center;
 }

@@ -183,10 +183,27 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 
 - Ilustracja ciepła, spokojna (dominanta)
 - „Hej, dobrze, że jesteś."
-- Przerwa 1 dzień: „Wczoraj się nie złożyło — zdarza się każdemu. Twoja passa jest bezpieczna. Dziś jest nowy dzień."
+- Przerwa 1 dzień: „Wczoraj się nie złożyło — zdarza się każdemu. Twoja passa jest bezpieczna. Dziś jest nowy dzień." — **tylko gdy passa faktycznie trwa** (dylemat 9); inaczej wariant 2+ dni
 - Przerwa 2+ dni: „Trochę cię nie było — i to jest OK. Badania są jasne: wybaczenie sobie działa lepiej niż wyrzuty." (**bez liczby opuszczonych dni** — liczba = wyrzut)
 - **CTA:** „Pokaż dzisiejsze wyzwanie". Bez linku drugorzędnego — jedna droga: naprzód
 - Przerwa 30+ dni: dodatkowo wyzwanie o poziom łagodniejsze („miękki restart")
+
+**Ustalenia techniczne (Feature 10):**
+
+- „Przerwa" = liczba dni pominiętych, czyli dni bez ŻADNEGO wpisu między ostatnim wpisem a dziś
+  (`daysBetween(ostatniWpis, dziś) - 1`). Wpis dnia powstaje przy każdym otwarciu appki, więc
+  „otwarcie bez ukończenia" nie liczy się jako przerwa. To spina §2 („powrót po przerwie ≥ 2 dni"
+  między otwarciami) z wariantami §7 (1 dzień pominięty / 2+ pominięte).
+- „Raz na powrót" jest WYLICZANE, nie persystowane: interstitial pokazuje się tylko, gdy wpis
+  dzisiejszy właśnie powstał (pierwsze otwarcie dnia) i liczba dni pominiętych ≥ 1. Ponowne
+  otwarcie tego samego dnia → wpis już istnieje → brak interstitialu; kolejny dzień → przerwa 0.
+- Miękki restart (30+ dni pominiętych): poziom wyzwania obniżony o 1 (minimum 1) w momencie
+  przydziału w `getTodaysChallenge` — przydział jest trwały, więc restart appki go nie zmienia.
+  Obniżka dotyczy tylko dnia powrotu; progres poziomów (completedByLevel) liczony bez zmian.
+- Brak historii wpisów (świeży profil) → brak interstitialu (nie ma „powrotu").
+- Wariant „1 dzień" wymaga dodatkowo żywej passy (`computeStreak > 0`): po „otwarciu bez
+  ukończenia" + 1 dniu przerwy passa jest już wyzerowana, a komunikat „Twoja passa jest
+  bezpieczna" nie może kłamać (dylemat 9). Wariant 2+ dni jest prawdziwy zawsze.
 
 ---
 
@@ -216,3 +233,4 @@ Pełnoekranowy interstitial przy pierwszym otwarciu po przerwie, PRZED ekranem D
 | 6 | Przebieg ponownego quizu („Dostosuj moją ścieżkę") | **Od pytania 1, z anulowaniem** — bez powitania (język zmienia się w Ustawieniach); „Wróć" na pytaniu 1 wraca do Ustawień bez zapisu; podsumowanie zostaje; profil nadpisany dopiero na końcowym CTA |
 | 7 | Co po „Usuń wszystkie dane"? | **Powrót do onboardingu** — jak świeża instalacja, bez dodatkowego ekranu pożegnalnego |
 | 8 | „Jak działa Unstuck" | **Rozwijana sekcja w Ustawieniach** — tap rozwija treść na miejscu, bez pod-ekranu |
+| 9 | Komunikat „passa bezpieczna" przy martwej passie? | **Sprawdzać passę przed komunikatem** — wariant „1 dzień" tylko gdy `computeStreak > 0`; inaczej zawsze prawdziwy wariant 2+ dni (aplikacja nigdy nie kłamie) |
