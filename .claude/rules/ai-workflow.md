@@ -68,6 +68,11 @@ Rules for how AI agents work in this project (meta-level).
   concern and follow the recorded pattern. The rules file is a checklist, not a diary.
 - Corollary: the independent code review did not flag it either (it praised the flow) —
   reviews catch spec violations, rules catch RE-violations of past lessons. Both needed.
+- RECURRED in the Progress phase (empty-dot `aria-hidden` no-guilt rule, i18n punctuation
+  rule) — this time the review DID catch both, but that cost a review round. Escalation:
+  the feature-workflow "implementacja" step must START by re-reading the code-style
+  sections named in the plan (list them explicitly in the plan artifact), not by writing
+  code.
 
 ## Docs as source of truth
 

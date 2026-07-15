@@ -10,6 +10,7 @@ Jeden feature = jedna pełna iteracja tego przepływu. Nie zaczynaj kolejnego fe
 ## Kroki
 
 1. **Przeczytaj spec przed kodem.** Odpowiednie sekcje `docs/ux-spec.md` (ekrany, dylematy rozstrzygnięte) i `docs/data-model.md` (encje, algorytmy). Jeśli spec milczy w istotnej kwestii — dylemat do użytkownika (rule: `ai-workflow.md`), nie zgaduj.
+   **Obowiązkowo:** przejrzyj `.claude/rules/code-style.md` pod kątem sekcji dotyczących podobnych ekranów/mechanik i wypisz w planie, KTÓRE reguły stosujesz — dwie fazy z rzędu re-złamały zapisane reguły, bo czytano je dopiero post-stage (`ai-workflow.md`).
 2. **Domena najpierw.** Logika w `src/domain/` jako czyste funkcje + testy jednostkowe (`*.test.ts` obok pliku). Data/zegar jako parametr, nie `new Date()` w środku.
 3. **Storage, jeśli potrzebny.** Rozszerz `StorageAdapter` w `src/storage/` — reszta kodu nie dotyka IndexedDB bezpośrednio.
 4. **UI na końcu.** Ekran w `src/ui/screens/` (jeden plik), współdzielone kawałki w `src/ui/components/`. Stringi tylko przez i18n (dodaj klucze do `pl.ts` i `en.ts` naraz), style tylko przez tokeny.

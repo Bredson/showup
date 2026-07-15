@@ -30,6 +30,14 @@ z planem powrotu do stanu wyjściowego**.
   na produkcji NIGDY `deleteDatabase` ani zapisów testowych — tylko sondy read-only
   (`count()` na store) i asercje na renderze.
 
+## Zanim zaczniesz: JEDNA karta na origin
+
+Przed sianiem/chirurgią wywołaj `list_pages` i **zamknij zbędne karty z tym samym
+originem** (`close_page`). Druga karta apki dzieli IndexedDB i jej boot effect
+potrafi w trakcie weryfikacji dopisać/zmutować wpis dnia (np. wpis `pain→easy
+completed`, którego nikt nie wyklikał) — objaw wygląda jak bug apki, a to
+skażenie danych przez osieroconą kartę z poprzedniej sesji.
+
 ## Technika 1: chirurgiczna edycja wpisu Z BACKUPEM
 
 Zasada: **odczytaj i zwróć stary obiekt w wyniku narzędzia ZANIM go nadpiszesz**.
@@ -58,9 +66,14 @@ Po screenshocie: przywróć backup (`store.put(backup)`) i **potwierdź snapshot
 
 ## Technika 2: sianie tymczasowych wpisów (stany kalendarza / passy)
 
-Do pokazania ✓/🌿/legendy dosiej wpisy `status: 'completed'` na wybrane daty
-(np. luka 1-dniowa = dzień wybaczony). Użyj neutralnego `challengeId` (`l1-001`).
-**Zapisz listę dosianych dat** — sprzątanie to `store.delete(date)` dla każdej.
+Do pokazania ✓/🍃/legendy dosiej wpisy `status: 'completed'` na wybrane daty
+(np. luka 1-dniowa = dzień wybaczony). Kształt wpisu Showup: `{ date, kind:
+'session'|'easy'|'test', variant, feelBefore, downgradedTo, status, sets,
+testResult, easyContent, reflection, completedAt, updatedAt }` — pola nieużywane
+jako `null`, NIE pomijane. Pamiętaj: historia MUSI zaczynać się testem
+założycielskim (`kind:'test'` z `testResult`), inaczej `computeProgram` rzuca.
+**Zapisz listę dosianych dat** — sprzątanie to `store.delete(date)` dla każdej
+albo `indexedDB.deleteDatabase('showup')` + reload, gdy baza dev ma być pusta.
 
 ## Technika 3: zamrożenie auto-advance do screenshota
 
