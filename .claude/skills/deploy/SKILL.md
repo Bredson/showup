@@ -8,12 +8,12 @@ Use when asked to deploy, release, or ship the application to any environment.
 
 ## Production setup (Faza 6, Dylemat 10)
 
-- **Hosting:** GitHub Pages, repo `Bredson/unstuck` (public), live at `https://bredson.github.io/unstuck/`
+- **Hosting:** GitHub Pages, repo `Bredson/showup` (public), live at `https://bredson.github.io/showup/`
 - **Deploy:** automatic — every push to `main` runs `.github/workflows/deploy.yml`
   (npm ci → vitest → build → `upload-pages-artifact` → `deploy-pages`)
-- **Base path:** `base: '/unstuck/'` in `vite.config.ts` — vite-plugin-pwa derives
+- **Base path:** `base: '/showup/'` in `vite.config.ts` — vite-plugin-pwa derives
   manifest `scope`/`start_url` and service worker paths from it. Never hardcode paths elsewhere.
-- Pages was enabled via `gh api -X POST repos/Bredson/unstuck/pages -f build_type=workflow`
+- Pages was enabled via `gh api -X POST repos/Bredson/showup/pages -f build_type=workflow`
   (one-time; the "official" Actions flow, no `gh-pages` branch)
 
 ## Workflow
@@ -24,10 +24,10 @@ Use when asked to deploy, release, or ship the application to any environment.
 4. Pre-deployment checks: PWA offline test on `npx vite preview` —
    emulate Offline in DevTools, reload, app must boot from service worker cache
 5. Deploy: `git push` (Actions does the rest); watch with
-   `gh run watch <id> --repo Bredson/unstuck --exit-status`
+   `gh run watch <id> --repo Bredson/showup --exit-status`
 6. Smoke test on the live URL: page renders, console clean,
-   `navigator.serviceWorker.ready` scope = `https://bredson.github.io/unstuck/`,
-   `manifest.webmanifest` has `scope`/`start_url` = `/unstuck/`
+   `navigator.serviceWorker.ready` scope = `https://bredson.github.io/showup/`,
+   `manifest.webmanifest` has `scope`/`start_url` = `/showup/`
 7. Report deployment status
 
 ## Testing tricks (proven in Faza 6)

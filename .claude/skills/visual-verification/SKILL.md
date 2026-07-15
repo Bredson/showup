@@ -1,18 +1,18 @@
 ---
 name: visual-verification
-description: Techniki weryfikacji wizualnej ekranów Unstuck zależnych od stanu IndexedDB (kalendarz, streak, stany zaznaczenia z auto-advance). Używaj w kroku "weryfikacja wizualna" feature-workflow, gdy screenshot wymaga konkretnego stanu danych lub zatrzymania animacji/timera.
+description: Techniki weryfikacji wizualnej ekranów Showup zależnych od stanu IndexedDB (kalendarz, streak, stany zaznaczenia z auto-advance). Używaj w kroku "weryfikacja wizualna" feature-workflow, gdy screenshot wymaga konkretnego stanu danych lub zatrzymania animacji/timera.
 ---
 
 # Weryfikacja wizualna ekranów stanowych
 
-Ekrany Unstuck (Dziś, Progres, pętla) renderują się z IndexedDB. Żeby zobaczyć
+Ekrany Showup (Dziś, Progres, pętla) renderują się z IndexedDB. Żeby zobaczyć
 konkretny stan (np. dzień wybaczony 🌿, passa 4 dni, zaznaczona emocja przed
 auto-advance), trzeba tymczasowo zmienić dane lub zatrzymać timer — **zawsze
 z planem powrotu do stanu wyjściowego**.
 
 ## Baza dev
 
-- Baza `unstuck` v1, story: `entries`, `meta`, `profile`.
+- Baza `showup` v1, story: `entries`, `meta`, `profile`.
 - Klucz `entries` jest **in-line** (pole `date`, format `YYYY-MM-DD` z
   `toLocaleDateString('sv-SE')`) → `store.put(obj)` bez drugiego argumentu.
 - Dostęp przez `chrome-devtools_evaluate_script` (raw IndexedDB API, bez `idb`).
@@ -25,7 +25,7 @@ Backup ląduje w transkrypcie rozmowy — przetrwa nawet crash sesji przeglądar
 ```js
 async () => {
   const db = await new Promise((res, rej) => {
-    const o = indexedDB.open('unstuck', 1);
+    const o = indexedDB.open('showup', 1);
     o.onsuccess = () => res(o.result); o.onerror = () => rej(o.error);
   });
   const tx = db.transaction('entries', 'readwrite');

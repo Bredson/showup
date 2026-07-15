@@ -1,4 +1,4 @@
-// Unstuck — daily loop transitions (ux-spec §3: 6 fullscreen steps, < 5 min).
+// Showup — daily loop transitions (ux-spec §3: 6 fullscreen steps, < 5 min).
 // RULE: pure functions only; no React/storage imports; time passed in, never read from the clock.
 // Every transition returns a NEW DailyEntry — callers persist it via StorageAdapter.
 

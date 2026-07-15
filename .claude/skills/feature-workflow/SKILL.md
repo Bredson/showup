@@ -1,9 +1,9 @@
 ---
 name: feature-workflow
-description: Standardowy przepływ implementacji pojedynczego feature'u MVP w projekcie Unstuck. Używaj przy każdym zadaniu typu "zaimplementuj ekran X / algorytm Y / przepływ Z" w Fazie 4 i późniejszych.
+description: Standardowy przepływ implementacji pojedynczego feature'u MVP w projekcie Showup. Używaj przy każdym zadaniu typu "zaimplementuj ekran X / algorytm Y / przepływ Z" w Fazie 4 i późniejszych.
 ---
 
-# Feature Workflow — Unstuck
+# Feature Workflow — Showup
 
 Jeden feature = jedna pełna iteracja tego przepływu. Nie zaczynaj kolejnego feature'u przed domknięciem poprzedniego.
 

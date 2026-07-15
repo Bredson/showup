@@ -1,4 +1,4 @@
-// Unstuck — storage abstraction. Source of truth: docs/data-model.md §2.
+// Showup — storage abstraction. Source of truth: docs/data-model.md §2.
 // BINDING: domain never touches IndexedDB directly; UI and services depend on this
 // interface only, so a future swap to @capacitor-community/sqlite touches nothing else.
 

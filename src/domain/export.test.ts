@@ -26,7 +26,7 @@ describe('buildExportBlob', () => {
   it('produces the binding blob shape', () => {
     const blob = buildExportBlob(profile, [entry], 1, '2026-07-14T09:00:00.000Z');
     expect(blob).toEqual({
-      app: 'unstuck',
+      app: 'showup',
       schemaVersion: 1,
       exportedAt: '2026-07-14T09:00:00.000Z',
       profile,
@@ -49,6 +49,6 @@ describe('buildExportBlob', () => {
 
 describe('exportFilename', () => {
   it('uses the local date in the binding format', () => {
-    expect(exportFilename('2026-07-14')).toBe('unstuck-export-2026-07-14.json');
+    expect(exportFilename('2026-07-14')).toBe('showup-export-2026-07-14.json');
   });
 });

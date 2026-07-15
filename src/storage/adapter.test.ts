@@ -13,7 +13,7 @@ const FIXED_NOW = () => new Date('2026-07-13T10:00:00.000Z');
 let dbCounter = 0;
 const implementations: Array<[string, () => Promise<StorageAdapter>]> = [
   ['memoryAdapter', async () => createMemoryAdapter(FIXED_NOW)],
-  ['idbAdapter', () => createIdbAdapter(`unstuck-test-${++dbCounter}`, FIXED_NOW)],
+  ['idbAdapter', () => createIdbAdapter(`showup-test-${++dbCounter}`, FIXED_NOW)],
 ];
 
 function entry(date: string, status: ChallengeStatus = 'completed'): DailyEntry {
@@ -186,7 +186,7 @@ describe.each(implementations)('StorageAdapter contract: %s', (_name, createAdap
 // so it lives outside the shared contract.
 describe('idbAdapter durability', () => {
   it('data survives closing and reopening the same database', async () => {
-    const dbName = `unstuck-durability-${Date.now()}`;
+    const dbName = `showup-durability-${Date.now()}`;
     const first = await createIdbAdapter(dbName, FIXED_NOW);
     await first.saveProfile(profile);
     await first.putEntry(entry('2026-07-13'));

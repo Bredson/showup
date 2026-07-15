@@ -1,6 +1,6 @@
 // Polish dictionary — the reference language (every key must exist here).
 export const pl = {
-  'app.name': 'Unstuck',
+  'app.name': 'Showup',
   'app.tagline': 'Jedno małe wyzwanie dziennie, bez presji.',
   'app.loadError': 'Nie udało się wczytać danych. Odśwież stronę — twoje wpisy są bezpieczne.',
 
@@ -123,7 +123,7 @@ export const pl = {
   'journal.date.yesterday': 'Wczoraj',
 
   // Onboarding quiz (ux-spec §1) — ton: „to będzie łagodne", nie „to będzie test"
-  'onboarding.welcome.title': 'Cześć! Tu Unstuck.',
+  'onboarding.welcome.title': 'Cześć! Tu Showup.',
   'onboarding.welcome.body': 'Prokrastynacja to nie lenistwo — to emocje. Jedno małe wyzwanie dziennie, bez presji.',
   'onboarding.welcome.cta': 'Zacznijmy',
   'onboarding.lang.aria': 'Wybór języka',
@@ -183,8 +183,8 @@ export const pl = {
     'To zastąpi wszystkie obecne dane zawartością pliku (eksport z {date}, wpisów: {count}). Nie da się tego cofnąć.',
   'settings.data.importConfirm.yes': 'Zastąp dane',
   'settings.data.importConfirm.no': 'Zostaw',
-  'settings.data.importInvalid': 'To nie wygląda na plik eksportu Unstuck.',
-  'settings.data.importNewer': 'Ten plik pochodzi z nowszej wersji Unstuck. Zaktualizuj aplikację i spróbuj ponownie.',
+  'settings.data.importInvalid': 'To nie wygląda na plik eksportu Showup.',
+  'settings.data.importNewer': 'Ten plik pochodzi z nowszej wersji Showup. Zaktualizuj aplikację i spróbuj ponownie.',
   'settings.data.importError': 'Nie udało się zaimportować danych. Twoje obecne dane są bez zmian.',
   'settings.data.delete': 'Usuń wszystkie dane',
   'settings.data.deleteConfirm.body':
@@ -194,10 +194,10 @@ export const pl = {
   'settings.data.deleteError': 'Nie udało się usunąć danych. Spróbuj ponownie.',
   'settings.privacy': 'Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia.',
   'settings.about.heading': 'O aplikacji',
-  'settings.about.version': 'Unstuck {version}',
-  'settings.about.how': 'Jak działa Unstuck',
+  'settings.about.version': 'Showup {version}',
+  'settings.about.how': 'Jak działa Showup',
   'settings.about.howBody':
-    'Prokrastynacja to nie lenistwo — to sposób radzenia sobie z emocjami. Dlatego Unstuck nie zarządza twoim czasem, tylko pomaga zacząć: jedno małe wyzwanie dziennie. Nazywasz emocję, robisz pierwsze 2 minuty i zapisujesz jedno zdanie refleksji. Powtarzane codziennie małe kroki budują nawyk startowania — a passa wybacza dni odpoczynku.',
+    'Prokrastynacja to nie lenistwo — to sposób radzenia sobie z emocjami. Dlatego Showup nie zarządza twoim czasem, tylko pomaga zacząć: jedno małe wyzwanie dziennie. Nazywasz emocję, robisz pierwsze 2 minuty i zapisujesz jedno zdanie refleksji. Powtarzane codziennie małe kroki budują nawyk startowania — a passa wybacza dni odpoczynku.',
 
   // Comeback interstitial (ux-spec §7) — self-compassion; NIGDY nie pokazuje liczby dni
   'comeback.title': 'Hej, dobrze, że jesteś.',

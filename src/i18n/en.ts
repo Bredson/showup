@@ -2,7 +2,7 @@
 import type { pl } from './pl';
 
 export const en: Record<keyof typeof pl, string> = {
-  'app.name': 'Unstuck',
+  'app.name': 'Showup',
   'app.tagline': 'One small challenge a day, no pressure.',
   'app.loadError': 'Could not load your data. Refresh the page — your entries are safe.',
 
@@ -111,7 +111,7 @@ export const en: Record<keyof typeof pl, string> = {
   'journal.date.today': 'Today',
   'journal.date.yesterday': 'Yesterday',
 
-  'onboarding.welcome.title': 'Hi! This is Unstuck.',
+  'onboarding.welcome.title': 'Hi! This is Showup.',
   'onboarding.welcome.body': 'Procrastination is not laziness — it is emotions. One small challenge a day, no pressure.',
   'onboarding.welcome.cta': 'Let’s begin',
   'onboarding.lang.aria': 'Language',
@@ -170,8 +170,8 @@ export const en: Record<keyof typeof pl, string> = {
     'This will replace all current data with the file contents (exported {date}, entries: {count}). It cannot be undone.',
   'settings.data.importConfirm.yes': 'Replace data',
   'settings.data.importConfirm.no': 'Keep it',
-  'settings.data.importInvalid': "This doesn't look like an Unstuck export file.",
-  'settings.data.importNewer': 'This file comes from a newer version of Unstuck. Update the app and try again.',
+  'settings.data.importInvalid': "This doesn't look like an Showup export file.",
+  'settings.data.importNewer': 'This file comes from a newer version of Showup. Update the app and try again.',
   'settings.data.importError': 'Could not import the data. Your current data is unchanged.',
   'settings.data.delete': 'Delete all data',
   'settings.data.deleteConfirm.body':
@@ -181,10 +181,10 @@ export const en: Record<keyof typeof pl, string> = {
   'settings.data.deleteError': 'Could not delete your data. Please try again.',
   'settings.privacy': 'Everything stays on this device. No accounts, no cloud, no tracking.',
   'settings.about.heading': 'About',
-  'settings.about.version': 'Unstuck {version}',
-  'settings.about.how': 'How Unstuck works',
+  'settings.about.version': 'Showup {version}',
+  'settings.about.how': 'How Showup works',
   'settings.about.howBody':
-    'Procrastination is not laziness — it is how we cope with emotions. That is why Unstuck does not manage your time; it helps you start: one small challenge a day. You name the emotion, do the first 2 minutes and write one sentence of reflection. Small steps repeated daily build a habit of starting — and the streak forgives rest days.',
+    'Procrastination is not laziness — it is how we cope with emotions. That is why Showup does not manage your time; it helps you start: one small challenge a day. You name the emotion, do the first 2 minutes and write one sentence of reflection. Small steps repeated daily build a habit of starting — and the streak forgives rest days.',
 
   // Comeback interstitial (ux-spec §7) — self-compassion; NEVER shows the number of days
   'comeback.title': "Hey, it's good to see you.",

@@ -51,7 +51,7 @@ describe('validateExportBlob', () => {
   });
 
   it('rejects non-objects and files from other apps', () => {
-    for (const raw of [null, 42, 'unstuck', [], { app: 'other-app' }]) {
+    for (const raw of [null, 42, 'showup', [], { app: 'other-app' }]) {
       const result = validateExportBlob(raw, CURRENT);
       expect(result.ok).toBe(false);
       if (!result.ok) expect(result.reason).toBe('invalid');

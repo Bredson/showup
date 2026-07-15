@@ -67,7 +67,7 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: 
           if (kind !== 'none') setComeback(kind);
         }
       } catch (err) {
-        console.error('Unstuck boot failed', err);
+        console.error('Showup boot failed', err);
         if (!cancelled) setBootError(true);
       }
     })();
@@ -83,7 +83,7 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: 
   // Persist every loop transition immediately — "×"/crash never loses progress (ux-spec §3).
   function handleEntryChange(updated: DailyEntry) {
     setEntry(updated);
-    adapter.putEntry(updated).catch((err: unknown) => console.error('Unstuck: entry save failed', err));
+    adapter.putEntry(updated).catch((err: unknown) => console.error('Showup: entry save failed', err));
   }
 
   if (bootError) {
@@ -203,14 +203,14 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
         }
         // No profile → onboarding, even if the draft read fails (a lost draft only restarts the quiz).
         const draft = await adapter.getQuizDraft().catch((err: unknown) => {
-          console.error('Unstuck: quiz draft read failed', err);
+          console.error('Showup: quiz draft read failed', err);
           return null;
         });
         if (cancelled) return;
         if (draft) setLang(draft.language); // an interrupted quiz keeps its language choice
         setBoot({ phase: 'onboarding', draft });
       } catch (err) {
-        console.error('Unstuck boot failed', err);
+        console.error('Showup boot failed', err);
         // Fall through to the shell — its own boot path shows the load-error screen.
         if (!cancelled) setBoot({ phase: 'ready' });
       }
@@ -228,8 +228,8 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
     setBoot({ phase: 'ready' });
     adapter.saveProfile(created).then(
       () =>
-        adapter.clearQuizDraft().catch((err: unknown) => console.error('Unstuck: quiz draft clear failed', err)),
-      (err: unknown) => console.error('Unstuck: profile save failed', err),
+        adapter.clearQuizDraft().catch((err: unknown) => console.error('Showup: quiz draft clear failed', err)),
+      (err: unknown) => console.error('Showup: profile save failed', err),
     );
   }
 
@@ -242,7 +242,7 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
     if (wipingRef.current) return; // never write during a wipe
     setProfile(updated);
     setLang(updated.language);
-    adapter.saveProfile(updated).catch((err: unknown) => console.error('Unstuck: profile save failed', err));
+    adapter.saveProfile(updated).catch((err: unknown) => console.error('Showup: profile save failed', err));
   }
 
   // Bumped after a successful import: the new key remounts Shell, whose boot effect
@@ -285,7 +285,7 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
           initialDraft={boot.draft}
           onLanguageChange={setLang}
           onSaveDraft={(d) => {
-            adapter.saveQuizDraft(d).catch((err: unknown) => console.error('Unstuck: quiz draft save failed', err));
+            adapter.saveQuizDraft(d).catch((err: unknown) => console.error('Showup: quiz draft save failed', err));
           }}
           onComplete={completeOnboarding}
         />

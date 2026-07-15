@@ -1,4 +1,4 @@
-# Testing Rules — Unstuck
+# Testing Rules — Showup
 
 Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.config.ts`, uruchamianie: `npm test`).
 

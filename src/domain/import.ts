@@ -1,4 +1,4 @@
-// Unstuck — data import domain. Source of truth: docs/data-model.md §5.
+// Showup — data import domain. Source of truth: docs/data-model.md §5.
 // RULE: no React/storage imports. Import = REPLACE, never merge (data-model §5,
 // trade-off 6: merge is a minefield; the export file becomes the whole truth).
 // A file is untrusted input (hand-editable JSON) — every field gets a runtime check,
@@ -103,8 +103,8 @@ function checkEntry(raw: unknown, index: number, errors: string[]): raw is Daily
  */
 export function validateExportBlob(raw: unknown, currentSchemaVersion: number): ImportValidation {
   if (!isRecord(raw)) return { ok: false, reason: 'invalid', errors: ['not a JSON object'] };
-  if (raw.app !== 'unstuck') {
-    return { ok: false, reason: 'invalid', errors: ['app: not an unstuck export file'] };
+  if (raw.app !== 'showup') {
+    return { ok: false, reason: 'invalid', errors: ['app: not an showup export file'] };
   }
   if (typeof raw.schemaVersion !== 'number' || !Number.isInteger(raw.schemaVersion) || raw.schemaVersion < 1) {
     return { ok: false, reason: 'invalid', errors: ['schemaVersion: not a positive integer'] };

@@ -5,9 +5,9 @@ import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
 import type { DailyEntry, Meta, QuizDraft, UserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
-const DB_NAME = 'unstuck';
+const DB_NAME = 'showup';
 
-interface UnstuckDb extends DBSchema {
+interface ShowupDb extends DBSchema {
   profile: { key: string; value: UserProfile };
   /** Key "YYYY-MM-DD" sorts lexicographically == chronologically (calendar range queries). */
   entries: { key: string; value: DailyEntry };
@@ -19,7 +19,7 @@ export async function createIdbAdapter(
   dbName: string = DB_NAME,
   now: () => Date = () => new Date(),
 ): Promise<StorageAdapter> {
-  const db: IDBPDatabase<UnstuckDb> = await openDB<UnstuckDb>(dbName, CURRENT_SCHEMA_VERSION, {
+  const db: IDBPDatabase<ShowupDb> = await openDB<ShowupDb>(dbName, CURRENT_SCHEMA_VERSION, {
     upgrade(database) {
       // Fresh install only for now; schema bumps go through blob migrations (§5), not here.
       if (!database.objectStoreNames.contains('profile')) {

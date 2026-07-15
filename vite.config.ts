@@ -8,9 +8,9 @@ const pkg = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 
 
 // https://vite.dev/config/
 export default defineConfig({
-  // Deployed at https://bredson.github.io/unstuck/ (Dylemat 10: GitHub Pages).
+  // Deployed at https://bredson.github.io/showup/ (Dylemat 10: GitHub Pages).
   // vite-plugin-pwa picks this up for the manifest scope and service worker paths.
-  base: '/unstuck/',
+  base: '/showup/',
   // Version shown in Settings → About; single source of truth is package.json.
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
@@ -22,8 +22,8 @@ export default defineConfig({
       // Extra static files to precache (icons referenced from index.html / iOS).
       includeAssets: ['favicon.ico', 'icon.svg', 'apple-touch-icon-180x180.png'],
       manifest: {
-        name: 'Unstuck',
-        short_name: 'Unstuck',
+        name: 'Showup',
+        short_name: 'Showup',
         description: 'One small challenge a day, no pressure.',
         theme_color: '#fdf6ec',
         background_color: '#fdf6ec',

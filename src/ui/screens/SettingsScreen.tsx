@@ -64,7 +64,7 @@ export default function SettingsScreen({
     setDeleteState('deleting');
     onDeleteAll().catch((err: unknown) => {
       // Unlike tap-time saves this MUST be confirmed — pretending data is gone would be a lie.
-      console.error('Unstuck: delete all failed', err);
+      console.error('Showup: delete all failed', err);
       setDeleteState('error');
     });
   }
@@ -85,14 +85,14 @@ export default function SettingsScreen({
     try {
       parsed = await readJSONFile(file);
     } catch (err) {
-      console.error('Unstuck: import file unreadable', err);
+      console.error('Showup: import file unreadable', err);
       setImportState('invalid');
       return;
     }
     const result = validateExportBlob(parsed, CURRENT_SCHEMA_VERSION);
     if (!result.ok) {
       // errors are a debugging aid (console only) — the UI copy stays calm and generic
-      console.error('Unstuck: import rejected', result.errors);
+      console.error('Showup: import rejected', result.errors);
       setImportState(result.reason);
       return;
     }
@@ -105,7 +105,7 @@ export default function SettingsScreen({
     setImportState('importing');
     onImportAll(pendingBlob).catch((err: unknown) => {
       // replaceAll is atomic (one transaction), so a failure honestly means "nothing changed".
-      console.error('Unstuck: import failed', err);
+      console.error('Showup: import failed', err);
       setPendingBlob(null);
       setImportState('error');
     });

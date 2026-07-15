@@ -1,4 +1,4 @@
-/* Unstuck — shared UI classes. RULE: token variables only, no raw hex (tokens.css). */
+/* Showup — shared UI classes. RULE: token variables only, no raw hex (tokens.css). */
 
 .screen {
   padding: var(--pad-screen);

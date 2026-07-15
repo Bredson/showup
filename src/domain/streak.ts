@@ -1,4 +1,4 @@
-// Unstuck — forgiving streak + derived progress. Source of truth: docs/data-model.md §3–4.
+// Showup — forgiving streak + derived progress. Source of truth: docs/data-model.md §3–4.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
 import type { DailyEntry, DifficultyLevel, ISODate, ProgressState } from './types';

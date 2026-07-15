@@ -1,4 +1,4 @@
-// Unstuck — comeback interstitial logic (self-compassion). Source of truth: docs/ux-spec.md §7.
+// Showup — comeback interstitial logic (self-compassion). Source of truth: docs/ux-spec.md §7.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 //
 // "Break" = days with NO entry between the last entry and today. An entry is created on every

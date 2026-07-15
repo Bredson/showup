@@ -1,4 +1,4 @@
-// Unstuck — minimal i18n (2 languages, flat keys). No library needed (~40 lines).
+// Showup — minimal i18n (2 languages, flat keys). No library needed (~40 lines).
 // RULE: every user-facing string goes through t() — hardcoded strings are bugs.
 
 import { pl } from './pl';

@@ -1,5 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Unstuck app icon — sprout motif (🌿 "passa trwa"), palette from src/tokens.css.
+  <!-- Showup app icon — sprout motif (🌿 "passa trwa"), palette from src/tokens.css.
        Full-bleed design: OS applies its own mask (rounded corners / circle).
        Motif kept inside the central 80% safe zone for maskable icons.
        Draw order matters: mound is painted LAST so the stem grows out of the soil. -->

@@ -1,4 +1,4 @@
-/* Unstuck — design tokens. Source of truth: docs/design-direction.md
+/* Showup — design tokens. Source of truth: docs/design-direction.md
    RULE: components use only these variables — no raw hex values in component CSS. */
 
 :root {

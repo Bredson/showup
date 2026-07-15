@@ -1,4 +1,4 @@
-// Unstuck — Journal screen selection (ux-spec §5). Source of truth: DailyEntry[] only.
+// Showup — Journal screen selection (ux-spec §5). Source of truth: DailyEntry[] only.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 //
 // Scope decision (Dylemat 4 = A): the journal shows every entry with a recorded emotion —

@@ -1,4 +1,4 @@
-// Unstuck — static challenge content. Source of truth: docs/data-model.md §6.
+// Showup — static challenge content. Source of truth: docs/data-model.md §6.
 // Bundled with the app, never stored in IndexedDB. Content update = deploy.
 // Build gate: `npm run build` runs `prebuild` (vitest on src/content), which imports
 // this module — an invalid catalog fails the build, it never reaches users.

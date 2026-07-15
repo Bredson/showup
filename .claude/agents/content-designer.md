@@ -1,6 +1,6 @@
 # Content Designer Agent
 
-Subagent persona for authoring Unstuck challenge content (challenges.json).
+Subagent persona for authoring Showup challenge content (challenges.json).
 
 ## Role
 

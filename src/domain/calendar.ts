@@ -1,4 +1,4 @@
-// Unstuck — Progress-screen calendar (last 28 days). Source of truth: docs/ux-spec.md §4.
+// Showup — Progress-screen calendar (last 28 days). Source of truth: docs/ux-spec.md §4.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
 import type { DailyEntry, ISODate } from './types';

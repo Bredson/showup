@@ -1,4 +1,4 @@
-# Code Style Rules — Unstuck
+# Code Style Rules — Showup
 
 Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczegóły architektury: `docs/architecture.md`.
 
@@ -116,7 +116,7 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
 
 ## Deploy i produkcja (Faza 6)
 
-- **`base: '/unstuck/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/unstuck/` w kodzie aplikacji.
+- **`base: '/showup/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/showup/` w kodzie aplikacji.
 - **Pola formularzy (`textarea`, `input`) zawsze z atrybutem `name`** — brak `name`/`id` to issue w DevTools (autofill); `aria-label` nie wystarcza.
 - Szczegóły procesu deployu i triki testowe (offline PWA, przechwycenie eksportu) → `.claude/skills/deploy/SKILL.md`.
 

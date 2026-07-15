@@ -1,4 +1,4 @@
-// Unstuck — data export domain. Source of truth: docs/data-model.md §5.
+// Showup — data export domain. Source of truth: docs/data-model.md §5.
 // RULE: no React/storage imports; time is injected. The blob format is also the
 // migration format — changing it requires a schemaVersion bump + a Migration.
 
@@ -15,7 +15,7 @@ export function buildExportBlob(
   exportedAt: ISODateTime,
 ): ExportBlob {
   return {
-    app: 'unstuck',
+    app: 'showup',
     schemaVersion,
     exportedAt,
     profile,
@@ -23,7 +23,7 @@ export function buildExportBlob(
   };
 }
 
-/** File name fixed by data-model §5: unstuck-export-YYYY-MM-DD.json (local date). */
+/** File name fixed by data-model §5: showup-export-YYYY-MM-DD.json (local date). */
 export function exportFilename(today: ISODate): string {
-  return `unstuck-export-${today}.json`;
+  return `showup-export-${today}.json`;
 }

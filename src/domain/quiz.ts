@@ -1,4 +1,4 @@
-// Unstuck — onboarding quiz domain. Source of truth: docs/ux-spec.md §1 + docs/data-model.md §1.
+// Showup — onboarding quiz domain. Source of truth: docs/ux-spec.md §1 + docs/data-model.md §1.
 // RULE: no React/storage imports; time is injected. Question/option ids are IMMUTABLE FOREVER —
 // raw answers in QuizResult must stay recomputable after future quiz changes (data-model §1).
 
@@ -85,7 +85,7 @@ export function deriveDominantTriggers(answers: QuizAnswers): Emotion[] {
 /** Shared by buildProfile/updateProfileFromQuiz — one place enforcing the completeness invariant. */
 function buildQuizResult(answers: QuizAnswers, now: ISODateTime): QuizResult {
   if (!isQuizComplete(answers)) {
-    throw new Error('Unstuck quiz: cannot build profile from incomplete answers');
+    throw new Error('Showup quiz: cannot build profile from incomplete answers');
   }
   return {
     // Deep copy: array answers must not stay aliased to the caller's draft state.

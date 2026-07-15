@@ -1,4 +1,4 @@
-// Unstuck — domain types. Source of truth: docs/data-model.md
+// Showup — domain types. Source of truth: docs/data-model.md
 // RULE: this module (and everything in src/domain/) must not import from React or storage.
 
 export type Lang = 'pl' | 'en';
@@ -91,7 +91,7 @@ export interface Meta {
 }
 
 export interface ExportBlob {
-  app: 'unstuck';
+  app: 'showup';
   schemaVersion: number;
   exportedAt: ISODateTime;
   profile: UserProfile;

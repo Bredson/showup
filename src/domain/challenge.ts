@@ -1,4 +1,4 @@
-// Unstuck — daily challenge selection. Source of truth: docs/data-model.md §4.
+// Showup — daily challenge selection. Source of truth: docs/data-model.md §4.
 // RULE: no React/storage imports. The narrow port below is satisfied structurally by
 // StorageAdapter, so the domain stays import-free while accepting the adapter as an argument.
 
