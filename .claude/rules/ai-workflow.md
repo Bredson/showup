@@ -26,9 +26,28 @@ Rules for how AI agents work in this project (meta-level).
   with a recommendation and let the user decide.
 - Record every user decision in the relevant doc (e.g. "Rozstrzygnięcia dylematów" section).
 
+## Fork hygiene (lesson from Showup rebranding, 2026-07-15)
+
+- Rebranding a fork must cover SEMANTICS, not just names: `.claude/rules/` files still
+  described Unstuck's challenge/level model after the name-level rebrand — caught only by
+  independent review. When forking: audit every rules/skills file for domain assumptions.
+- Inherited docs that are not yet valid for this app must carry an explicit "superseded"
+  stamp at the top (see `docs/ux-spec.md`) instead of being silently misleading.
+
+## Spec review loop
+
+- Before implementing an engine/spec, run an independent subagent review (verdict:
+  SHIP / FIX FIRST / RETHINK). The Showup data-model review caught 4 blockers, all of them
+  state-derivation gaps (undefined values after transitions, non-derivable positions).
+  When reviewing derived-state designs, specifically probe: every transition (does each
+  derived value stay defined?), pause/resume, and edge slots (first/last of a cycle).
+- Record the review verdict and applied fixes in the doc itself (see data-model.md §8).
+
 ## Docs as source of truth
 
 - Implementation phases read `docs/`, not conversation history.
-- Current docs: `prd.md` (scope), `ux-spec.md` (screens), `data-model.md` (data & storage),
-  `design-direction.md` (visuals), `titd-method.*.md` (method foundation),
-  `fitness-research.md` (fitness sibling-app research + decisions).
+- Current docs: `prd.md` (scope), `data-model.md` (data & storage + program engine),
+  `pushup-program-research.md` (program skeleton §3), `fitness-research.md` (fork
+  rationale), `titd-method.*.md` (method foundation). `ux-spec.md` and
+  `design-direction.md` are inherited from Unstuck — ux-spec is superseded (stamped),
+  design direction still binding (PRD §8).
