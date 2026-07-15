@@ -150,10 +150,51 @@ export const pl = {
     'Przerwa to nie porażka — to część każdej długiej drogi. Zaczynamy od dziś, reszta nie ma znaczenia.',
   'comeback.cta': 'Wracam',
 
-  // Bottom navigation (2 tabs — the bar grows with future phases)
+  // Bottom navigation (3 tabs — the bar grows with future phases)
   'nav.label': 'Nawigacja',
   'nav.today': 'Dziś',
   'nav.progress': 'Progres',
+  'nav.settings': 'Ustawienia',
+
+  // Settings (PRD §5.6)
+  'settings.title': 'Ustawienia',
+  'settings.language': 'Język',
+  'settings.language.error': 'Nie udało się zapisać języka — zmiana może zniknąć po odświeżeniu. Spróbuj ponownie.',
+  'settings.how.title': 'Jak działa Showup',
+  'settings.how.show': 'Pokaż opis metody',
+  'settings.how.hide': 'Zwiń opis metody',
+  'settings.how.p1':
+    'Showup prowadzi cię drabiną wariantów: pompki przy ścianie, na wysokim i niskim podwyższeniu, na kolanach, aż do klasycznych. Trenujesz wariant dopasowany do swojego wyniku — trudność rośnie dopiero wtedy, gdy test pokaże, że jesteś na to gotowy.',
+  'settings.how.p2':
+    'Plan to 3 sesje w tygodniu, zawsze z dniem przerwy pomiędzy — mięśnie zwykle rosną w dni odpoczynku. Pozostałe dni są lekkie: rozgrzewka albo jedna luźna seria. Gdy zgłosisz ból, apka nie negocjuje — dzień zamienia się w wersję lekką.',
+  'settings.how.p3':
+    'Co kilka tygodni robisz Max Test — jedną serię do granic. Wynik decyduje, czy przechodzisz wyżej, zostajesz na konsolidację, czy dostajesz lżejszy tydzień. Plan nie jest nigdzie zapisany na sztywno: zawsze wynika z twojej historii wpisów.',
+  'settings.how.p4':
+    'Passa liczy obecność, nie wynik. Dzień lekki podtrzymuje ją tak samo jak sesja, a pojedynczy dzień przerwy jest wybaczony. Po dłuższej przerwie wracasz bez wyrzutów — czasem z retestem, żeby plan dogonił rzeczywistość.',
+  'settings.how.p5':
+    'Program opiera się na typowych zaleceniach progresji siłowej i bywa skuteczny, ale nie jest poradą medyczną. Przy bólu, zawrotach głowy lub wątpliwościach zdrowotnych skonsultuj się ze specjalistą.',
+  'settings.data': 'Twoje dane',
+  'settings.export.cta': 'Eksportuj dane',
+  'settings.export.working': 'Eksportuję…',
+  'settings.export.error': 'Nie udało się przygotować eksportu. Spróbuj ponownie.',
+  'settings.import.cta': 'Importuj dane',
+  'settings.import.working': 'Importuję…',
+  'settings.import.confirmBody':
+    'Kopia z dnia: {date}, wpisów: {count}. Import zastąpi wszystkie obecne dane w aplikacji.',
+  'settings.import.confirmCta': 'Zastąp dane kopią',
+  'settings.import.invalid': 'Ten plik nie wygląda na kopię danych Showup.',
+  'settings.import.newer': 'Ta kopia pochodzi z nowszej wersji aplikacji. Zaktualizuj aplikację i spróbuj ponownie.',
+  'settings.import.error': 'Import się nie powiódł. Twoje obecne dane pozostały nietknięte.',
+  'settings.delete.cta': 'Usuń wszystkie dane',
+  'settings.delete.working': 'Usuwam…',
+  'settings.delete.confirmBody':
+    'Zniknie cały dziennik, profil i progres — bez kopii nie da się ich odzyskać. Możesz najpierw wyeksportować dane.',
+  'settings.delete.confirmCta': 'Usuń na zawsze',
+  'settings.delete.error': 'Nie udało się usunąć danych. Spróbuj ponownie.',
+  'settings.confirm.keep': 'Zostaw',
+  'settings.privacy': 'Wszystko zostaje na tym urządzeniu. Zero kont, zero chmury, zero śledzenia.',
+  'settings.about': 'O aplikacji',
+  'settings.version': 'Showup {version}',
 
   // Progress — hero (forgiving streak: rhythm, not perfection)
   'progress.title': 'Twój progres',

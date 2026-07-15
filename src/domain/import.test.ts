@@ -67,11 +67,55 @@ describe('validateExportBlob', () => {
     }
   });
 
-  it('accepts an export with zero entries (fresh install backup)', () => {
+  it('rejects an export with zero entries — a profile cannot exist before the founding test', () => {
     const blob = JSON.parse(
       JSON.stringify(buildExportBlob(profile, [], CURRENT, '2026-07-03T20:00:00.000Z')),
     ) as unknown;
-    expect(validateExportBlob(blob, CURRENT).ok).toBe(true);
+    const result = validateExportBlob(blob, CURRENT);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.join(' ')).toContain('no completed Max Test');
+  });
+
+  it('rejects entries without any completed Max Test (computeProgram would throw post-import)', () => {
+    // Sessions only, and a test that was pain-degraded (degraded tests carry no result).
+    const blob = JSON.parse(
+      JSON.stringify(
+        buildExportBlob(
+          profile,
+          [
+            entry('2026-07-01'),
+            entry('2026-07-02', {
+              kind: 'test',
+              feelBefore: 'pain',
+              downgradedTo: 'easy',
+              sets: null,
+              easyContent: 'warmup',
+            }),
+          ],
+          CURRENT,
+          '2026-07-03T20:00:00.000Z',
+        ),
+      ),
+    ) as unknown;
+    const result = validateExportBlob(blob, CURRENT);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.join(' ')).toContain('no completed Max Test');
+  });
+
+  it('does not add a noise "no Max Test" error when the test entry itself is malformed', () => {
+    const blob = JSON.parse(
+      JSON.stringify(
+        buildExportBlob(
+          profile,
+          [entry('2026-07-01', { kind: 'test', sets: null, testResult: -3, feelBefore: 'fresh' })],
+          CURRENT,
+          '2026-07-03T20:00:00.000Z',
+        ),
+      ),
+    ) as unknown;
+    const result = validateExportBlob(blob, CURRENT);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.join(' ')).not.toContain('no completed Max Test');
   });
 
   it('rejects non-objects and files from other apps', () => {

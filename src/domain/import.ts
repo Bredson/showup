@@ -15,7 +15,7 @@ import type {
   UserProfile,
   Variant,
 } from './types';
-import { validateSessionDays } from './program';
+import { isGateTest, validateSessionDays } from './program';
 
 // `satisfies` keeps runtime lists in lockstep with the unions (adding a union member
 // without updating the list is a compile error).
@@ -195,11 +195,23 @@ export function validateExportBlob(raw: unknown, currentSchemaVersion: number): 
     return { ok: false, reason: 'invalid', errors };
   }
   const seenDates = new Set<string>();
+  let entriesOk = true;
   raw.entries.forEach((entry, index) => {
-    if (!checkEntry(entry, index, errors)) return;
+    if (!checkEntry(entry, index, errors)) {
+      entriesOk = false;
+      return;
+    }
     if (seenDates.has(entry.date)) errors.push(`entries[${index}]: duplicate date "${entry.date}"`);
     seenDates.add(entry.date);
   });
+  // A Showup profile can only exist AFTER the onboarding Max Test, and computeProgram
+  // throws without one (data-model §4) — a blob that validates but crashes the app right
+  // after replaceAll would be worse than a rejection. Zero entries is the same case: the
+  // app can never produce such an export. Skipped when an entry is malformed (the file is
+  // already rejected, and the broken entry might BE the missing test — no noise on top).
+  if (entriesOk && !raw.entries.some((e) => isGateTest(e as DailyEntry))) {
+    errors.push('entries: no completed Max Test entry — program state cannot be derived (data-model §4)');
+  }
 
   if (errors.length > 0 || !profileOk) return { ok: false, reason: 'invalid', errors };
   // Runtime checks above are the proof behind this assertion (validate-and-return style).

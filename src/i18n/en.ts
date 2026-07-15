@@ -151,10 +151,51 @@ export const en: Record<keyof typeof pl, string> = {
     'A break is not a failure — it is part of every long road. We start from today; the rest does not matter.',
   'comeback.cta': "I'm back",
 
-  // Bottom navigation (2 tabs — the bar grows with future phases)
+  // Bottom navigation (3 tabs — the bar grows with future phases)
   'nav.label': 'Navigation',
   'nav.today': 'Today',
   'nav.progress': 'Progress',
+  'nav.settings': 'Settings',
+
+  // Settings (PRD §5.6)
+  'settings.title': 'Settings',
+  'settings.language': 'Language',
+  'settings.language.error': 'Could not save the language — the change may not survive a refresh. Please try again.',
+  'settings.how.title': 'How Showup works',
+  'settings.how.show': 'Show how the method works',
+  'settings.how.hide': 'Hide how the method works',
+  'settings.how.p1':
+    'Showup walks you up a ladder of variants: wall push-ups, high and low incline, knees, all the way to full push-ups. You train the variant matched to your result — difficulty only rises once a test shows you are ready for it.',
+  'settings.how.p2':
+    'The plan is 3 sessions a week, always with a rest day in between — muscles tend to grow on the days off. The remaining days are easy: a warm-up or one loose set. If you report pain, the app does not negotiate — the day turns into its easy version.',
+  'settings.how.p3':
+    'Every few weeks you take a Max Test — one set to your limit. The result decides whether you move up, stay to consolidate, or get a lighter week. The plan is never stored anywhere: it is always derived from your entry history.',
+  'settings.how.p4':
+    'The streak counts showing up, not results. An easy day keeps it alive just like a session, and a single missed day is forgiven. After a longer break you come back without guilt — sometimes with a retest, so the plan catches up with reality.',
+  'settings.how.p5':
+    'The program follows common strength-progression guidelines and tends to work, but it is not medical advice. If you feel pain, dizziness or have health concerns, consult a professional.',
+  'settings.data': 'Your data',
+  'settings.export.cta': 'Export data',
+  'settings.export.working': 'Exporting…',
+  'settings.export.error': 'Could not prepare the export. Please try again.',
+  'settings.import.cta': 'Import data',
+  'settings.import.working': 'Importing…',
+  'settings.import.confirmBody':
+    'Backup from {date}, entries: {count}. Importing will replace all current data in the app.',
+  'settings.import.confirmCta': 'Replace data with backup',
+  'settings.import.invalid': 'This file does not look like a Showup backup.',
+  'settings.import.newer': 'This backup comes from a newer app version. Update the app and try again.',
+  'settings.import.error': 'The import failed. Your current data was left untouched.',
+  'settings.delete.cta': 'Delete all data',
+  'settings.delete.working': 'Deleting…',
+  'settings.delete.confirmBody':
+    'Your whole journal, profile and progress will be gone — without a backup they cannot be recovered. You can export your data first.',
+  'settings.delete.confirmCta': 'Delete forever',
+  'settings.delete.error': 'Could not delete the data. Please try again.',
+  'settings.confirm.keep': 'Keep it',
+  'settings.privacy': 'Everything stays on this device. No accounts, no cloud, no tracking.',
+  'settings.about': 'About',
+  'settings.version': 'Showup {version}',
 
   // Progress — hero (forgiving streak: rhythm, not perfection)
   'progress.title': 'Your progress',
