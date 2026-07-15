@@ -219,6 +219,17 @@ export const pl = {
   'progress.curve.srPoint': '{variant}: {value}',
   'progress.curve.srSegment': '{variant}: od {from} do {to}',
 
+  // Progress — block history funnel (PRD §6; short no-guilt labels — the gate's own verdicts)
+  'progress.blocks.title': 'Historia bloków',
+  'progress.blocks.result': '{result} ({variant})',
+  'progress.blocks.goal': 'Cel: 100 pompek',
+  'progress.blocks.advance': 'Awans: {variant}',
+  'progress.blocks.calibrated': 'Kalibracja',
+  'progress.blocks.newBlock': 'Nowy blok',
+  'progress.blocks.consolidation': 'Konsolidacja',
+  'progress.blocks.regen': 'Regeneracja',
+  'progress.blocks.stepDown': 'Lżejszy poziom',
+
   // Progress — current program position
   'progress.position.title': 'Twoja pozycja',
   'progress.position.week': 'Tydzień {n} z 4 bloku',

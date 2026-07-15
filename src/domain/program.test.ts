@@ -5,6 +5,7 @@ import type { DailyEntry, ISODate, ProgramState, UserProfile, Variant, Weekday }
 import {
   applyGate,
   bracketFor,
+  computeGateLog,
   computeProgram,
   dayKindFor,
   easyContentRange,
@@ -216,6 +217,7 @@ describe('applyGate', () => {
     );
     expect(r.state.variant).toBe('wall');
     expect(r.state.lastMT).toBe(6);
+    expect(r.outcome).toEqual({ type: 'regen' }); // the honest verdict at the ladder floor
   });
 
   it('graduation: MT >= 20 on a non-full variant → next variant with a seeded lastMT', () => {
@@ -244,6 +246,76 @@ describe('applyGate', () => {
     expect(r.state.goalReachedAt).toBe('2026-08-01');
     const r2 = applyGate(105, '2026-09-01', r.state, program);
     expect(r2.state.goalReachedAt).toBe('2026-08-01'); // first time only
+  });
+});
+
+// --- computeGateLog (funnel, PRD §6) --------------------------------------------
+
+describe('computeGateLog', () => {
+  function gateTest(date: ISODate, testResult: number, variant: Variant = 'full'): DailyEntry {
+    return entry({ date, kind: 'test', variant, testResult });
+  }
+
+  it('returns [] before the founding test (screens render pre-founding states gracefully)', () => {
+    expect(computeGateLog([], program)).toEqual([]);
+    expect(computeGateLog([session('2026-07-08')], program)).toEqual([]);
+  });
+
+  it('the founding test opens the log as calibrated — or goal at 100+ on full (PRD §3)', () => {
+    expect(computeGateLog([test0(12)], program)).toEqual([
+      { date: START, variant: 'full', result: 12, outcome: { type: 'calibrated' } },
+    ]);
+    expect(computeGateLog([test0(104)], program)[0]?.outcome).toEqual({ type: 'goal' });
+  });
+
+  it('chronological rows carry the verdict the gate reported at the time', () => {
+    // 12 → 14 (+15% → new block) → 15 (consolidation) → 14 (regen) → 13 (2nd fail → step-down).
+    // All gaps ≤ 14 days, so the pause rule never rewrites a fail into a calibration.
+    const entries = [
+      test0(12),
+      gateTest('2026-07-15', 14),
+      gateTest('2026-07-25', 15),
+      gateTest('2026-08-04', 14),
+      gateTest('2026-08-14', 13),
+    ];
+    expect(computeGateLog(entries, program).map((i) => [i.date, i.result, i.outcome.type])).toEqual([
+      [START, 12, 'calibrated'],
+      ['2026-07-15', 14, 'new-block'],
+      ['2026-07-25', 15, 'consolidation'],
+      ['2026-08-04', 14, 'regen'],
+      ['2026-08-14', 13, 'step-down'],
+    ]);
+  });
+
+  it('graduation shows as variant-advance with the new variant', () => {
+    const entries = [
+      test0(10, 'knee'),
+      session('2026-07-13', 'knee'), // keep-alive: gap ≤ 14 days
+      gateTest('2026-07-25', 22, 'knee'),
+    ];
+    expect(computeGateLog(entries, program)[1]).toEqual({
+      date: '2026-07-25',
+      variant: 'knee',
+      result: 22,
+      outcome: { type: 'variant-advance', variant: 'full' },
+    });
+  });
+
+  it('goal wins over the branch verdict (100+ on full mid-program)', () => {
+    const log = computeGateLog([test0(90), gateTest('2026-07-15', 102)], program);
+    expect(log[1]?.outcome).toEqual({ type: 'goal' });
+  });
+
+  it('a retest after a >14-day pause is a calibration, not a fail (§4 pause rule)', () => {
+    const log = computeGateLog([test0(12), gateTest('2026-09-01', 8)], program);
+    expect(log[1]?.outcome).toEqual({ type: 'calibrated' });
+  });
+
+  it('sorts a copy — unordered input is handled and never mutated', () => {
+    const entries = [gateTest('2026-07-15', 14), test0(12)];
+    const snapshot = [...entries];
+    expect(computeGateLog(entries, program).map((i) => i.date)).toEqual([START, '2026-07-15']);
+    expect(entries).toEqual(snapshot);
   });
 });
 

@@ -13,17 +13,22 @@ import type {
   ISODate,
   UserProfile,
 } from '../../domain/types';
-import { computeProgram, dayKindFor, easyContentRange, sessionPlan } from '../../domain/program';
+import {
+  computeGateLog,
+  computeProgram,
+  dayKindFor,
+  easyContentRange,
+  sessionPlan,
+  type GateOutcome,
+} from '../../domain/program';
 import { computeStreak } from '../../domain/streak';
 import {
-  classifyGateOutcome,
   comebackKind,
   missedDaysBefore,
   nextStep,
   openDayEntry,
   resumeStep,
   type ComebackKind,
-  type GateOutcome,
   type LoopStep,
 } from '../../domain/loop';
 import { program } from '../../content/program';
@@ -289,7 +294,7 @@ export default function TodayScreen({ adapter, profile }: Props) {
 
   // --- done: reinforcement / gate outcome --------------------------------------
   return (
-    <DoneStep entry={entry} entries={entries} profile={profile} today={today} headingRef={headingRef} />
+    <DoneStep entry={entry} entries={entries} today={today} headingRef={headingRef} />
   );
 }
 
@@ -529,13 +534,11 @@ function ReflectionStep({
 function DoneStep({
   entry,
   entries,
-  profile,
   today,
   headingRef,
 }: {
   entry: DailyEntry;
   entries: readonly DailyEntry[];
-  profile: UserProfile;
   today: ISODate;
   headingRef: React.RefObject<HTMLHeadingElement | null>;
 }) {
@@ -543,22 +546,12 @@ function DoneStep({
   const streak = computeStreak(entries, today);
   const isRealTest = entry.kind === 'test' && entry.downgradedTo === null && entry.testResult !== null;
 
-  // Gate outcome is derivable at any time: state without today's test vs. with it.
-  // Exception: the founding Max Test (onboarding day) has no "before" state —
-  // computeProgram throws on an empty history. That test seats the plan, so the
-  // honest verdict is 'calibrated', not a gate comparison.
-  const history = entries.filter((e) => e.date !== today);
-  let outcome: GateOutcome | null = null;
-  if (isRealTest) {
-    outcome =
-      history.length === 0
-        ? { type: 'calibrated' }
-        : classifyGateOutcome(
-            computeProgram(history, profile, program, today),
-            computeProgram(entries, profile, program, today),
-            program,
-          );
-  }
+  // The gate reports its own verdict (computeGateLog replays every test through it) —
+  // today's test is simply its row in the log. The founding Max Test needs no special
+  // case anymore: the log opens with it as 'calibrated' (or 'goal' at 100+ on full).
+  const outcome: GateOutcome | null = isRealTest
+    ? (computeGateLog(entries, program).find((i) => i.date === today)?.outcome ?? null)
+    : null;
 
   const { title, body } = doneCopy(entry, outcome, t);
 

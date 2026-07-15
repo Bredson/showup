@@ -30,6 +30,8 @@ samowspółczucie, zero presji), inna domena i inna progresja.
 | Cel v1 | **tylko 100 pompek** | jedna rzecz porządnie; architektura programu generyczna, ale bez drugiego programu w MVP |
 | System treningowy | **hybryda „Speirs-core"** | 3x/tydz. + drabinka wariantów BWF + łatwe dni GtG + periodyzacja testowa (pełny szkielet: pushup-program-research.md §3) |
 | Check przed startem | **1 pytanie: samopoczucie/energia** | odpowiedzi łączą nastrój i ciało; „coś boli" → auto-obniżenie sesji |
+| Lejek programu (§6) | **karta „Historia bloków" w Progresie** (decyzja 2026-07-15) | wiersz per test bramkowy (data, wariant, wynik, rezultat bramki) derywowany z wpisów; zero persystencji |
+| „Requiz" w Showup | **zmiana dni sesji w Ustawieniach** (decyzja 2026-07-15) | pełny re-onboarding z nowym Max Testem odrzucony — kłóciłby się z zasadą „testy tylko w harmonogramie"; walidacja dni jak przy onboardingu |
 | Harmonogram | **stałe 3 dni wybrane przy onboardingu + przesunięcie o 1 dzień** (przy onboardingu żadne dwa dni nie sąsiadują; przesunięcie dozwolone tylko gdy zachowa ≥ 48 h od poprzedniej i do następnej twardej sesji — inaczej sesja przepada **bez kaskady**) | stały sygnał nawykowy (Kaushal & Rhodes) bez „pierwsza kolizja z życiem = porażka"; kaskadowe przesuwanie zniszczyłoby stały sygnał |
 
 ## 3. Mapowanie metody i researchu na funkcje

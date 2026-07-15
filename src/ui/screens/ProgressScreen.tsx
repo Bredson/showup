@@ -7,7 +7,14 @@
 import { useEffect, useRef, useState } from 'react';
 import type { DailyEntry, ISODate, ProgramState, UserProfile } from '../../domain/types';
 import { computeCalendar, type CalendarDay } from '../../domain/calendar';
-import { computeProgram, isGateTest, SLOTS_PER_WEEK } from '../../domain/program';
+import {
+  computeGateLog,
+  computeProgram,
+  isGateTest,
+  SLOTS_PER_WEEK,
+  type GateLogItem,
+  type GateOutcome,
+} from '../../domain/program';
 import { computeStreak, computeLongestStreak } from '../../domain/streak';
 import { computeTestCurve, type TestCurve } from '../../domain/testCurve';
 import { program } from '../../content/program';
@@ -69,6 +76,7 @@ export default function ProgressScreen({ adapter, profile }: Props) {
   const longest = computeLongestStreak(entries);
   const days = computeCalendar(entries, today);
   const curve = computeTestCurve(state?.testHistory ?? []);
+  const gateLog = computeGateLog(entries, program); // [] pre-founding — card simply absent
   // Ring = presence over the last 7 calendar days (completed + forgiven), matching
   // the forgiving-streak philosophy: rhythm, not perfection.
   const last7 = days.slice(-7).filter((d) => d.status === 'completed' || d.status === 'forgiven');
@@ -102,6 +110,8 @@ export default function ProgressScreen({ adapter, profile }: Props) {
       </section>
 
       {state !== null && <PositionCard state={state} />}
+
+      {gateLog.length > 0 && <BlocksCard log={gateLog} today={today} />}
 
       {sheetEntry !== null && (
         <EntrySheet entry={sheetEntry} today={today} onClose={() => setSheetEntry(null)} />
@@ -285,6 +295,48 @@ function Curve({ curve }: { curve: TestCurve }) {
       {hasSeeds && <p className="muted">{t('progress.curve.seedNote')}</p>}
     </>
   );
+}
+
+/** Block history funnel (PRD §6) — one row per gate test, newest first (like the journal). */
+function BlocksCard({ log, today }: { log: readonly GateLogItem[]; today: ISODate }) {
+  const t = useT();
+  const lang = useLang();
+  return (
+    <section className="card">
+      <h2>{t('progress.blocks.title')}</h2>
+      <ul className="blocks-list">
+        {[...log].reverse().map((item) => (
+          // At most one gate test per date (entries are keyed by date) — safe key.
+          <li key={item.date} className="blocks-row">
+            <span className="blocks-date muted">{formatDayShort(item.date, lang, today)}</span>
+            <span className="blocks-result">
+              {t('progress.blocks.result', { result: item.result, variant: t(`variant.${item.variant}`) })}
+            </span>
+            <span className="badge">{outcomeLabel(item.outcome, t)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+  );
+}
+
+function outcomeLabel(outcome: GateOutcome, t: ReturnType<typeof useT>): string {
+  switch (outcome.type) {
+    case 'goal':
+      return t('progress.blocks.goal');
+    case 'variant-advance':
+      return t('progress.blocks.advance', { variant: t(`variant.${outcome.variant}`) });
+    case 'calibrated':
+      return t('progress.blocks.calibrated');
+    case 'new-block':
+      return t('progress.blocks.newBlock');
+    case 'consolidation':
+      return t('progress.blocks.consolidation');
+    case 'regen':
+      return t('progress.blocks.regen');
+    case 'step-down':
+      return t('progress.blocks.stepDown');
+  }
 }
 
 function PositionCard({ state }: { state: ProgramState }) {

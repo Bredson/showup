@@ -220,6 +220,17 @@ export const en: Record<keyof typeof pl, string> = {
   'progress.curve.srPoint': '{variant}: {value}',
   'progress.curve.srSegment': '{variant}: from {from} to {to}',
 
+  // Progress — block history funnel (PRD §6; short no-guilt labels — the gate's own verdicts)
+  'progress.blocks.title': 'Block history',
+  'progress.blocks.result': '{result} ({variant})',
+  'progress.blocks.goal': 'Goal: 100 push-ups',
+  'progress.blocks.advance': 'Advance: {variant}',
+  'progress.blocks.calibrated': 'Calibration',
+  'progress.blocks.newBlock': 'New block',
+  'progress.blocks.consolidation': 'Consolidation',
+  'progress.blocks.regen': 'Regeneration',
+  'progress.blocks.stepDown': 'Easier level',
+
   // Progress — current program position
   'progress.position.title': 'Where you are',
   'progress.position.week': 'Week {n} of 4 in the block',

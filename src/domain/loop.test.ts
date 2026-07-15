@@ -1,9 +1,7 @@
 // Daily-loop glue tests against the binding spec: docs/prd.md §4, docs/data-model.md §1/§4.
 import { describe, expect, it } from 'vitest';
-import { program } from '../content/program';
-import type { DailyEntry, ISODate, ProgramState } from './types';
+import type { DailyEntry, ISODate } from './types';
 import {
-  classifyGateOutcome,
   comebackKind,
   missedDaysBefore,
   nextStep,
@@ -13,25 +11,6 @@ import {
 } from './loop';
 
 // --- fixtures ---------------------------------------------------------------
-
-function state(partial: Partial<ProgramState> = {}): ProgramState {
-  return {
-    variant: 'full',
-    lastMT: 20,
-    lastMTisSeed: false,
-    bracket: 'b2',
-    blockWeek: 1,
-    volumeModifier: 1,
-    sessionsDoneThisWeek: 0,
-    consolidations: 0,
-    failedTestsInRow: 0,
-    goalReachedAt: null,
-    currentStreak: 0,
-    longestStreak: 0,
-    testHistory: [],
-    ...partial,
-  };
-}
 
 function entry(partial: Partial<DailyEntry> & { date: ISODate }): DailyEntry {
   return {
@@ -124,46 +103,6 @@ describe('openDayEntry', () => {
       completedAt: null,
       updatedAt: '2026-07-15T07:00:00.000Z',
     });
-  });
-});
-
-// --- gate outcome -------------------------------------------------------------
-
-describe('classifyGateOutcome', () => {
-  it('goal reached wins over everything', () => {
-    const prev = state({ lastMT: 90, bracket: 'b6' });
-    const next = state({ lastMT: 104, bracket: 'b6', goalReachedAt: '2026-07-15' });
-    expect(classifyGateOutcome(prev, next, program)).toEqual({ type: 'goal' });
-  });
-
-  it('variant graduation is announced with the new variant', () => {
-    const prev = state({ variant: 'knee', lastMT: 18 });
-    const next = state({ variant: 'full', lastMT: 9, lastMTisSeed: true, bracket: 'b1' });
-    expect(classifyGateOutcome(prev, next, program)).toEqual({ type: 'variant-advance', variant: 'full' });
-  });
-
-  it('first real test on a seeded variant is a calibration, not a verdict', () => {
-    const prev = state({ lastMT: 8, lastMTisSeed: true, bracket: 'b1' });
-    const next = state({ lastMT: 11, lastMTisSeed: false, bracket: 'b2' });
-    expect(classifyGateOutcome(prev, next, program)).toEqual({ type: 'calibrated' });
-  });
-
-  it('failed test → regen; second failure with a bracket drop → step-down', () => {
-    const prev = state({ failedTestsInRow: 0 });
-    const next = state({ blockWeek: 'regen', failedTestsInRow: 1, volumeModifier: 0.9 });
-    expect(classifyGateOutcome(prev, next, program)).toEqual({ type: 'regen' });
-
-    const prev2 = state({ failedTestsInRow: 1, volumeModifier: 0.9 });
-    const next2 = state({ blockWeek: 'regen', bracket: 'b1', lastMT: 9 });
-    expect(classifyGateOutcome(prev2, next2, program)).toEqual({ type: 'step-down' });
-  });
-
-  it('small improvement → consolidation; clear improvement → new block', () => {
-    const prev = state({ lastMT: 20 });
-    expect(classifyGateOutcome(prev, state({ lastMT: 21, consolidations: 1 }), program)).toEqual({
-      type: 'consolidation',
-    });
-    expect(classifyGateOutcome(prev, state({ lastMT: 25 }), program)).toEqual({ type: 'new-block' });
   });
 });
 

@@ -19,11 +19,16 @@ export function formatDayLong(date: ISODate, lang: Lang, today?: ISODate): strin
   });
 }
 
-/** "12 lip" / "12 Jul" — compact axis labels on the Max Test curve. */
-export function formatDayShort(date: ISODate, lang: Lang): string {
+/**
+ * "12 lip" / "12 Jul" — compact axis labels on the Max Test curve.
+ * Pass `today` for unbounded lists (block history): other-year dates include the year.
+ */
+export function formatDayShort(date: ISODate, lang: Lang, today?: ISODate): string {
+  const differentYear = today !== undefined && date.slice(0, 4) !== today.slice(0, 4);
   return new Date(`${date}T00:00:00`).toLocaleDateString(LOCALES[lang], {
     day: 'numeric',
     month: 'short',
+    ...(differentYear ? { year: 'numeric' } : {}),
   });
 }
 

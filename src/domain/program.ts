@@ -156,12 +156,27 @@ interface GateState {
   goalReachedAt: ISODate | null;
 }
 
+/**
+ * Gate verdict, reported by the gate itself at the moment it runs — the SINGLE source
+ * of truth for the done-screen copy and the block-history funnel (PRD §6). Priority:
+ * goal > variant-advance > branch outcome (a graduation overrides the block it seated).
+ */
+export type GateOutcome =
+  | { type: 'goal' } // first 100+ on full — celebration (program continues)
+  | { type: 'variant-advance'; variant: Variant } // graduate to a harder variant (seeded MT)
+  | { type: 'calibrated' } // first real test on a seeded variant — block seated, no judgement
+  | { type: 'step-down' } // 2nd failed test → easier bracket/variant + regen week
+  | { type: 'regen' } // failed test → regeneration week, then repeat at 0.9
+  | { type: 'consolidation' } // small improvement → repeat block with better MT (framing: normal)
+  | { type: 'new-block' }; // clear improvement → next block
+
 interface GateResult {
   state: GateState;
   /** First day of the new block (day after the test, or after the regen week). */
   blockAnchor: ISODate;
   /** Last day of the regen week ('easy' days), or null when no regen was triggered. */
   regenUntil: ISODate | null;
+  outcome: GateOutcome;
 }
 
 export function applyGate(
@@ -173,8 +188,10 @@ export function applyGate(
   const s: GateState = { ...prev };
   let regenUntil: ISODate | null = null;
   let blockAnchor = addDays(date, 1);
+  let outcome: GateOutcome;
 
-  if (s.variant === 'full' && newMT >= 100 && s.goalReachedAt === null) {
+  const goalNow = s.variant === 'full' && newMT >= 100 && s.goalReachedAt === null;
+  if (goalNow) {
     s.goalReachedAt = date; // minor #16 — program continues past the goal
   }
 
@@ -184,6 +201,7 @@ export function applyGate(
     s.lastMT = newMT;
     s.lastMTisSeed = false;
     s.volumeModifier = 1;
+    outcome = { type: 'calibrated' };
   } else if (
     newMT >= (1 + program.testGateImprovement) * s.lastMT ||
     bracketFor(newMT, program).id !== bracketFor(s.lastMT, program).id
@@ -194,18 +212,23 @@ export function applyGate(
     s.volumeModifier = 1;
     s.consolidations = 0;
     s.failedTestsInRow = 0;
+    outcome = { type: 'new-block' };
   } else if (newMT > s.lastMT) {
     // Consolidation: repeat the block with the slightly better MT (framing: normal).
     s.lastMT = newMT;
     s.volumeModifier = 1;
     s.consolidations += 1;
     s.failedTestsInRow = 0;
+    outcome = { type: 'consolidation' };
   } else {
     // Failed test (newMT <= lastMT): lastMT stays; regen week, then repeat at 0.9 (minor #14).
     s.failedTestsInRow += 1;
     s.volumeModifier = 0.9;
+    outcome = { type: 'regen' };
     if (s.failedTestsInRow >= 2) {
-      stepDown(s, newMT, program); // + UI prompt about sleep/soreness (copy lives in i18n)
+      // + UI prompt about sleep/soreness (copy lives in i18n). At the ladder floor
+      // stepDown changes nothing — the honest verdict is still 'regen', not 'step-down'.
+      if (stepDown(s, newMT, program)) outcome = { type: 'step-down' };
       s.volumeModifier = 1;
       s.failedTestsInRow = 0;
       s.consolidations = 0;
@@ -226,14 +249,20 @@ export function applyGate(
       s.failedTestsInRow = 0;
       regenUntil = null;
       blockAnchor = addDays(date, 1);
+      outcome = { type: 'variant-advance', variant: harder };
     }
   }
 
-  return { state: s, blockAnchor, regenUntil };
+  if (goalNow) outcome = { type: 'goal' }; // announcement priority: goal wins over everything
+
+  return { state: s, blockAnchor, regenUntil, outcome };
 }
 
-/** Two failed tests in a row: step down a bracket, or a variant when already on the lowest. */
-function stepDown(s: GateState, newMT: number, program: ProgramConfig): void {
+/**
+ * Two failed tests in a row: step down a bracket, or a variant when already on the lowest.
+ * Returns true when something actually changed (false at the ladder floor).
+ */
+function stepDown(s: GateState, newMT: number, program: ProgramConfig): boolean {
   const bracket = bracketFor(s.lastMT, program);
   const idx = program.brackets.findIndex((b) => b.id === bracket.id);
   const prevBracket = program.brackets[idx - 1];
@@ -241,15 +270,17 @@ function stepDown(s: GateState, newMT: number, program: ProgramConfig): void {
     // Synthetic value, not a real result → seed, so the next test calibrates freshly.
     s.lastMT = prevBracket.maxMT;
     s.lastMTisSeed = true;
-    return;
+    return true;
   }
   const easier = easierVariant(s.variant, program);
   if (easier !== null) {
     s.variant = easier;
     s.lastMT = Math.max(1, Math.round(newMT / program.variantSeedFactor));
     s.lastMTisSeed = true;
+    return true;
   }
   // wall + lowest bracket: nothing easier exists — stay put (ladder floor).
+  return false;
 }
 
 // ---------------------------------------------------------------------------
@@ -272,7 +303,7 @@ function isCompleted(e: DailyEntry): boolean {
 }
 
 /** A completed test that carries a gate-relevant result (a pain-downgraded test wanders instead). */
-export function isGateTest(e: DailyEntry): boolean {
+export function isGateTest(e: DailyEntry): e is DailyEntry & { testResult: number } {
   return e.kind === 'test' && isCompleted(e) && e.downgradedTo === null && e.testResult !== null;
 }
 
@@ -284,6 +315,85 @@ function scheduledDays(from: ISODate, to: ISODate, sessionDays: readonly Weekday
     if (sessionDays.includes(weekdayOf(d))) out.push(d);
   }
   return out;
+}
+
+/** One gate test with the verdict the gate reported at the time — a funnel row (PRD §6). */
+export interface GateLogItem {
+  date: ISODate;
+  /** Variant the test was performed on (entry snapshot). */
+  variant: Variant;
+  result: number;
+  outcome: GateOutcome;
+}
+
+interface Replay {
+  gate: GateState;
+  blockAnchor: ISODate;
+  regenUntil: ISODate | null;
+  testHistory: ProgramState['testHistory'];
+  log: GateLogItem[];
+}
+
+/**
+ * Gate replay — the ONLY fold over completed tests (derive and computeGateLog both
+ * use it; a second copy of the pause-seed / onboarding-cascade rules would drift).
+ */
+function replayGates(sorted: readonly DailyEntry[], program: ProgramConfig): Replay {
+  const tests = sorted.filter(isGateTest);
+  const first = tests[0];
+  if (first === undefined) {
+    throw new Error('computeProgram requires the onboarding Max Test entry (data-model §4)');
+  }
+
+  // Onboarding entry stores the LAST REAL attempt; the cascade resolves the training start.
+  let gate: GateState = {
+    ...resolveOnboardingResult(first.variant, first.testResult, program),
+    volumeModifier: 1,
+    consolidations: 0,
+    failedTestsInRow: 0,
+    goalReachedAt: first.variant === 'full' && first.testResult >= 100 ? first.date : null,
+  };
+  let blockAnchor = addDays(first.date, 1);
+  let regenUntil: ISODate | null = null;
+
+  const completedAsc = sorted.filter(isCompleted);
+  const testHistory: ProgramState['testHistory'] = [
+    { date: first.date, variant: first.variant, result: first.testResult },
+  ];
+  if (gate.lastMTisSeed) {
+    testHistory.push({ date: first.date, variant: gate.variant, result: gate.lastMT, seed: true });
+  }
+  const log: GateLogItem[] = [
+    {
+      date: first.date,
+      variant: first.variant,
+      result: first.testResult,
+      // The founding test seats the plan (no "before" state to judge against) — unless
+      // it already hits the goal: 100+ on full at onboarding IS the celebration (PRD §3).
+      outcome: gate.goalReachedAt !== null ? { type: 'goal' } : { type: 'calibrated' },
+    },
+  ];
+
+  for (const t of tests.slice(1)) {
+    // A test after a >14-day pause gates against a stale MT — treat it as a seed so the
+    // gate takes the calibration path: its result SEATS the new block (§4 pause rule).
+    const prevCompleted = completedAsc.filter((e) => e.date < t.date).pop();
+    if (prevCompleted !== undefined && daysBetween(prevCompleted.date, t.date) > PAUSE_RETEST_DAYS) {
+      gate = { ...gate, lastMTisSeed: true };
+    }
+    const r = applyGate(t.testResult, t.date, gate, program);
+    gate = r.state;
+    blockAnchor = r.blockAnchor;
+    regenUntil = r.regenUntil;
+    testHistory.push({ date: t.date, variant: t.variant, result: t.testResult });
+    if (gate.lastMTisSeed) {
+      // Graduation / step-down left a seeded MT — record it for chart continuity.
+      testHistory.push({ date: t.date, variant: gate.variant, result: gate.lastMT, seed: true });
+    }
+    log.push({ date: t.date, variant: t.variant, result: t.testResult, outcome: r.outcome });
+  }
+
+  return { gate, blockAnchor, regenUntil, testHistory, log };
 }
 
 /**
@@ -299,49 +409,8 @@ function derive(
   today: ISODate,
 ): Derived {
   const sorted = [...entries].sort((a, b) => (a.date < b.date ? -1 : a.date > b.date ? 1 : 0));
-  const tests = sorted.filter(isGateTest);
-  const first = tests[0];
-  if (first === undefined) {
-    throw new Error('computeProgram requires the onboarding Max Test entry (data-model §4)');
-  }
-
-  // Onboarding entry stores the LAST REAL attempt; the cascade resolves the training start.
-  let gate: GateState = {
-    ...resolveOnboardingResult(first.variant, first.testResult as number, program),
-    volumeModifier: 1,
-    consolidations: 0,
-    failedTestsInRow: 0,
-    goalReachedAt: first.variant === 'full' && (first.testResult as number) >= 100 ? first.date : null,
-  };
-  let blockAnchor = addDays(first.date, 1);
-  let regenUntil: ISODate | null = null;
-
+  const { gate, blockAnchor, regenUntil, testHistory } = replayGates(sorted, program);
   const completedAsc = sorted.filter(isCompleted);
-  const testHistory: ProgramState['testHistory'] = [
-    { date: first.date, variant: first.variant, result: first.testResult as number },
-  ];
-  if (gate.lastMTisSeed) {
-    testHistory.push({ date: first.date, variant: gate.variant, result: gate.lastMT, seed: true });
-  }
-
-  for (const t of tests.slice(1)) {
-    // A test after a >14-day pause gates against a stale MT — treat it as a seed so the
-    // gate takes the calibration path: its result SEATS the new block (§4 pause rule).
-    const prevCompleted = completedAsc.filter((e) => e.date < t.date).pop();
-    if (prevCompleted !== undefined && daysBetween(prevCompleted.date, t.date) > PAUSE_RETEST_DAYS) {
-      gate = { ...gate, lastMTisSeed: true };
-    }
-    const r = applyGate(t.testResult as number, t.date, gate, program);
-    gate = r.state;
-    blockAnchor = r.blockAnchor;
-    regenUntil = r.regenUntil;
-    testHistory.push({ date: t.date, variant: t.variant, result: t.testResult as number });
-    if (gate.lastMTisSeed) {
-      // Graduation / step-down left a seeded MT — record it for chart continuity.
-      testHistory.push({ date: t.date, variant: gate.variant, result: gate.lastMT, seed: true });
-    }
-  }
-
   const lastCompleted = completedAsc[completedAsc.length - 1];
   const lastCompletedDate = lastCompleted?.date ?? null;
   const paused =
@@ -487,6 +556,20 @@ export function computeProgram(
   today: ISODate,
 ): ProgramState {
   return derive(entries, profile, program, today).state;
+}
+
+/**
+ * The program's own funnel (PRD §6): every gate test, chronologically, with the verdict
+ * the gate reported at the time. [] before the founding test — screens render pre-founding
+ * states gracefully instead of throwing like computeProgram (founding-day lesson).
+ */
+export function computeGateLog(
+  entries: readonly DailyEntry[],
+  program: ProgramConfig,
+): readonly GateLogItem[] {
+  const sorted = [...entries].sort((a, b) => a.date.localeCompare(b.date));
+  if (!sorted.some(isGateTest)) return [];
+  return replayGates(sorted, program).log;
 }
 
 /**

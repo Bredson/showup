@@ -1,16 +1,8 @@
-// Showup — daily loop glue: step machine, gate outcome for UI copy, comeback interstitial.
+// Showup — daily loop glue: step machine and the comeback interstitial.
 // Source of truth: docs/prd.md §4, docs/data-model.md §1/§4.
 // RULE: pure functions only; no React/storage/i18n imports; dates passed in, never read from the clock.
 
-import type {
-  DailyEntry,
-  DayKind,
-  ISODate,
-  ISODateTime,
-  ProgramConfig,
-  ProgramState,
-  Variant,
-} from './types';
+import type { DailyEntry, DayKind, ISODate, ISODateTime, Variant } from './types';
 import { daysBetween } from './streak';
 
 /**
@@ -90,44 +82,9 @@ export function resumeStep(entry: DailyEntry, plannedSetCount: number | null): L
   return plannedSetCount === null || done < plannedSetCount ? 'sets' : 'reflection';
 }
 
-// ---------------------------------------------------------------------------
-// Gate outcome — classification for the post-test message (PRD §4: awans/konsolidacja/regen)
-// ---------------------------------------------------------------------------
-
-/**
- * Ordered by announcement priority; derived by comparing the ProgramState before and
- * after the completed test entry (the engine is a fold over entries — no extra API).
- */
-export type GateOutcome =
-  | { type: 'goal' } // first 100+ on full — celebration (program continues)
-  | { type: 'variant-advance'; variant: Variant } // graduate to a harder variant (seeded MT)
-  | { type: 'calibrated' } // first real test on a seeded variant — block seated, no judgement
-  | { type: 'step-down' } // 2nd failed test → easier bracket/variant + regen week
-  | { type: 'regen' } // failed test → regeneration week, then repeat at 0.9
-  | { type: 'consolidation' } // small improvement → repeat block with better MT (framing: normal)
-  | { type: 'new-block' }; // clear improvement → next block
-
-export function classifyGateOutcome(
-  prev: ProgramState,
-  next: ProgramState,
-  program: ProgramConfig,
-): GateOutcome {
-  if (prev.goalReachedAt === null && next.goalReachedAt !== null) return { type: 'goal' };
-
-  const prevIdx = program.variants.indexOf(prev.variant);
-  const nextIdx = program.variants.indexOf(next.variant);
-  if (nextIdx > prevIdx) return { type: 'variant-advance', variant: next.variant };
-
-  if (next.blockWeek === 'regen') {
-    // stepDown fires on the 2nd failure and may lower the bracket or the variant.
-    return nextIdx < prevIdx || next.bracket !== prev.bracket
-      ? { type: 'step-down' }
-      : { type: 'regen' };
-  }
-  if (prev.lastMTisSeed && !next.lastMTisSeed) return { type: 'calibrated' };
-  if (next.consolidations > prev.consolidations) return { type: 'consolidation' };
-  return { type: 'new-block' };
-}
+// Gate outcome classification moved INTO the gate itself: `applyGate` reports its
+// verdict and `computeGateLog` (program.ts) exposes the full history — comparing
+// ProgramStates here was a heuristic reverse-engineering a decision already made.
 
 // ---------------------------------------------------------------------------
 // Comeback interstitial (PRD §4: missed day → self-compassion, never reproach)

@@ -730,6 +730,37 @@ button.cal-dot::after {
   }
 }
 
+/* Progress — block history funnel (PRD §6): date · result · gate verdict badge */
+.blocks-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.blocks-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.blocks-date {
+  flex: 0 0 4.5rem;
+  font-size: 0.85rem;
+}
+
+.blocks-result {
+  flex: 1;
+  min-width: 0;
+}
+
+.blocks-row .badge {
+  margin: 0;
+  flex-shrink: 0;
+}
+
 /* Journal (ux-spec §5) — reverse-chronological list of emotion + reflection rows */
 .journal-list {
   list-style: none;
