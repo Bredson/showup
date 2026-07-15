@@ -60,6 +60,96 @@ export const en: Record<keyof typeof pl, string> = {
   'onb.ifthen.placeholder': 'When [signal], I do my session — e.g. "When I get home from work, I do my session."',
   'onb.finish.cta': 'Start training',
 
+  // Today — day shell
+  'today.title.session': 'Session day',
+  'today.title.test': 'Test day',
+  'today.title.easy': 'Easy day',
+  'today.variantLabel': 'Variant: {variant}',
+  'today.saveError': 'Could not save. Try again — nothing was lost.',
+  'today.streak': 'Days showing up in a row: {n}',
+
+  // Today — feel check (sessions and tests)
+  'today.feel.title': 'How do you feel today?',
+  'today.feel.hint': 'Answer honestly — the plan will adapt.',
+  'today.feel.fresh': 'Fresh',
+  'today.feel.ok': 'Okay',
+  'today.feel.tired': 'Tired',
+  'today.feel.pain': 'Something hurts',
+
+  // Today — pain degradation (day runs as easy; kind snapshot stays)
+  'today.pain.title': 'No hard work today',
+  'today.pain.body':
+    'Pain is a stop signal for a hard session. Do the light version today — it still counts as a full program day.',
+
+  // Today — session sets
+  'today.sets.tiredNote': 'Tired? Today\u2019s plan is one set lighter.',
+  'today.sets.progress': 'Set {current} of {total}',
+  'today.sets.target': 'Target: {reps} reps',
+  'today.sets.amrapTarget': 'Target: max minus one',
+  'today.sets.amrapHint': 'Stop one rep before your form breaks — never to failure.',
+  'today.sets.inputLabel': 'How many reps?',
+  'today.sets.confirm': 'Save set',
+  'today.sets.restHint': 'Rest 60–120 seconds between sets.',
+
+  // Today — easy day (2-minute minimum)
+  'today.easy.title': 'The two-minute minimum',
+  'today.easy.hint': 'Pick one and check it off. Showing up counts, not volume.',
+  'today.easy.gtg': 'One relaxed set: {min}–{max} reps',
+  'today.easy.warmup': 'Wrist and shoulder warm-up (2 minutes)',
+  'today.easy.cta': 'Done',
+
+  // Today — Max Test (warmup reuses the onboarding safety copy: onb.disclaimer.redFlags)
+  'today.test.warmup.title': 'Warm-up before the test',
+  'today.test.warmup.body':
+    'Do 2 light sets of a few reps, then rest 2–3 minutes. The test is one set until your form breaks — not until it hurts.',
+  'today.test.warmup.cta': 'Start the test',
+  'today.test.title': 'Max Test',
+  'today.test.result': 'Your result: {result}',
+
+  // Today — reflection (sessions and tests)
+  'today.reflection.title': 'One sentence to finish',
+  'today.reflection.placeholder': 'How did it go? What do you notice today?',
+  'today.reflection.save': 'Save and finish',
+  'today.reflection.skip': 'Finish without a note',
+
+  // Today — done (reinforcement)
+  'today.done.session.title': 'Session done',
+  'today.done.session.body': 'Another brick laid. Consistency builds strength faster than heroics.',
+  'today.done.easy.title': 'Showed up',
+  'today.done.easy.body': 'Minimum done — that is exactly what easy days are about.',
+  'today.done.degraded.title': 'Day complete',
+  'today.done.degraded.body':
+    'Listening to your body is training too. If the pain returns next time, see a specialist.',
+
+  // Test gate outcomes (PRD §4: advance / consolidation / regeneration)
+  'gate.goal.title': '100 pushups. Goal reached!',
+  'gate.goal.body':
+    'One hundred full pushups — the whole road travelled. The program keeps going if you want to raise the bar.',
+  'gate.advance.title': 'Advance: {variant}',
+  'gate.advance.body':
+    'A new, harder variant. Your max will be lower on it — that is normal; the next test will calibrate the plan.',
+  'gate.calibrated.title': 'Plan calibrated',
+  'gate.calibrated.body': 'Your first real test on this variant set your plan. From now on we count from this result.',
+  'gate.newBlock.title': 'New block unlocked',
+  'gate.newBlock.body': 'Clear progress — a stronger block starts with your next session.',
+  'gate.consolidation.title': 'Consolidation',
+  'gate.consolidation.body':
+    'A small step up. We repeat the block with a better base — a normal part of the road, not a failure.',
+  'gate.regen.title': 'Regeneration week',
+  'gate.regen.body':
+    'The result did not jump — your body is asking for a breather. A week of easy days, then the block once more. Progress loves rest.',
+  'gate.stepDown.title': 'One step back, two forward',
+  'gate.stepDown.body':
+    'Two weaker tests in a row usually mean fatigue, not regression. We step down one level — check your sleep and recovery, you will come back stronger.',
+
+  // Comeback interstitial (missed day → self-compassion, never reproach)
+  'comeback.oneDay.title': 'Good to see you',
+  'comeback.oneDay.body': 'A one-day break happens to everyone. Your streak is safe — back to moving.',
+  'comeback.multiDay.title': 'Good to have you back',
+  'comeback.multiDay.body':
+    'A break is not a failure — it is part of every long road. We start from today; the rest does not matter.',
+  'comeback.cta': "I'm back",
+
   // Pushup variant names (ladder)
   'variant.wall': 'Wall pushups',
   'variant.incline-high': 'High incline pushups',

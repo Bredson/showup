@@ -1,11 +1,12 @@
-// App shell: no profile → onboarding; with profile → the program UI (for now still
-// the "under construction" placeholder — the daily loop arrives in the next phase).
+// App shell: no profile → onboarding; with profile → the daily loop (TodayScreen).
+// The "under construction" placeholder remains only as the boot-error screen.
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
 import { useEffect, useState } from 'react';
 import type { Lang, UserProfile } from './domain/types';
 import type { StorageAdapter } from './storage/adapter';
 import { LangContext, useT } from './ui/LangContext';
 import OnboardingScreen from './ui/screens/OnboardingScreen';
+import TodayScreen from './ui/screens/TodayScreen';
 
 /** Sensible default before a profile exists; a stored profile wins after boot. */
 function detectLang(): Lang {
@@ -52,15 +53,17 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
 
   return (
     <LangContext.Provider value={lang}>
-      {boot.state === 'ready' && boot.profile === null ? (
+      {boot.state === 'loading' ? null : boot.state === 'error' ? (
+        <UnderConstruction error />
+      ) : boot.profile === null ? (
         <OnboardingScreen
           adapter={adapter}
           lang={lang}
           onLangChange={setLang}
           onDone={(profile) => setBoot({ state: 'ready', profile })}
         />
-      ) : boot.state === 'loading' ? null : (
-        <UnderConstruction error={boot.state === 'error'} />
+      ) : (
+        <TodayScreen adapter={adapter} profile={boot.profile} />
       )}
     </LangContext.Provider>
   );

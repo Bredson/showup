@@ -750,15 +750,20 @@ button.cal-dot::after {
   justify-content: center;
 }
 
+/* Today — the daily loop (PRD §4); no bottom nav in Showup yet */
+.today {
+  padding-bottom: var(--pad-screen);
+}
+
+.today h1:focus {
+  outline: none;
+}
+
 /* Comeback interstitial (ux-spec §7) — full-screen before Today, no bottom nav */
 .comeback {
   padding-bottom: var(--pad-screen);
   justify-content: center;
   text-align: center;
-}
-
-.comeback-body {
-  color: var(--text-muted);
 }
 
 /* Shared emoji illustration (onboarding, comeback) — extract, don't copy (rule F6). */
