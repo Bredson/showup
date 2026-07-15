@@ -58,6 +58,17 @@ Rules for how AI agents work in this project (meta-level).
 - `noUncheckedIndexedAccess` is on and vitest/esbuild does NOT typecheck — always run
   `npx tsc -b` before `npm test`.
 
+## Rules are pre-implementation input, not post-stage reading (lesson 2026-07-15)
+
+- The onboarding UI reintroduced the exact `mountedRef` StrictMode focus bug that
+  code-style.md (F8 section) already documented — caught only because post-stage
+  analysis re-read the rules AFTER commit+push. Cost: a follow-up fix commit.
+- Rule: BEFORE implementing a known-pattern UI concern (focus management, timers,
+  modals, live regions, destructive ops), grep `.claude/rules/code-style.md` for that
+  concern and follow the recorded pattern. The rules file is a checklist, not a diary.
+- Corollary: the independent code review did not flag it either (it praised the flow) —
+  reviews catch spec violations, rules catch RE-violations of past lessons. Both needed.
+
 ## Docs as source of truth
 
 - Implementation phases read `docs/`, not conversation history.

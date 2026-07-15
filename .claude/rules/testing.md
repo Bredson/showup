@@ -42,6 +42,14 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
   importują `CURRENT_SCHEMA_VERSION`: bump wersji ma wymusić nowe fixture'y, a nie
   po cichu przecelować stare.
 
+## Buildery rekordów — test round-trip przez walidator importu (faza onboardingu)
+
+- Każdy builder produkujący persystowane rekordy (`buildOnboardingRecords`) ma test
+  przepuszczający wynik przez `buildExportBlob` → `validateExportBlob` z asercją
+  `{ ok: true }` — najsilniejsza możliwa asercja zgodności z §1, moduły nie mogą się
+  rozjechać w ciszy. Testuj też brzegi (result 0, wariant z estymacji).
+- Każda bramka `throw` w builderze ma testy negatywne (po jednym na klasę złego wejścia).
+
 ## Definition of Done dla feature
 
 Feature nie jest ukończony, dopóki `npm test` i `npm run build` nie przechodzą.

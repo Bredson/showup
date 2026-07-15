@@ -60,11 +60,13 @@ export default function OnboardingScreen({ adapter, lang, onLangChange, onDone }
 
   // Screen-reader announcement: headings receive focus on step change (.onb h1:focus).
   // Skipped on mount — a fresh app open must not steal focus from the document.
+  // Prev-value ref, NOT a mounted flag: StrictMode runs effects twice, and a
+  // mounted flag would see `true` on the second pass and steal focus (code-style F8).
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const mounted = useRef(false);
+  const prevStep = useRef<Step>(step);
   useEffect(() => {
-    if (mounted.current) headingRef.current?.focus();
-    mounted.current = true;
+    if (prevStep.current !== step) headingRef.current?.focus();
+    prevStep.current = step;
   }, [step]);
 
   // Both arms of OnboardingStep carry `variant`: for 'attempt' it is the variant to

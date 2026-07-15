@@ -12,10 +12,23 @@ z planem powrotu do stanu wyjściowego**.
 
 ## Baza dev
 
-- Baza `showup` v1, story: `entries`, `meta`, `profile`.
+- Baza `showup` **v2** (schema storage v2), story: `entries`, `meta`, `profile`.
 - Klucz `entries` jest **in-line** (pole `date`, format `YYYY-MM-DD` z
   `toLocaleDateString('sv-SE')`) → `store.put(obj)` bez drugiego argumentu.
 - Dostęp przez `chrome-devtools_evaluate_script` (raw IndexedDB API, bez `idb`).
+- **Po `indexedDB.deleteDatabase('showup')` ZAWSZE reload** — delete przy otwartym
+  połączeniu appki daje `InvalidStateError: database connection is closing` przy
+  późniejszym zapisie.
+
+## Live smoke po deployu — pułapka SW precache
+
+- Pierwsza wizyta na produkcji po deployu serwuje STARĄ wersję z precache workboxa
+  (nowy SW dopiero się instaluje) — brak nowych elementów UI to zwykle stale cache,
+  nie zepsuty deploy. Wymuś: `navigator.serviceWorker.getRegistrations()` →
+  `r.update()` → odczekaj → **2× reload** → dopiero wtedy oceniaj.
+- **Wspólny origin `bredson.github.io` z Unstuck i realnymi danymi użytkownika**:
+  na produkcji NIGDY `deleteDatabase` ani zapisów testowych — tylko sondy read-only
+  (`count()` na store) i asercje na renderze.
 
 ## Technika 1: chirurgiczna edycja wpisu Z BACKUPEM
 
