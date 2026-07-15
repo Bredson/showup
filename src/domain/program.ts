@@ -25,7 +25,7 @@ export const PAUSE_RETEST_DAYS = 14;
 /** Regeneration week after a failed test: calendar days of 'easy' before the block resumes. */
 export const REGEN_DAYS = 7;
 /** Scheduled session slots per block week (3 sessions/week). */
-const SLOTS_PER_WEEK = 3;
+export const SLOTS_PER_WEEK = 3;
 /** 0-based slot index at which the day opens as a Max Test (3rd slot of week 4 = slot 11). */
 const TEST_SLOT_INDEX = 11;
 /** Minimum days of rest around a shifted session (≥48 h on both sides, major #6). */
@@ -272,7 +272,7 @@ function isCompleted(e: DailyEntry): boolean {
 }
 
 /** A completed test that carries a gate-relevant result (a pain-downgraded test wanders instead). */
-function isGateTest(e: DailyEntry): boolean {
+export function isGateTest(e: DailyEntry): boolean {
   return e.kind === 'test' && isCompleted(e) && e.downgradedTo === null && e.testResult !== null;
 }
 

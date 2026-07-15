@@ -623,6 +623,63 @@ button.cal-dot::after {
   border-color: var(--primary-soft);
 }
 
+/* Visually hidden, available to screen readers (text equivalent of the curve) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Max Test curve (Progress) — inline SVG, tokens only */
+.curve-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.curve-grid {
+  stroke: var(--surface-alt);
+  stroke-width: 1;
+}
+
+.curve-axis {
+  fill: var(--text-muted);
+  font-size: 9px;
+  font-family: var(--font-sans);
+}
+
+.curve-label {
+  fill: var(--text-muted);
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--font-sans);
+}
+
+.curve-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.curve-dot {
+  fill: var(--primary);
+}
+
+/* hollow = seed/estimate (user decision: real tests solid, estimates hollow) */
+.curve-dot--seed {
+  fill: var(--surface);
+  stroke: var(--primary);
+  stroke-width: 2;
+}
+
 /* Bottom sheet (entry preview) */
 .sheet-overlay {
   position: fixed;
@@ -750,17 +807,24 @@ button.cal-dot::after {
   justify-content: center;
 }
 
-/* Today — the daily loop (PRD §4); no bottom nav in Showup yet */
-.today {
-  padding-bottom: var(--pad-screen);
-}
-
+/* Today — the daily loop (PRD §4); inherits .screen's bottom-nav padding */
 .today h1:focus {
   outline: none;
 }
 
-/* Comeback interstitial (ux-spec §7) — full-screen before Today, no bottom nav */
+/* Comeback interstitial (ux-spec §7) — full-screen BEFORE Today: fixed overlay
+   above the bottom nav (same z-index tier as .loop), centered like #root */
 .comeback {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  z-index: 10;
+  background: var(--bg);
+  overflow-y: auto;
   padding-bottom: var(--pad-screen);
   justify-content: center;
   text-align: center;

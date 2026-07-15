@@ -7,7 +7,7 @@ const LOCALES: Record<Lang, string> = { pl: 'pl-PL', en: 'en-GB' };
 /**
  * "niedziela, 12 lipca" / "Sunday, 12 July" — for entry previews and journal rows.
  * Pass `today` for unbounded lists (journal): entries from another year then include the year.
- * The Progress calendar (35-day window) can safely omit it.
+ * The Progress calendar (28-day window) can safely omit it.
  */
 export function formatDayLong(date: ISODate, lang: Lang, today?: ISODate): string {
   const differentYear = today !== undefined && date.slice(0, 4) !== today.slice(0, 4);
@@ -16,6 +16,14 @@ export function formatDayLong(date: ISODate, lang: Lang, today?: ISODate): strin
     day: 'numeric',
     month: 'long',
     ...(differentYear ? { year: 'numeric' } : {}),
+  });
+}
+
+/** "12 lip" / "12 Jul" — compact axis labels on the Max Test curve. */
+export function formatDayShort(date: ISODate, lang: Lang): string {
+  return new Date(`${date}T00:00:00`).toLocaleDateString(LOCALES[lang], {
+    day: 'numeric',
+    month: 'short',
   });
 }
 

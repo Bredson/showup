@@ -65,7 +65,8 @@ export const pl = {
   'today.title.easy': 'Dzień lżejszy',
   'today.variantLabel': 'Wariant: {variant}',
   'today.saveError': 'Nie udało się zapisać. Spróbuj ponownie — nic nie przepadło.',
-  'today.streak': 'Dni obecności z rzędu: {n}',
+  // User decision 2026-07-15: "dni w rytmie" everywhere — never "z rzędu" (forgiving streak).
+  'today.streak': 'Dni w rytmie: {n}',
 
   // Today — feel check (sessions and tests)
   'today.feel.title': 'Jak się dziś czujesz?',
@@ -148,6 +149,48 @@ export const pl = {
   'comeback.multiDay.body':
     'Przerwa to nie porażka — to część każdej długiej drogi. Zaczynamy od dziś, reszta nie ma znaczenia.',
   'comeback.cta': 'Wracam',
+
+  // Bottom navigation (2 tabs — the bar grows with future phases)
+  'nav.label': 'Nawigacja',
+  'nav.today': 'Dziś',
+  'nav.progress': 'Progres',
+
+  // Progress — hero (forgiving streak: rhythm, not perfection)
+  'progress.title': 'Twój progres',
+  'progress.hero.caption': 'dni w rytmie',
+  'progress.hero.longest': 'Najwięcej dni w rytmie: {n}',
+  'progress.hero.hint': 'Rytm wybacza pojedynczy dzień przerwy. Liczy się obecność.',
+
+  // Progress — 28-day presence calendar (dots = pure presence; details on tap)
+  'progress.calendar.title': 'Ostatnie 4 tygodnie',
+  'progress.calendar.completed': 'dzień zaliczony',
+  'progress.calendar.forgiven': 'dzień wybaczony — rytm trwa',
+  'progress.calendar.pending': 'dziś — jeszcze otwarte',
+  'progress.calendar.empty': 'bez aktywności',
+
+  // Progress — Max Test curve (segments per variant; hollow points = estimates)
+  'progress.curve.title': 'Krzywa Max Testów',
+  'progress.curve.empty': 'Tu pojawi się twoja krzywa — pierwszy Max Test ją zacznie.',
+  'progress.curve.baseline': 'Twój punkt odniesienia. Kolejne testy dorysują krzywą.',
+  'progress.curve.seedNote': 'Puste punkty to szacunki po zmianie wariantu — pierwszy test je kalibruje.',
+  'progress.curve.last': 'Ostatni test: {result} ({variant})',
+  'progress.curve.srPoint': '{variant}: {value}',
+  'progress.curve.srSegment': '{variant}: od {from} do {to}',
+
+  // Progress — current program position
+  'progress.position.title': 'Twoja pozycja',
+  'progress.position.week': 'Tydzień {n} z 4 bloku',
+  'progress.position.regen': 'Tydzień regeneracji',
+  'progress.position.sessions': 'Sesje w tym tygodniu: {done} z {total}',
+
+  // Progress — entry preview bottom sheet
+  'progress.sheet.close': 'Zamknij',
+  'progress.sheet.kindVariant': '{kind} · {variant}',
+  'progress.sheet.reflection': '„{text}”',
+  'progress.sheet.degraded': 'Dzień wykonany w wersji lekkiej (sygnał bólu).',
+  'progress.sheet.sets': 'Serie: {sets}',
+  'progress.sheet.easy.gtg-set': 'Luźna seria — minimum dnia',
+  'progress.sheet.easy.warmup': 'Rozgrzewka — minimum dnia',
 
   // Pushup variant names (ladder)
   'variant.wall': 'Pompki przy ścianie',

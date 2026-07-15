@@ -66,7 +66,8 @@ export const en: Record<keyof typeof pl, string> = {
   'today.title.easy': 'Easy day',
   'today.variantLabel': 'Variant: {variant}',
   'today.saveError': 'Could not save. Try again — nothing was lost.',
-  'today.streak': 'Days showing up in a row: {n}',
+  // User decision 2026-07-15: "days in rhythm" everywhere — never "in a row" (forgiving streak).
+  'today.streak': 'Days in rhythm: {n}',
 
   // Today — feel check (sessions and tests)
   'today.feel.title': 'How do you feel today?',
@@ -149,6 +150,48 @@ export const en: Record<keyof typeof pl, string> = {
   'comeback.multiDay.body':
     'A break is not a failure — it is part of every long road. We start from today; the rest does not matter.',
   'comeback.cta': "I'm back",
+
+  // Bottom navigation (2 tabs — the bar grows with future phases)
+  'nav.label': 'Navigation',
+  'nav.today': 'Today',
+  'nav.progress': 'Progress',
+
+  // Progress — hero (forgiving streak: rhythm, not perfection)
+  'progress.title': 'Your progress',
+  'progress.hero.caption': 'days in rhythm',
+  'progress.hero.longest': 'Most days in rhythm: {n}',
+  'progress.hero.hint': 'The rhythm forgives a single day off. Showing up is what counts.',
+
+  // Progress — 28-day presence calendar (dots = pure presence; details on tap)
+  'progress.calendar.title': 'Last 4 weeks',
+  'progress.calendar.completed': 'day done',
+  'progress.calendar.forgiven': 'day forgiven — the rhythm holds',
+  'progress.calendar.pending': 'today — still open',
+  'progress.calendar.empty': 'no activity',
+
+  // Progress — Max Test curve (segments per variant; hollow points = estimates)
+  'progress.curve.title': 'Max Test curve',
+  'progress.curve.empty': 'Your curve will appear here — the first Max Test starts it.',
+  'progress.curve.baseline': 'Your baseline. Future tests will draw the curve.',
+  'progress.curve.seedNote': 'Hollow points are estimates after a variant change — the first test calibrates them.',
+  'progress.curve.last': 'Last test: {result} ({variant})',
+  'progress.curve.srPoint': '{variant}: {value}',
+  'progress.curve.srSegment': '{variant}: from {from} to {to}',
+
+  // Progress — current program position
+  'progress.position.title': 'Where you are',
+  'progress.position.week': 'Week {n} of 4 in the block',
+  'progress.position.regen': 'Regeneration week',
+  'progress.position.sessions': 'Sessions this week: {done} of {total}',
+
+  // Progress — entry preview bottom sheet
+  'progress.sheet.close': 'Close',
+  'progress.sheet.kindVariant': '{kind} · {variant}',
+  'progress.sheet.reflection': '“{text}”',
+  'progress.sheet.degraded': 'Day done as the light version (pain signal).',
+  'progress.sheet.sets': 'Sets: {sets}',
+  'progress.sheet.easy.gtg-set': 'One relaxed set — the daily minimum',
+  'progress.sheet.easy.warmup': 'Warm-up — the daily minimum',
 
   // Pushup variant names (ladder)
   'variant.wall': 'Wall pushups',
