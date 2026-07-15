@@ -73,6 +73,10 @@ Rules for how AI agents work in this project (meta-level).
   the feature-workflow "implementacja" step must START by re-reading the code-style
   sections named in the plan (list them explicitly in the plan artifact), not by writing
   code.
+- OUTCOME (Settings phase, same day): rules F9/F8.1 were listed in the plan and re-read
+  before coding — review returned ZERO must-fix findings for the first time; the four
+  should-fixes were all NEW patterns (confirm focus dance, F7 date param in a new spot),
+  not re-violations. The escalation works; keep the rules-in-plan step mandatory.
 
 ## Docs as source of truth
 

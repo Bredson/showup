@@ -87,6 +87,21 @@ za szybko na screenshot. Monkey-patch przed kliknięciem:
 - Znika samoczynnie po `reload` — nie wymaga sprzątania w kodzie.
 - Patchuj **tylko na czas jednego screenshota**, potem od razu reload.
 
+## Technika 4: upload pliku przez ukryty input (import danych)
+
+`chrome-devtools_upload_file` przyjmuje uid **widocznego przycisku, który otwiera
+picker** („Importuj dane") — narzędzie samo trafia w ukryty `<input type="file">`
+wyzwalany przez `ref.click()`. Nie szukaj uida ukrytego inputa (hidden = brak w
+snapshocie a11y).
+
+- Plik-atrapa do ścieżki negatywnej: `{"hello":"world"}` w pliku `.json`.
+- Poprawny blob do ścieżki pozytywnej buduj z ŻYWEJ bazy (`getAll` na stores) —
+  ręczne klecenie wpisów rozjedzie się z walidatorem inwariantów (gate-test).
+- Import przez confirm wykonany do końca remountuje Shell (`key={importGeneration}`)
+  i ląduje na tabie „Dziś" — to oczekiwany dowód sukcesu, nie regresja nawigacji.
+- Przechwycenie EKSPORTU (download) → `.claude/skills/deploy/SKILL.md` (patch
+  `HTMLAnchorElement.prototype.click`).
+
 ## Scenariusz obowiązkowy: dzień założycielski
 
 Zawsze sprawdź ekran ZARAZ po świeżym onboardingu (pusta baza → onboarding →
