@@ -2,15 +2,15 @@
 // RULE: no React/storage imports. The narrow port below is satisfied structurally by
 // StorageAdapter, so the domain stays import-free while accepting the adapter as an argument.
 
-import type { Challenge, DailyEntry, DifficultyLevel, ISODate, ISODateTime } from './types';
+import type { Challenge, LegacyDailyEntry, DifficultyLevel, ISODate, ISODateTime } from './types';
 import { computeProgress } from './streak';
 import { gentlerLevel, missedDaysBefore, SOFT_RESTART_MISSED_DAYS } from './comeback';
 
 /** The slice of StorageAdapter this module needs (structural typing keeps layers decoupled). */
 export interface DailyEntryStore {
-  getEntry(date: ISODate): Promise<DailyEntry | null>;
-  putEntry(e: DailyEntry): Promise<void>;
-  getAllEntries(): Promise<DailyEntry[]>;
+  getEntry(date: ISODate): Promise<LegacyDailyEntry | null>;
+  putEntry(e: LegacyDailyEntry): Promise<void>;
+  getAllEntries(): Promise<LegacyDailyEntry[]>;
 }
 
 /** FNV-1a 32-bit — deterministic "random" pick from the pool, stable for a given date. */
@@ -32,7 +32,7 @@ export function fnv1aHash(input: string): number {
  */
 export function selectChallenge(
   challenges: Challenge[],
-  entries: DailyEntry[],
+  entries: LegacyDailyEntry[],
   level: DifficultyLevel,
   today: ISODate,
 ): Challenge {
@@ -51,7 +51,7 @@ export function selectChallenge(
 
 function leastRecentlyUsed(
   challenges: Challenge[],
-  entries: DailyEntry[],
+  entries: LegacyDailyEntry[],
   level: DifficultyLevel,
 ): Challenge {
   const candidates = challenges.filter((c) => c.level === level).sort(byId);
@@ -94,7 +94,7 @@ export async function getTodaysChallenge(
   challenges: Challenge[],
   today: ISODate,
   now: ISODateTime,
-): Promise<{ challenge: Challenge | null; entry: DailyEntry }> {
+): Promise<{ challenge: Challenge | null; entry: LegacyDailyEntry }> {
   const existing = await store.getEntry(today);
   if (existing) {
     const assigned = challenges.find((c) => c.id === existing.challengeId);
@@ -117,7 +117,7 @@ export async function getTodaysChallenge(
       : progress.currentLevel;
   const challenge = selectChallenge(challenges, entries, level, today);
 
-  const entry: DailyEntry = existing
+  const entry: LegacyDailyEntry = existing
     ? { ...existing, challengeId: challenge.id, updatedAt: now }
     : {
         date: today,

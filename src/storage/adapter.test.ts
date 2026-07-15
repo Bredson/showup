@@ -3,7 +3,7 @@
 
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry, QuizDraft, UserProfile } from '../domain/types';
+import type { ChallengeStatus, LegacyDailyEntry, QuizDraft, LegacyUserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 import { createIdbAdapter } from './idbAdapter';
 import { createMemoryAdapter } from './memoryAdapter';
@@ -16,7 +16,7 @@ const implementations: Array<[string, () => Promise<StorageAdapter>]> = [
   ['idbAdapter', () => createIdbAdapter(`showup-test-${++dbCounter}`, FIXED_NOW)],
 ];
 
-function entry(date: string, status: ChallengeStatus = 'completed'): DailyEntry {
+function entry(date: string, status: ChallengeStatus = 'completed'): LegacyDailyEntry {
   return {
     date,
     challengeId: 'l1-001',
@@ -29,7 +29,7 @@ function entry(date: string, status: ChallengeStatus = 'completed'): DailyEntry 
   };
 }
 
-const profile: UserProfile = {
+const profile: LegacyUserProfile = {
   id: 'singleton',
   language: 'pl',
   startDate: '2026-07-13',
@@ -134,7 +134,7 @@ describe.each(implementations)('StorageAdapter contract: %s', (_name, createAdap
     await adapter.saveProfile(profile);
     await adapter.putEntry(entry('2026-07-13'));
 
-    const imported: UserProfile = { ...profile, language: 'en', startDate: '2026-01-01' };
+    const imported: LegacyUserProfile = { ...profile, language: 'en', startDate: '2026-01-01' };
     await adapter.replaceAll(imported, [entry('2026-01-01'), entry('2026-01-02')]);
 
     expect((await adapter.getProfile())?.language).toBe('en');

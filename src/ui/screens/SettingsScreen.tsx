@@ -1,7 +1,7 @@
 // Settings screen (ux-spec §6): language, path retake, data export/delete, privacy, about.
 // No .btn-primary here — nothing on this screen is "the one action" (ux-spec button rule).
 import { useRef, useState, type ChangeEvent } from 'react';
-import type { DailyEntry, ExportBlob, Lang, UserProfile } from '../../domain/types';
+import type { LegacyDailyEntry, LegacyExportBlob, Lang, LegacyUserProfile } from '../../domain/types';
 import { buildExportBlob, exportFilename } from '../../domain/export';
 import { validateExportBlob } from '../../domain/import';
 import { CURRENT_SCHEMA_VERSION } from '../../storage/adapter';
@@ -14,9 +14,9 @@ import { useLang, useT } from '../LangContext';
 const LANGS: readonly Lang[] = ['pl', 'en'];
 
 interface Props {
-  profile: UserProfile;
+  profile: LegacyUserProfile;
   /** All entries (past + today) — the export must contain everything. */
-  entries: DailyEntry[];
+  entries: LegacyDailyEntry[];
   /** Applies immediately to the whole app and persists profile.language (ux-spec §6). */
   onChangeLanguage: (lang: Lang) => void;
   /** Opens the quiz in retake mode (dylemat 6). */
@@ -27,7 +27,7 @@ interface Props {
    * Replaces ALL data with the (already validated) blob. On success the app shell
    * remounts and re-reads storage, so this screen never sees a "success" state.
    */
-  onImportAll: (blob: ExportBlob) => Promise<void>;
+  onImportAll: (blob: LegacyExportBlob) => Promise<void>;
 }
 
 export default function SettingsScreen({
@@ -47,7 +47,7 @@ export default function SettingsScreen({
   const [importState, setImportState] = useState<'idle' | 'confirm' | 'importing' | 'invalid' | 'newer' | 'error'>(
     'idle',
   );
-  const [pendingBlob, setPendingBlob] = useState<ExportBlob | null>(null);
+  const [pendingBlob, setPendingBlob] = useState<LegacyExportBlob | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const [howOpen, setHowOpen] = useState(false);
   // While a wipe/replace is in flight all Settings controls are disabled and App's wipingRef

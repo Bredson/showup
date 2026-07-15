@@ -1,7 +1,7 @@
 // App shell (Feature 5): tab routing + owning today's entry/progress state.
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { Challenge, DailyEntry, ExportBlob, Lang, QuizDraft, UserProfile } from './domain/types';
+import type { Challenge, LegacyDailyEntry, LegacyExportBlob, Lang, QuizDraft, LegacyUserProfile } from './domain/types';
 import { computeProgress, computeStreak } from './domain/streak';
 import { getTodaysChallenge } from './domain/challenge';
 import { shouldHideIfThenEducation } from './domain/dailyLoop';
@@ -23,13 +23,13 @@ import ComebackScreen from './ui/screens/ComebackScreen';
 interface ShellProps {
   adapter: StorageAdapter;
   /** Null only if the profile read failed at boot — Settings then degrades to the load error. */
-  profile: UserProfile | null;
+  profile: LegacyUserProfile | null;
   /** Single write path for profile updates (language change, quiz retake): persists + applies. */
-  onProfileChange: (updated: UserProfile) => void;
+  onProfileChange: (updated: LegacyUserProfile) => void;
   /** Clears IndexedDB and returns the app to onboarding (ux-spec §6, dylemat 7). */
   onDeleteAll: () => Promise<void>;
   /** Replaces all data with an imported backup; on success App remounts this Shell. */
-  onImportAll: (blob: ExportBlob) => Promise<void>;
+  onImportAll: (blob: LegacyExportBlob) => Promise<void>;
 }
 
 function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: ShellProps) {
@@ -37,8 +37,8 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: 
   const [loopOpen, setLoopOpen] = useState(false);
   const [requizOpen, setRequizOpen] = useState(false);
   const [challenge, setChallenge] = useState<Challenge | null>(null);
-  const [entry, setEntry] = useState<DailyEntry | null>(null);
-  const [pastEntries, setPastEntries] = useState<DailyEntry[]>([]); // everything except today
+  const [entry, setEntry] = useState<LegacyDailyEntry | null>(null);
+  const [pastEntries, setPastEntries] = useState<LegacyDailyEntry[]>([]); // everything except today
   // Comeback interstitial (ux-spec §7): derived once at boot, never persisted — "once per
   // return" holds because only the first open of a day creates the entry.
   const [comeback, setComeback] = useState<Exclude<ComebackKind, 'none'> | null>(null);
@@ -81,7 +81,7 @@ function Shell({ adapter, profile, onProfileChange, onDeleteAll, onImportAll }: 
   const progress = useMemo(() => computeProgress(allEntries, today), [allEntries, today]);
 
   // Persist every loop transition immediately — "×"/crash never loses progress (ux-spec §3).
-  function handleEntryChange(updated: DailyEntry) {
+  function handleEntryChange(updated: LegacyDailyEntry) {
     setEntry(updated);
     adapter.putEntry(updated).catch((err: unknown) => console.error('Showup: entry save failed', err));
   }
@@ -187,7 +187,7 @@ function detectLang(): Lang {
 export default function App({ adapter }: { adapter: StorageAdapter }) {
   const [boot, setBoot] = useState<BootPhase>({ phase: 'loading' });
   const [lang, setLang] = useState<Lang>(detectLang);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<LegacyUserProfile | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -238,7 +238,7 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
   const wipingRef = useRef(false);
 
   /** Single write path for later profile edits (Settings: language, quiz retake). */
-  function handleProfileChange(updated: UserProfile) {
+  function handleProfileChange(updated: LegacyUserProfile) {
     if (wipingRef.current) return; // never write during a wipe
     setProfile(updated);
     setLang(updated.language);
@@ -251,7 +251,7 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
   const [importGeneration, setImportGeneration] = useState(0);
 
   /** "Importuj dane" (F8.1): atomic replace of everything, then a fresh Shell boot. */
-  async function handleImportAll(blob: ExportBlob) {
+  async function handleImportAll(blob: LegacyExportBlob) {
     wipingRef.current = true; // same race guard as delete: no save may land mid-replace
     try {
       await adapter.replaceAll(blob.profile, blob.entries);

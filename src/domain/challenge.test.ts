@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Challenge, ChallengeStatus, DailyEntry, DifficultyLevel } from './types';
+import type { Challenge, ChallengeStatus, LegacyDailyEntry, DifficultyLevel } from './types';
 import { fnv1aHash, getTodaysChallenge, selectChallenge } from './challenge';
 import { createMemoryAdapter } from '../storage/memoryAdapter';
 
@@ -16,7 +16,7 @@ function challenge(id: string): Challenge {
   };
 }
 
-function entry(date: string, challengeId: string, status: ChallengeStatus = 'completed'): DailyEntry {
+function entry(date: string, challengeId: string, status: ChallengeStatus = 'completed'): LegacyDailyEntry {
   return {
     date,
     challengeId,

@@ -5,7 +5,7 @@
 // app open, so an open-without-completing does not count as absence. Nothing here is persisted:
 // "once per return" is derived from "today's entry was just created" (ux-spec §7 tech notes).
 
-import type { DailyEntry, DifficultyLevel, ISODate } from './types';
+import type { LegacyDailyEntry, DifficultyLevel, ISODate } from './types';
 import { daysBetween } from './streak';
 
 /** 30+ missed days → the comeback day gets a one-level-gentler challenge (ux-spec §7). */
@@ -16,7 +16,7 @@ export const SOFT_RESTART_MISSED_DAYS = 30;
  * Entries dated `today` (or later — defensive) are ignored, so the caller may pass all entries.
  * No past entries → 0 (a fresh profile has nothing to "return" to).
  */
-export function missedDaysBefore(entries: DailyEntry[], today: ISODate): number {
+export function missedDaysBefore(entries: LegacyDailyEntry[], today: ISODate): number {
   let last: ISODate | null = null;
   for (const e of entries) {
     if (e.date < today && (last === null || e.date > last)) last = e.date;

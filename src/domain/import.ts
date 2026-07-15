@@ -4,7 +4,7 @@
 // A file is untrusted input (hand-editable JSON) — every field gets a runtime check,
 // mirroring the validateChallenges convention (collect ALL errors, no silent fixes).
 
-import type { ChallengeStatus, DailyEntry, ExportBlob, Lang, UserProfile } from './types';
+import type { ChallengeStatus, LegacyDailyEntry, LegacyExportBlob, Lang, LegacyUserProfile } from './types';
 import { EMOTIONS } from './dailyLoop';
 
 // `satisfies` keeps runtime lists in lockstep with the unions (pattern from src/content/index.ts).
@@ -19,7 +19,7 @@ const LANGS = Object.keys(LANG_SET);
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 export type ImportValidation =
-  | { ok: true; blob: ExportBlob }
+  | { ok: true; blob: LegacyExportBlob }
   /**
    * 'newer'   — file written by a future app version (schemaVersion > current): the app
    *             cannot understand it; the fix is updating the app, not the file.
@@ -35,7 +35,7 @@ function isNullOrString(value: unknown): boolean {
   return value === null || typeof value === 'string';
 }
 
-function checkProfile(raw: unknown, errors: string[]): raw is UserProfile {
+function checkProfile(raw: unknown, errors: string[]): raw is LegacyUserProfile {
   if (!isRecord(raw)) {
     errors.push('profile: missing or not an object');
     return false;
@@ -72,7 +72,7 @@ function checkProfile(raw: unknown, errors: string[]): raw is UserProfile {
   return errors.length === 0;
 }
 
-function checkEntry(raw: unknown, index: number, errors: string[]): raw is DailyEntry {
+function checkEntry(raw: unknown, index: number, errors: string[]): raw is LegacyDailyEntry {
   const at = `entries[${index}]`;
   if (!isRecord(raw)) {
     errors.push(`${at}: not an object`);
@@ -91,13 +91,13 @@ function checkEntry(raw: unknown, index: number, errors: string[]): raw is Daily
   if (!isNullOrString(raw.reflection)) errors.push(`${at}.reflection: not null/string`);
   if (!isNullOrString(raw.completedAt)) errors.push(`${at}.completedAt: not null/string`);
   if (typeof raw.updatedAt !== 'string') errors.push(`${at}.updatedAt: not a string`);
-  // A broken entry must not satisfy `raw is DailyEntry` — it would also make the
+  // A broken entry must not satisfy `raw is LegacyDailyEntry` — it would also make the
   // duplicate-date check downstream compare undefined dates (noise errors).
   return errors.length === errorsBefore;
 }
 
 /**
- * Validate a parsed JSON value as an ExportBlob. Never throws — the UI needs a calm
+ * Validate a parsed JSON value as an LegacyExportBlob. Never throws — the UI needs a calm
  * branch per outcome, so problems come back as data (unlike the build-time content
  * validator, where a loud throw is the point).
  */
@@ -144,5 +144,5 @@ export function validateExportBlob(raw: unknown, currentSchemaVersion: number): 
 
   if (errors.length > 0 || !profileOk) return { ok: false, reason: 'invalid', errors };
   // Runtime checks above are the proof behind this assertion (validate-and-return style).
-  return { ok: true, blob: raw as unknown as ExportBlob };
+  return { ok: true, blob: raw as unknown as LegacyExportBlob };
 }

@@ -1,7 +1,7 @@
 // Progress screen (ux-spec §4, design variant 1h): "look what you already have" — never
 // what's missing. No historical streak record here (a record is a hidden guilt mechanic).
 import { useMemo, useState, type CSSProperties } from 'react';
-import type { DailyEntry, ISODate, ProgressState } from '../../domain/types';
+import type { LegacyDailyEntry, ISODate, ProgressState } from '../../domain/types';
 import { computeCalendar, type CalendarDay } from '../../domain/calendar';
 import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
 import EntrySheet from '../components/EntrySheet';
@@ -10,7 +10,7 @@ import { useLang, useT } from '../LangContext';
 
 interface Props {
   /** All entries including today's — calendar and progress are derived, never stored. */
-  entries: DailyEntry[];
+  entries: LegacyDailyEntry[];
   progress: ProgressState;
   today: ISODate;
   onBackToToday: () => void;

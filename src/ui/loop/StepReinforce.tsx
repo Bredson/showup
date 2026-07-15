@@ -1,10 +1,10 @@
 // Step 3.6 — reinforcement: warm ~1.5s animation, concrete message, small progress bar.
-import type { DailyEntry, ProgressState } from '../../domain/types';
+import type { LegacyDailyEntry, ProgressState } from '../../domain/types';
 import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
 import { useT } from '../LangContext';
 
 interface Props {
-  entry: DailyEntry;
+  entry: LegacyDailyEntry;
   progress: ProgressState;
   onClose: () => void;
   onSeeProgress: () => void;

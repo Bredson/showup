@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry } from './types';
+import type { ChallengeStatus, LegacyDailyEntry } from './types';
 import {
   computeLongestStreak,
   computeProgress,
@@ -10,7 +10,7 @@ import {
 } from './streak';
 
 let seq = 0;
-function entry(date: string, status: ChallengeStatus = 'completed', challengeId?: string): DailyEntry {
+function entry(date: string, status: ChallengeStatus = 'completed', challengeId?: string): LegacyDailyEntry {
   seq += 1;
   return {
     date,

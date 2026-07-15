@@ -1,11 +1,11 @@
 import { describe, expect, it } from 'vitest';
 import { buildExportBlob } from './export';
 import { validateExportBlob } from './import';
-import type { DailyEntry, UserProfile } from './types';
+import type { LegacyDailyEntry, LegacyUserProfile } from './types';
 
 const CURRENT = 1;
 
-const profile: UserProfile = {
+const profile: LegacyUserProfile = {
   id: 'singleton',
   language: 'pl',
   startDate: '2026-07-01',
@@ -13,7 +13,7 @@ const profile: UserProfile = {
   createdAt: '2026-07-01T09:00:00.000Z',
 };
 
-function entry(date: string): DailyEntry {
+function entry(date: string): LegacyDailyEntry {
   return {
     date,
     challengeId: 'l1-003',
@@ -86,7 +86,7 @@ describe('validateExportBlob', () => {
   });
 
   it('rejects duplicate entry dates (date is the primary key)', () => {
-    const raw = validBlob() as { entries: DailyEntry[] };
+    const raw = validBlob() as { entries: LegacyDailyEntry[] };
     raw.entries[1]!.date = raw.entries[0]!.date;
     const result = validateExportBlob(raw, CURRENT);
     expect(result.ok).toBe(false);
@@ -133,7 +133,7 @@ describe('validateExportBlob', () => {
   });
 
   it('accepts unknown challengeIds — entries survive content deploys (spec §6)', () => {
-    const raw = validBlob() as { entries: DailyEntry[] };
+    const raw = validBlob() as { entries: LegacyDailyEntry[] };
     raw.entries[0]!.challengeId = 'l9-999';
     expect(validateExportBlob(raw, CURRENT).ok).toBe(true);
   });

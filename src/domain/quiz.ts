@@ -2,7 +2,7 @@
 // RULE: no React/storage imports; time is injected. Question/option ids are IMMUTABLE FOREVER —
 // raw answers in QuizResult must stay recomputable after future quiz changes (data-model §1).
 
-import type { Emotion, ISODate, ISODateTime, Lang, QuizResult, UserProfile } from './types';
+import type { Emotion, ISODate, ISODateTime, Lang, QuizResult, LegacyUserProfile } from './types';
 
 export type QuizQuestionId = 'triggers' | 'timeOfDay' | 'taskType' | 'aftermath' | 'dailyTime';
 
@@ -100,7 +100,7 @@ function buildQuizResult(answers: QuizAnswers, now: ISODateTime): QuizResult {
  * the UI must not offer the closing CTA before isQuizComplete() (untrusted-input rule).
  * Dylemat 5 = NO: dailyTime is stored raw only, everyone starts at level 1.
  */
-export function buildProfile(answers: QuizAnswers, language: Lang, today: ISODate, now: ISODateTime): UserProfile {
+export function buildProfile(answers: QuizAnswers, language: Lang, today: ISODate, now: ISODateTime): LegacyUserProfile {
   return {
     id: 'singleton',
     language,
@@ -114,6 +114,6 @@ export function buildProfile(answers: QuizAnswers, language: Lang, today: ISODat
  * Retake ("Dostosuj moją ścieżkę", ux-spec §6, dylemat 6): only the quiz result changes.
  * language/startDate/createdAt stay — progress lives in entries and is untouched by design.
  */
-export function updateProfileFromQuiz(existing: UserProfile, answers: QuizAnswers, now: ISODateTime): UserProfile {
+export function updateProfileFromQuiz(existing: LegacyUserProfile, answers: QuizAnswers, now: ISODateTime): LegacyUserProfile {
   return { ...existing, quiz: buildQuizResult(answers, now) };
 }

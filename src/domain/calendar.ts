@@ -1,7 +1,7 @@
 // Showup — Progress-screen calendar (last 28 days). Source of truth: docs/ux-spec.md §4.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
-import type { DailyEntry, ISODate } from './types';
+import type { LegacyDailyEntry, ISODate } from './types';
 import { daysBetween, toUtcMs } from './streak';
 
 /** Fixed 7×4 grid ending today (user decision: rolling 4 weeks, no navigation). */
@@ -19,7 +19,7 @@ export interface CalendarDay {
   date: ISODate;
   status: CalendarDayStatus;
   /** Entry of that day if one exists (any status) — powers the tap-to-preview bottom sheet. */
-  entry: DailyEntry | null;
+  entry: LegacyDailyEntry | null;
 }
 
 const MS_PER_DAY = 86_400_000;
@@ -35,8 +35,8 @@ export function addDays(date: ISODate, delta: number): ISODate {
  * is forgiven; the day between the last completion and a still-pending `today` is forgiven too
  * (gap of exactly 2 keeps the streak alive until local midnight).
  */
-export function computeCalendar(entries: DailyEntry[], today: ISODate): CalendarDay[] {
-  const byDate = new Map<ISODate, DailyEntry>(entries.map((e) => [e.date, e]));
+export function computeCalendar(entries: LegacyDailyEntry[], today: ISODate): CalendarDay[] {
+  const byDate = new Map<ISODate, LegacyDailyEntry>(entries.map((e) => [e.date, e]));
   const completedAsc = entries
     .filter((e) => e.status === 'completed')
     .map((e) => e.date)
@@ -66,7 +66,7 @@ export function computeCalendar(entries: DailyEntry[], today: ISODate): Calendar
 
 function statusFor(
   date: ISODate,
-  entry: DailyEntry | null,
+  entry: LegacyDailyEntry | null,
   forgiven: Set<ISODate>,
   today: ISODate,
 ): CalendarDayStatus {

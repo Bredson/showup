@@ -2,18 +2,18 @@
 // RULE: no React/storage imports; time is injected. The blob format is also the
 // migration format — changing it requires a schemaVersion bump + a Migration.
 
-import type { DailyEntry, ExportBlob, ISODate, ISODateTime, UserProfile } from './types';
+import type { LegacyDailyEntry, LegacyExportBlob, ISODate, ISODateTime, LegacyUserProfile } from './types';
 
 /**
  * Assemble the export blob. Inputs are referenced, not copied — the caller
  * serializes to JSON immediately (ui), so no aliasing can outlive the call.
  */
 export function buildExportBlob(
-  profile: UserProfile,
-  entries: readonly DailyEntry[],
+  profile: LegacyUserProfile,
+  entries: readonly LegacyDailyEntry[],
   schemaVersion: number,
   exportedAt: ISODateTime,
-): ExportBlob {
+): LegacyExportBlob {
   return {
     app: 'showup',
     schemaVersion,

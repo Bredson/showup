@@ -1,0 +1,79 @@
+{
+  "programVersion": 1,
+  "variants": ["wall", "incline-high", "incline-low", "knee", "full"],
+  "variantEntryMinMT": 6,
+  "fullEntryMinMT": 5,
+  "variantGraduateMT": 20,
+  "variantSeedFactor": 0.4,
+  "testGateImprovement": 0.15,
+  "deloadVolumeFactor": 0.6,
+  "easySetFactor": [0.4, 0.5],
+  "brackets": [
+    {
+      "id": "b1",
+      "minMT": 5,
+      "maxMT": 10,
+      "weeks": [
+        { "sets": [0.6, 0.7, 0.5, 0.5, "A"] },
+        { "sets": [0.65, 0.75, 0.55, 0.55, "A"] },
+        { "sets": [0.7, 0.8, 0.6, 0.6, "A"] },
+        { "deload": true }
+      ]
+    },
+    {
+      "id": "b2",
+      "minMT": 11,
+      "maxMT": 20,
+      "weeks": [
+        { "sets": [0.6, 0.7, 0.5, 0.5, "A"] },
+        { "sets": [0.65, 0.75, 0.55, 0.55, "A"] },
+        { "sets": [0.7, 0.8, 0.6, 0.6, "A"] },
+        { "deload": true }
+      ]
+    },
+    {
+      "id": "b3",
+      "minMT": 21,
+      "maxMT": 35,
+      "weeks": [
+        { "sets": [0.55, 0.65, 0.5, 0.5, "A"] },
+        { "sets": [0.6, 0.7, 0.55, 0.55, "A"] },
+        { "sets": [0.65, 0.75, 0.6, 0.6, "A"] },
+        { "deload": true }
+      ]
+    },
+    {
+      "id": "b4",
+      "minMT": 36,
+      "maxMT": 50,
+      "weeks": [
+        { "sets": [0.5, 0.6, 0.45, 0.45, "A"] },
+        { "sets": [0.55, 0.65, 0.5, 0.5, "A"] },
+        { "sets": [0.6, 0.7, 0.55, 0.55, "A"] },
+        { "deload": true }
+      ]
+    },
+    {
+      "id": "b5",
+      "minMT": 51,
+      "maxMT": 75,
+      "weeks": [
+        { "sets": [0.45, 0.55, 0.4, 0.4, "A"] },
+        { "sets": [0.5, 0.6, 0.45, 0.45, "A"] },
+        { "sets": [0.55, 0.65, 0.5, 0.5, "A"] },
+        { "deload": true }
+      ]
+    },
+    {
+      "id": "b6",
+      "minMT": 76,
+      "maxMT": 100,
+      "weeks": [
+        { "sets": [0.4, 0.5, 0.35, 0.35, "A"] },
+        { "sets": [0.45, 0.55, 0.4, 0.4, "A"] },
+        { "sets": [0.5, 0.6, 0.45, 0.45, "A"] },
+        { "deload": true }
+      ]
+    }
+  ]
+}

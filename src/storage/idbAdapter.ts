@@ -2,15 +2,15 @@
 // The ONLY module in the app allowed to talk to IndexedDB.
 
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
-import type { DailyEntry, Meta, QuizDraft, UserProfile } from '../domain/types';
+import type { LegacyDailyEntry, Meta, QuizDraft, LegacyUserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
 const DB_NAME = 'showup';
 
 interface ShowupDb extends DBSchema {
-  profile: { key: string; value: UserProfile };
+  profile: { key: string; value: LegacyUserProfile };
   /** Key "YYYY-MM-DD" sorts lexicographically == chronologically (calendar range queries). */
-  entries: { key: string; value: DailyEntry };
+  entries: { key: string; value: LegacyDailyEntry };
   /** Two singleton records share this store: "meta" (Meta) and "quizDraft" (QuizDraft). */
   meta: { key: string; value: Meta | QuizDraft };
 }

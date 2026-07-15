@@ -1,9 +1,9 @@
 // Tests for the export blob — format is binding (docs/data-model.md §5).
 import { describe, expect, it } from 'vitest';
 import { buildExportBlob, exportFilename } from './export';
-import type { DailyEntry, UserProfile } from './types';
+import type { LegacyDailyEntry, LegacyUserProfile } from './types';
 
-const profile: UserProfile = {
+const profile: LegacyUserProfile = {
   id: 'singleton',
   language: 'pl',
   startDate: '2026-07-01',
@@ -11,7 +11,7 @@ const profile: UserProfile = {
   createdAt: '2026-07-01T10:00:00.000Z',
 };
 
-const entry: DailyEntry = {
+const entry: LegacyDailyEntry = {
   date: '2026-07-02',
   challengeId: 'l1-001',
   emotionBefore: 'anxiety',

@@ -1,7 +1,7 @@
 // Journal screen (ux-spec §5): a record of emotions and reflections — never a judgment
 // of execution (that's Progress). No edit/delete, no search, no "new entry" (scope creep).
 import { useMemo, useState } from 'react';
-import type { DailyEntry, ISODate } from '../../domain/types';
+import type { LegacyDailyEntry, ISODate } from '../../domain/types';
 import { relativeDay, selectJournalEntries, type JournalEntry } from '../../domain/journal';
 import { challengeById } from '../../content';
 import EntrySheet from '../components/EntrySheet';
@@ -11,7 +11,7 @@ import { useLang, useT } from '../LangContext';
 
 interface Props {
   /** All entries including today's — the journal is derived, never stored separately. */
-  entries: DailyEntry[];
+  entries: LegacyDailyEntry[];
   today: ISODate;
 }
 

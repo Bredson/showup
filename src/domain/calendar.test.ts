@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry } from './types';
+import type { ChallengeStatus, LegacyDailyEntry } from './types';
 import { CALENDAR_DAYS, addDays, computeCalendar } from './calendar';
 
 let seq = 0;
-function entry(date: string, status: ChallengeStatus = 'completed'): DailyEntry {
+function entry(date: string, status: ChallengeStatus = 'completed'): LegacyDailyEntry {
   seq += 1;
   return {
     date,

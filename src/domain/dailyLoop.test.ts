@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { DailyEntry } from './types';
+import type { LegacyDailyEntry } from './types';
 import {
   completeEntry,
   dayPartFor,
@@ -13,7 +13,7 @@ import {
 
 const NOW = '2026-07-14T10:00:00.000Z';
 
-function entry(overrides: Partial<DailyEntry> = {}): DailyEntry {
+function entry(overrides: Partial<LegacyDailyEntry> = {}): LegacyDailyEntry {
   return {
     date: '2026-07-14',
     challengeId: 'l1-001',
@@ -92,7 +92,7 @@ describe('nextStep', () => {
 });
 
 describe('shouldHideIfThenEducation', () => {
-  const done = (date: string, ifThen: string | null): DailyEntry =>
+  const done = (date: string, ifThen: string | null): LegacyDailyEntry =>
     entry({ date, ifThen, status: 'completed', reflection: 'ok' });
 
   it('hides after 3 consecutive finished days without an if-then', () => {

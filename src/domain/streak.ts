@@ -1,7 +1,17 @@
 // Showup — forgiving streak + derived progress. Source of truth: docs/data-model.md §3–4.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
-import type { DailyEntry, DifficultyLevel, ISODate, ProgressState } from './types';
+import type { LegacyDailyEntry, DifficultyLevel, ISODate, ProgressState } from './types';
+
+/**
+ * Structural view of an entry for streak math — both the Showup DailyEntry and the
+ * LegacyDailyEntry satisfy it. Streak touches ONLY date + status (data-model §3:
+ * a completed day of ANY kind counts; reps and test results never matter).
+ */
+export interface StreakEntry {
+  date: ISODate;
+  status: 'in_progress' | 'completed' | 'skipped';
+}
 
 const MS_PER_DAY = 86_400_000;
 /** Completions needed to advance a level — also drives the 7-dot progress UI. */
@@ -33,7 +43,7 @@ export function levelFromChallengeId(challengeId: string): DifficultyLevel {
  * - today is "pending" until local midnight — it never breaks the streak
  * - skipped == no entry (no penalty)
  */
-export function computeStreak(entries: DailyEntry[], today: ISODate): number {
+export function computeStreak(entries: readonly StreakEntry[], today: ISODate): number {
   const [latest, ...rest] = completedDatesDesc(entries);
   if (latest === undefined) return 0;
 
@@ -51,7 +61,7 @@ export function computeStreak(entries: DailyEntry[], today: ISODate): number {
 }
 
 /** Longest streak ever, under the same forgiving rules (kept in ProgressState; not shown as a "record" in UI). */
-export function computeLongestStreak(entries: DailyEntry[]): number {
+export function computeLongestStreak(entries: readonly StreakEntry[]): number {
   const completed = completedDatesDesc(entries);
   let longest = 0;
   let current = 0;
@@ -71,8 +81,8 @@ export function currentLevel(completedByLevel: Record<DifficultyLevel, number>):
   return 3;
 }
 
-/** Derives the full ProgressState from entries — NEVER persisted (DailyEntry is the single source of truth). */
-export function computeProgress(entries: DailyEntry[], today: ISODate): ProgressState {
+/** Derives the full ProgressState from entries — NEVER persisted (LegacyDailyEntry is the single source of truth). */
+export function computeProgress(entries: LegacyDailyEntry[], today: ISODate): ProgressState {
   const completedByLevel: Record<DifficultyLevel, number> = { 1: 0, 2: 0, 3: 0 };
   const usedChallengeIds = new Set<string>();
   let totalCompleted = 0;
@@ -100,7 +110,7 @@ export function computeProgress(entries: DailyEntry[], today: ISODate): Progress
   };
 }
 
-function completedDatesDesc(entries: DailyEntry[]): ISODate[] {
+function completedDatesDesc(entries: readonly StreakEntry[]): ISODate[] {
   return entries
     .filter((e) => e.status === 'completed')
     .map((e) => e.date)

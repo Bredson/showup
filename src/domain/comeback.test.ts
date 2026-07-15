@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry } from './types';
+import type { ChallengeStatus, LegacyDailyEntry } from './types';
 import { comebackKind, gentlerLevel, missedDaysBefore, SOFT_RESTART_MISSED_DAYS } from './comeback';
 
-function entry(date: string, status: ChallengeStatus = 'completed'): DailyEntry {
+function entry(date: string, status: ChallengeStatus = 'completed'): LegacyDailyEntry {
   return {
     date,
     challengeId: 'l1-001',

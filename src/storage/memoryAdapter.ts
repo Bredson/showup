@@ -1,19 +1,19 @@
 // In-memory StorageAdapter: used by unit tests of higher layers (no IndexedDB in jsdom)
 // and as the reference implementation for the adapter contract test.
 
-import type { DailyEntry, ISODate, Meta, QuizDraft, UserProfile } from '../domain/types';
+import type { LegacyDailyEntry, ISODate, Meta, QuizDraft, LegacyUserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
 /** Plain string comparison — the exact analogue of IndexedDB key order (localeCompare is not). */
-function byDateAsc(a: DailyEntry, b: DailyEntry): number {
+function byDateAsc(a: LegacyDailyEntry, b: LegacyDailyEntry): number {
   return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
 }
 
 export function createMemoryAdapter(now: () => Date = () => new Date()): StorageAdapter {
-  let profile: UserProfile | null = null;
+  let profile: LegacyUserProfile | null = null;
   let meta: Meta | null = null;
   let quizDraft: QuizDraft | null = null;
-  const entries = new Map<ISODate, DailyEntry>();
+  const entries = new Map<ISODate, LegacyDailyEntry>();
 
   return {
     async getProfile() {

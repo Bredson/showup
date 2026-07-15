@@ -176,7 +176,8 @@ sessionPlan(state, program, feel):
     base = program.brackets[state.bracket].weeks[week].sets
     plan = base.map(pct => round(pct * state.lastMT * state.volumeModifier))
            ostatni element "A" → AMRAP-1
-    if state.blockWeek == 4: plan = plan × deloadVolumeFactor, "A" → zwykła seria  # deload
+    if state.blockWeek == 4: plan = plan × deloadVolumeFactor,
+                             "A" → zwykła seria o rozmiarze poprzedniej serii   # deload
     if feel == 'tired': usuń jedną środkową serię z planu
     if feel == 'pain':  downgradedTo='easy' (kind bez zmian) + copy czerwonych flag
                         # dotyczy też kind='test' — test wędruje na następny slot

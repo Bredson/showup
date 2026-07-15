@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, DailyEntry, Emotion } from './types';
+import type { ChallengeStatus, LegacyDailyEntry, Emotion } from './types';
 import { relativeDay, selectJournalEntries } from './journal';
 
 let seq = 0;
@@ -7,7 +7,7 @@ function entry(
   date: string,
   emotion: Emotion | null = 'anxiety',
   status: ChallengeStatus = 'completed',
-): DailyEntry {
+): LegacyDailyEntry {
   seq += 1;
   return {
     date,

@@ -1,13 +1,13 @@
 // Bottom sheet with a read-only entry preview (emotion + IF-THEN + reflection).
 // Shared by Progress (tap a calendar dot) and Journal (tap a list row).
 import { useEffect, useRef } from 'react';
-import type { DailyEntry } from '../../domain/types';
+import type { LegacyDailyEntry } from '../../domain/types';
 import { challengeById } from '../../content';
 import { EMOTION_EMOJI } from '../emotions';
 import { useLang, useT } from '../LangContext';
 
 interface Props {
-  entry: DailyEntry;
+  entry: LegacyDailyEntry;
   /** Already formatted for the current language (formatting stays in the caller). */
   date: string;
   onClose: () => void;

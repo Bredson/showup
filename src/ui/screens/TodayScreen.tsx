@@ -1,14 +1,14 @@
 // Today screen (ux-spec §2, design variant 1c "zenlife hero"):
 // two-color greeting + abstract art, streak/level pills, challenge card with a 2:00 ring, motto footer.
 import type { CSSProperties } from 'react';
-import type { Challenge, DailyEntry, ProgressState } from '../../domain/types';
+import type { Challenge, LegacyDailyEntry, ProgressState } from '../../domain/types';
 import { dayPartFor } from '../../domain/dailyLoop';
 import { COMPLETIONS_TO_ADVANCE } from '../../domain/streak';
 import { useLang, useT } from '../LangContext';
 
 interface Props {
   challenge: Challenge | null;
-  entry: DailyEntry;
+  entry: LegacyDailyEntry;
   progress: ProgressState;
   /** Current local hour 0–23 — injected so the greeting is testable and clock-free here. */
   hour: number;

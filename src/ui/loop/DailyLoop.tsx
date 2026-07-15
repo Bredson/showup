@@ -1,7 +1,7 @@
 // Daily loop orchestrator (ux-spec §3): fullscreen modal sequence over the Today tab.
 // Every transition persists the entry immediately — "×" or a crash never loses progress.
 import { useEffect, useRef, useState } from 'react';
-import type { Challenge, DailyEntry, Emotion, ISODateTime, ProgressState } from '../../domain/types';
+import type { Challenge, LegacyDailyEntry, Emotion, ISODateTime, ProgressState } from '../../domain/types';
 import { completeEntry, LOOP_STEPS, nextStep, resumeStep, setEmotion, setIfThen, type LoopStep } from '../../domain/dailyLoop';
 import { useT } from '../LangContext';
 import StepEmotion from './StepEmotion';
@@ -13,12 +13,12 @@ import StepReinforce from './StepReinforce';
 
 interface Props {
   challenge: Challenge;
-  entry: DailyEntry;
+  entry: LegacyDailyEntry;
   progress: ProgressState;
   hideIfThenEducation: boolean;
   now: () => ISODateTime;
   /** Persists and returns nothing; App owns state + storage. */
-  onEntryChange: (entry: DailyEntry) => void;
+  onEntryChange: (entry: LegacyDailyEntry) => void;
   onExit: () => void;
   onSeeProgress: () => void;
 }
@@ -51,7 +51,7 @@ export default function DailyLoop({
   }, [onExit]);
 
   /** Single source of step order: domain's nextStep (review #8). */
-  function advance(updated?: DailyEntry) {
+  function advance(updated?: LegacyDailyEntry) {
     if (updated) onEntryChange(updated);
     const next = nextStep(step);
     if (next) setStep(next);
