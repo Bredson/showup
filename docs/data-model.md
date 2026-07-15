@@ -113,7 +113,9 @@ Baza "showup" (⚠ WIĄŻĄCE: wspólny origin bredson.github.io z Unstuck — n
   store "meta"    — keyPath "id"
 ```
 
-`StorageAdapter` — interfejs odziedziczony 1:1 (getEntry/putEntry/getEntriesInRange/…).
+`StorageAdapter` — interfejs odziedziczony (getEntry/putEntry/getEntriesInRange/…),
+z jedną różnicą: trio quiz-draftowe (`getQuizDraft`/`saveQuizDraft`/`clearQuizDraft`)
+usunięte — onboarding Showup nie ma quizu, a szkicu nie persystujemy (YAGNI).
 
 ## 3. Passa obecności (streak)
 

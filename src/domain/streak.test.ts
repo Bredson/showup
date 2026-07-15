@@ -1,27 +1,8 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, LegacyDailyEntry } from './types';
-import {
-  computeLongestStreak,
-  computeProgress,
-  computeStreak,
-  currentLevel,
-  daysBetween,
-  levelFromChallengeId,
-} from './streak';
+import { computeLongestStreak, computeStreak, daysBetween, type StreakEntry } from './streak';
 
-let seq = 0;
-function entry(date: string, status: ChallengeStatus = 'completed', challengeId?: string): LegacyDailyEntry {
-  seq += 1;
-  return {
-    date,
-    challengeId: challengeId ?? `l1-${String(seq).padStart(3, '0')}`,
-    emotionBefore: null,
-    ifThen: null,
-    status,
-    reflection: null,
-    completedAt: status === 'completed' ? `${date}T12:00:00.000Z` : null,
-    updatedAt: `${date}T12:00:00.000Z`,
-  };
+function entry(date: string, status: StreakEntry['status'] = 'completed'): StreakEntry {
+  return { date, status };
 }
 
 describe('daysBetween', () => {
@@ -78,10 +59,10 @@ describe('computeStreak — forgiving rules', () => {
     expect(computeStreak([entry('2026-07-13')], '2026-07-13')).toBe(1);
   });
 
-  it('skipped and in_progress entries count as no entry', () => {
+  it('in_progress entries count as no entry (presence = completion, not opening the app)', () => {
     const entries = [
       entry('2026-07-11'),
-      entry('2026-07-12', 'skipped'),
+      entry('2026-07-12', 'in_progress'),
       entry('2026-07-13', 'in_progress'),
     ];
     expect(computeStreak(entries, '2026-07-13')).toBe(1);
@@ -96,7 +77,7 @@ describe('computeStreak — forgiving rules', () => {
 describe('computeLongestStreak', () => {
   it('returns 0 with no completed entries', () => {
     expect(computeLongestStreak([])).toBe(0);
-    expect(computeLongestStreak([entry('2026-07-12', 'skipped')])).toBe(0);
+    expect(computeLongestStreak([entry('2026-07-12', 'in_progress')])).toBe(0);
   });
 
   it('returns the current series when it is the longest, regardless of entry order', () => {
@@ -115,63 +96,5 @@ describe('computeLongestStreak', () => {
     ];
     expect(computeLongestStreak(entries)).toBe(3);
     expect(computeStreak(entries, '2026-07-13')).toBe(0);
-  });
-});
-
-describe('currentLevel — advance after 7 completions per level', () => {
-  it('progresses L1 → L2 → L3', () => {
-    expect(currentLevel({ 1: 0, 2: 0, 3: 0 })).toBe(1);
-    expect(currentLevel({ 1: 6, 2: 0, 3: 0 })).toBe(1);
-    expect(currentLevel({ 1: 7, 2: 0, 3: 0 })).toBe(2);
-    expect(currentLevel({ 1: 7, 2: 6, 3: 0 })).toBe(2);
-    expect(currentLevel({ 1: 7, 2: 7, 3: 0 })).toBe(3);
-  });
-});
-
-describe('levelFromChallengeId', () => {
-  it('parses the level encoded in the immutable id', () => {
-    expect(levelFromChallengeId('l1-007')).toBe(1);
-    expect(levelFromChallengeId('l3-012')).toBe(3);
-  });
-
-  it('throws on malformed ids, including ones with a valid level digit', () => {
-    expect(() => levelFromChallengeId('x9-001')).toThrow();
-    expect(() => levelFromChallengeId('x1-001')).toThrow();
-    expect(() => levelFromChallengeId('l1x001')).toThrow();
-    expect(() => levelFromChallengeId('l4-001')).toThrow();
-    expect(() => levelFromChallengeId('l1-01')).toThrow();
-  });
-});
-
-describe('computeProgress', () => {
-  it('derives the full state from entries only', () => {
-    const entries = [
-      entry('2026-07-10', 'completed', 'l1-001'),
-      entry('2026-07-11', 'completed', 'l1-002'),
-      entry('2026-07-12', 'skipped', 'l1-003'),
-      entry('2026-07-13', 'completed', 'l2-001'),
-    ];
-    const progress = computeProgress(entries, '2026-07-13');
-
-    expect(progress.totalCompleted).toBe(3);
-    expect(progress.completedByLevel).toEqual({ 1: 2, 2: 1, 3: 0 });
-    expect(progress.currentLevel).toBe(1);
-    expect(progress.currentStreak).toBe(3); // skipped day forgiven
-    expect(progress.lastCompletedDate).toBe('2026-07-13');
-    // skipped day still consumes its challenge (docs/data-model.md §4)
-    expect(progress.usedChallengeIds).toEqual(new Set(['l1-001', 'l1-002', 'l1-003', 'l2-001']));
-  });
-
-  it('returns an empty state for a fresh install', () => {
-    const progress = computeProgress([], '2026-07-13');
-    expect(progress).toEqual({
-      currentStreak: 0,
-      longestStreak: 0,
-      totalCompleted: 0,
-      completedByLevel: { 1: 0, 2: 0, 3: 0 },
-      currentLevel: 1,
-      usedChallengeIds: new Set(),
-      lastCompletedDate: null,
-    });
   });
 });

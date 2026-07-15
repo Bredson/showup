@@ -1,23 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import type { ChallengeStatus, LegacyDailyEntry } from './types';
+import type { StreakEntry } from './streak';
 import { CALENDAR_DAYS, addDays, computeCalendar } from './calendar';
 
-let seq = 0;
-function entry(date: string, status: ChallengeStatus = 'completed'): LegacyDailyEntry {
-  seq += 1;
-  return {
-    date,
-    challengeId: `l1-${String(seq).padStart(3, '0')}`,
-    emotionBefore: null,
-    ifThen: null,
-    status,
-    reflection: null,
-    completedAt: status === 'completed' ? `${date}T12:00:00.000Z` : null,
-    updatedAt: `${date}T12:00:00.000Z`,
-  };
+function entry(date: string, status: StreakEntry['status'] = 'completed'): StreakEntry {
+  return { date, status };
 }
 
-function statusOf(days: ReturnType<typeof computeCalendar>, date: string) {
+function statusOf(days: ReturnType<typeof computeCalendar<StreakEntry>>, date: string) {
   return days.find((d) => d.date === date)?.status;
 }
 
@@ -95,19 +84,19 @@ describe('computeCalendar', () => {
     expect(statusOf(days, '2026-06-23')).toBe('empty');
   });
 
-  it('ranks completed over forgiven: a skipped entry inside a 1-day gap still shows as forgiven', () => {
+  it('ranks completed over forgiven: an in_progress entry inside a 1-day gap still shows as forgiven', () => {
     const days = computeCalendar(
-      [entry('2026-07-10'), entry('2026-07-11', 'skipped'), entry('2026-07-12')],
+      [entry('2026-07-10'), entry('2026-07-11', 'in_progress'), entry('2026-07-12')],
       today,
     );
     expect(statusOf(days, '2026-07-11')).toBe('forgiven');
   });
 
-  it('treats skipped and in_progress days as not completed but keeps their entries', () => {
-    const skipped = entry('2026-07-12', 'skipped');
-    const days = computeCalendar([skipped], today);
+  it('treats in_progress days as not completed but keeps their entries', () => {
+    const started = entry('2026-07-12', 'in_progress');
+    const days = computeCalendar([started], today);
     expect(statusOf(days, '2026-07-12')).toBe('empty');
-    expect(days.find((d) => d.date === '2026-07-12')?.entry).toBe(skipped);
+    expect(days.find((d) => d.date === '2026-07-12')?.entry).toBe(started);
   });
 
   it('ignores completions older than the 28-day window without crashing', () => {

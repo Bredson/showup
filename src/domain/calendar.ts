@@ -1,8 +1,8 @@
 // Showup — Progress-screen calendar (last 28 days). Source of truth: docs/ux-spec.md §4.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
-import type { LegacyDailyEntry, ISODate } from './types';
-import { daysBetween, toUtcMs } from './streak';
+import type { ISODate } from './types';
+import { daysBetween, toUtcMs, type StreakEntry } from './streak';
 
 /** Fixed 7×4 grid ending today (user decision: rolling 4 weeks, no navigation). */
 export const CALENDAR_DAYS = 28;
@@ -15,11 +15,11 @@ export const CALENDAR_DAYS = 28;
  */
 export type CalendarDayStatus = 'completed' | 'forgiven' | 'pending' | 'empty';
 
-export interface CalendarDay {
+export interface CalendarDay<T extends StreakEntry = StreakEntry> {
   date: ISODate;
   status: CalendarDayStatus;
   /** Entry of that day if one exists (any status) — powers the tap-to-preview bottom sheet. */
-  entry: LegacyDailyEntry | null;
+  entry: T | null;
 }
 
 const MS_PER_DAY = 86_400_000;
@@ -35,8 +35,8 @@ export function addDays(date: ISODate, delta: number): ISODate {
  * is forgiven; the day between the last completion and a still-pending `today` is forgiven too
  * (gap of exactly 2 keeps the streak alive until local midnight).
  */
-export function computeCalendar(entries: LegacyDailyEntry[], today: ISODate): CalendarDay[] {
-  const byDate = new Map<ISODate, LegacyDailyEntry>(entries.map((e) => [e.date, e]));
+export function computeCalendar<T extends StreakEntry>(entries: readonly T[], today: ISODate): CalendarDay<T>[] {
+  const byDate = new Map<ISODate, T>(entries.map((e) => [e.date, e]));
   const completedAsc = entries
     .filter((e) => e.status === 'completed')
     .map((e) => e.date)
@@ -55,7 +55,7 @@ export function computeCalendar(entries: LegacyDailyEntry[], today: ISODate): Ca
     forgiven.add(addDays(last, 1)); // yesterday rests, streak still alive — mark it explicitly
   }
 
-  const days: CalendarDay[] = [];
+  const days: CalendarDay<T>[] = [];
   for (let offset = CALENDAR_DAYS - 1; offset >= 0; offset -= 1) {
     const date = addDays(today, -offset);
     const entry = byDate.get(date) ?? null;
@@ -66,7 +66,7 @@ export function computeCalendar(entries: LegacyDailyEntry[], today: ISODate): Ca
 
 function statusFor(
   date: ISODate,
-  entry: LegacyDailyEntry | null,
+  entry: StreakEntry | null,
   forgiven: Set<ISODate>,
   today: ISODate,
 ): CalendarDayStatus {

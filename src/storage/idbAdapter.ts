@@ -2,17 +2,17 @@
 // The ONLY module in the app allowed to talk to IndexedDB.
 
 import { openDB, type DBSchema, type IDBPDatabase } from 'idb';
-import type { LegacyDailyEntry, Meta, QuizDraft, LegacyUserProfile } from '../domain/types';
+import type { DailyEntry, Meta, UserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
 const DB_NAME = 'showup';
 
 interface ShowupDb extends DBSchema {
-  profile: { key: string; value: LegacyUserProfile };
+  profile: { key: string; value: UserProfile };
   /** Key "YYYY-MM-DD" sorts lexicographically == chronologically (calendar range queries). */
-  entries: { key: string; value: LegacyDailyEntry };
-  /** Two singleton records share this store: "meta" (Meta) and "quizDraft" (QuizDraft). */
-  meta: { key: string; value: Meta | QuizDraft };
+  entries: { key: string; value: DailyEntry };
+  /** Singleton record under key "meta". */
+  meta: { key: string; value: Meta };
 }
 
 export async function createIdbAdapter(
@@ -20,8 +20,14 @@ export async function createIdbAdapter(
   now: () => Date = () => new Date(),
 ): Promise<StorageAdapter> {
   const db: IDBPDatabase<ShowupDb> = await openDB<ShowupDb>(dbName, CURRENT_SCHEMA_VERSION, {
-    upgrade(database) {
-      // Fresh install only for now; schema bumps go through blob migrations (§5), not here.
+    upgrade(database, oldVersion) {
+      // v1 held pre-rewrite (Unstuck-shaped) data — nothing meaningful for the pushup
+      // program lives there, so the upgrade is a wipe, not a migration (data-model §5).
+      if (oldVersion > 0 && oldVersion < 2) {
+        for (const name of [...database.objectStoreNames]) {
+          database.deleteObjectStore(name);
+        }
+      }
       if (!database.objectStoreNames.contains('profile')) {
         database.createObjectStore('profile', { keyPath: 'id' });
       }
@@ -65,8 +71,7 @@ export async function createIdbAdapter(
     async getMeta() {
       // Get-then-put seed is not race-safe across calls, but this is a single-user local app;
       // worst case two first calls seed installedAt a few ms apart. Accepted, do not "fix".
-      // Key "meta" only ever holds a Meta record (key<->type pairing is this module's invariant).
-      const existing = (await db.get('meta', 'meta')) as Meta | undefined;
+      const existing = await db.get('meta', 'meta');
       if (existing) return existing;
       const seeded: Meta = {
         id: 'meta',
@@ -79,25 +84,15 @@ export async function createIdbAdapter(
     async saveMeta(m) {
       await db.put('meta', m);
     },
-    async getQuizDraft() {
-      return ((await db.get('meta', 'quizDraft')) as QuizDraft | undefined) ?? null;
-    },
-    async saveQuizDraft(d) {
-      await db.put('meta', d);
-    },
-    async clearQuizDraft() {
-      await db.delete('meta', 'quizDraft');
-    },
     async replaceAll(newProfile, newEntries) {
       // Single readwrite transaction = atomic: if anything throws, IndexedDB rolls back
       // and the current journal survives (the reason this is not clearAll + putEntry loops).
-      const tx = db.transaction(['profile', 'entries', 'meta'], 'readwrite');
+      const tx = db.transaction(['profile', 'entries'], 'readwrite');
       const profileStore = tx.objectStore('profile');
       const entriesStore = tx.objectStore('entries');
       await Promise.all([
         profileStore.clear().then(() => profileStore.put(newProfile)),
         entriesStore.clear().then(() => Promise.all(newEntries.map((e) => entriesStore.put(e)))),
-        tx.objectStore('meta').delete('quizDraft'),
         tx.done,
       ]);
     },

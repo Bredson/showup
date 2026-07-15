@@ -1,19 +1,18 @@
 // In-memory StorageAdapter: used by unit tests of higher layers (no IndexedDB in jsdom)
 // and as the reference implementation for the adapter contract test.
 
-import type { LegacyDailyEntry, ISODate, Meta, QuizDraft, LegacyUserProfile } from '../domain/types';
+import type { DailyEntry, ISODate, Meta, UserProfile } from '../domain/types';
 import { CURRENT_SCHEMA_VERSION, type StorageAdapter } from './adapter';
 
 /** Plain string comparison — the exact analogue of IndexedDB key order (localeCompare is not). */
-function byDateAsc(a: LegacyDailyEntry, b: LegacyDailyEntry): number {
+function byDateAsc(a: DailyEntry, b: DailyEntry): number {
   return a.date < b.date ? -1 : a.date > b.date ? 1 : 0;
 }
 
 export function createMemoryAdapter(now: () => Date = () => new Date()): StorageAdapter {
-  let profile: LegacyUserProfile | null = null;
+  let profile: UserProfile | null = null;
   let meta: Meta | null = null;
-  let quizDraft: QuizDraft | null = null;
-  const entries = new Map<ISODate, LegacyDailyEntry>();
+  const entries = new Map<ISODate, DailyEntry>();
 
   return {
     async getProfile() {
@@ -49,25 +48,14 @@ export function createMemoryAdapter(now: () => Date = () => new Date()): Storage
     async saveMeta(m) {
       meta = structuredClone(m);
     },
-    async getQuizDraft() {
-      return quizDraft ? structuredClone(quizDraft) : null;
-    },
-    async saveQuizDraft(d) {
-      quizDraft = structuredClone(d);
-    },
-    async clearQuizDraft() {
-      quizDraft = null;
-    },
     async replaceAll(newProfile, newEntries) {
-      profile = structuredClone(newProfile);
-      quizDraft = null; // meta stays — same contract as idbAdapter
+      profile = structuredClone(newProfile); // meta stays — same contract as idbAdapter
       entries.clear();
       for (const e of newEntries) entries.set(e.date, structuredClone(e));
     },
     async clearAll() {
       profile = null;
       meta = null;
-      quizDraft = null;
       entries.clear();
     },
   };

@@ -20,6 +20,9 @@ export type Feel = 'fresh' | 'ok' | 'tired' | 'pain';
 
 export type DayKind = 'session' | 'easy' | 'test';
 
+/** What was done as the 2-minute minimum on easy/degraded days. */
+export type EasyContent = 'gtg-set' | 'warmup';
+
 /**
  * No 'skipped': a day without completion is an in_progress entry or no entry at all.
  * Session shifting and pain degradation are separate mechanisms (data-model §7 #18).
@@ -59,7 +62,7 @@ export interface DailyEntry {
   /** kind='test', not downgraded: Max Test result (reps to technical failure). */
   testResult: number | null;
   /** kind='easy' or downgradedTo='easy': what was done as the 2-minute minimum. */
-  easyContent: 'gtg-set' | 'warmup' | null;
+  easyContent: EasyContent | null;
   /** Only after sessions/tests. */
   reflection: string | null;
   completedAt: ISODateTime | null;
@@ -152,82 +155,3 @@ export interface ExportBlob {
   entries: DailyEntry[];
 }
 
-// ---------------------------------------------------------------------------
-// LEGACY — inherited Unstuck model, being burned down. Every remaining use of a
-// Legacy* type marks code that still awaits the Showup migration. Do NOT build
-// new features on these.
-// ---------------------------------------------------------------------------
-
-export type DifficultyLevel = 1 | 2 | 3;
-
-/** LEGACY. The 5 emotions of the Unstuck daily check-in. */
-export type Emotion = 'anxiety' | 'boredom' | 'overwhelm' | 'aversion' | 'confusion';
-
-export type ChallengeStatus = 'in_progress' | 'completed' | 'skipped';
-
-export interface LegacyUserProfile {
-  id: 'singleton';
-  language: Lang;
-  startDate: ISODate;
-  quiz: QuizResult;
-  createdAt: ISODateTime;
-}
-
-export interface QuizResult {
-  answers: Record<string, string | string[]>;
-  dominantTriggers: Emotion[];
-  completedAt: ISODateTime;
-}
-
-export type ChallengeCategory = 'small-steps' | 'two-minute' | 'emotion' | 'starting';
-
-export interface ChallengeContent {
-  lesson: string;
-  task: string;
-  reflection: string;
-}
-
-export interface Challenge {
-  id: string;
-  level: DifficultyLevel;
-  category: ChallengeCategory;
-  i18n: Record<Lang, ChallengeContent>;
-}
-
-export interface LegacyDailyEntry {
-  date: ISODate;
-  challengeId: string;
-  emotionBefore: Emotion | null;
-  ifThen: string | null;
-  status: ChallengeStatus;
-  reflection: string | null;
-  completedAt: ISODateTime | null;
-  updatedAt: ISODateTime;
-}
-
-/** LEGACY. Derived read model of the Unstuck challenge progression. */
-export interface ProgressState {
-  currentStreak: number;
-  longestStreak: number;
-  totalCompleted: number;
-  completedByLevel: Record<DifficultyLevel, number>;
-  currentLevel: DifficultyLevel;
-  usedChallengeIds: Set<string>;
-  lastCompletedDate: ISODate | null;
-}
-
-/** LEGACY. Persisted mid-quiz onboarding state. */
-export interface QuizDraft {
-  id: 'quizDraft';
-  language: Lang;
-  answers: Record<string, string | string[]>;
-  updatedAt: ISODateTime;
-}
-
-export interface LegacyExportBlob {
-  app: 'showup';
-  schemaVersion: number;
-  exportedAt: ISODateTime;
-  profile: LegacyUserProfile;
-  entries: LegacyDailyEntry[];
-}

@@ -1,21 +1,19 @@
-// Showup — forgiving streak + derived progress. Source of truth: docs/data-model.md §3–4.
+// Showup — forgiving streak. Source of truth: docs/data-model.md §3.
 // RULE: pure functions only; no React/storage imports; dates passed in, never read from the clock.
 
-import type { LegacyDailyEntry, DifficultyLevel, ISODate, ProgressState } from './types';
+import type { EntryStatus, ISODate } from './types';
 
 /**
- * Structural view of an entry for streak math — both the Showup DailyEntry and the
- * LegacyDailyEntry satisfy it. Streak touches ONLY date + status (data-model §3:
- * a completed day of ANY kind counts; reps and test results never matter).
+ * Structural view of an entry for streak math — DailyEntry satisfies it. Streak
+ * touches ONLY date + status (data-model §3: a completed day of ANY kind counts;
+ * reps and test results never matter).
  */
 export interface StreakEntry {
   date: ISODate;
-  status: 'in_progress' | 'completed' | 'skipped';
+  status: EntryStatus;
 }
 
 const MS_PER_DAY = 86_400_000;
-/** Completions needed to advance a level — also drives the 7-dot progress UI. */
-export const COMPLETIONS_TO_ADVANCE = 7;
 
 /** Whole days between two local calendar dates. Uses UTC internally so DST can never skew the result. */
 export function daysBetween(a: ISODate, b: ISODate): number {
@@ -29,19 +27,12 @@ export function toUtcMs(date: ISODate): number {
   return Date.UTC(y, m - 1, d);
 }
 
-/** Challenge ids are immutable and encode the level: "l{level}-{nnn}" (docs/data-model.md). */
-export function levelFromChallengeId(challengeId: string): DifficultyLevel {
-  const match = /^l([123])-\d{3}$/.exec(challengeId);
-  if (match) return Number(match[1]) as DifficultyLevel;
-  throw new Error(`Invalid challenge id: ${challengeId}`);
-}
-
 /**
  * Forgiving streak (binding rules, docs/data-model.md §3):
  * - counts COMPLETED days only; a forgiven day adds nothing but breaks nothing
  * - renewable grace: every single 1-day gap is forgiven; 2+ consecutive missed days reset
  * - today is "pending" until local midnight — it never breaks the streak
- * - skipped == no entry (no penalty)
+ * - a missed day == no entry (no penalty)
  */
 export function computeStreak(entries: readonly StreakEntry[], today: ISODate): number {
   const [latest, ...rest] = completedDatesDesc(entries);
@@ -60,7 +51,7 @@ export function computeStreak(entries: readonly StreakEntry[], today: ISODate): 
   return streak;
 }
 
-/** Longest streak ever, under the same forgiving rules (kept in ProgressState; not shown as a "record" in UI). */
+/** Longest streak ever, under the same forgiving rules (kept in ProgramState; not shown as a "record" in UI). */
 export function computeLongestStreak(entries: readonly StreakEntry[]): number {
   const completed = completedDatesDesc(entries);
   let longest = 0;
@@ -72,42 +63,6 @@ export function computeLongestStreak(entries: readonly StreakEntry[]): number {
     if (current > longest) longest = current;
   }
   return longest;
-}
-
-/** Level progression: L1 until 7 L1 completions, then L2 until 7 L2 completions, then L3. */
-export function currentLevel(completedByLevel: Record<DifficultyLevel, number>): DifficultyLevel {
-  if (completedByLevel[1] < COMPLETIONS_TO_ADVANCE) return 1;
-  if (completedByLevel[2] < COMPLETIONS_TO_ADVANCE) return 2;
-  return 3;
-}
-
-/** Derives the full ProgressState from entries — NEVER persisted (LegacyDailyEntry is the single source of truth). */
-export function computeProgress(entries: LegacyDailyEntry[], today: ISODate): ProgressState {
-  const completedByLevel: Record<DifficultyLevel, number> = { 1: 0, 2: 0, 3: 0 };
-  const usedChallengeIds = new Set<string>();
-  let totalCompleted = 0;
-  let lastCompletedDate: ISODate | null = null;
-
-  for (const entry of entries) {
-    usedChallengeIds.add(entry.challengeId);
-    if (entry.status === 'completed') {
-      totalCompleted += 1;
-      completedByLevel[levelFromChallengeId(entry.challengeId)] += 1;
-      if (lastCompletedDate === null || entry.date > lastCompletedDate) {
-        lastCompletedDate = entry.date;
-      }
-    }
-  }
-
-  return {
-    currentStreak: computeStreak(entries, today),
-    longestStreak: computeLongestStreak(entries),
-    totalCompleted,
-    completedByLevel,
-    currentLevel: currentLevel(completedByLevel),
-    usedChallengeIds,
-    lastCompletedDate,
-  };
 }
 
 function completedDatesDesc(entries: readonly StreakEntry[]): ISODate[] {
