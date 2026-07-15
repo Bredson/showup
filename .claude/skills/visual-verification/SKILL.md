@@ -109,6 +109,14 @@ finisz): wpis testu założycielskiego jest wtedy JEDYNYM wpisem i dzisiejszym
 wpisem naraz — minimalna historia wywala derywacje, których testy domenowe nie
 pokrywają (crash „świat bez dziś" żył tylko w renderze UI).
 
+**Pułapka wzbogaconego seeda**: onboarding zapisuje test założycielski z
+`feelBefore: null` (feel check istnieje tylko w pętli dziennej) — realny stan
+po onboardingu to np. PUSTY Dziennik. Seed dev, który „upiększa" wpis
+założycielski (feel na teście), maskuje ten stan; weryfikuj też stan o
+kształcie DOKŁADNIE takim, jaki produkuje `onboarding.ts` (finding z live
+smoke fazy Dziennik: pusty stan okazał się stanem domyślnym produkcji, nie
+przypadkiem defensywnym).
+
 ## Klikanie w przepływach wielokrokowych — uid churn
 
 Po edycjach plików (HMR) uidy ze snapshotu chrome-devtools dezaktualizują się

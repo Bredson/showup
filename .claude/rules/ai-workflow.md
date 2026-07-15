@@ -77,6 +77,13 @@ Rules for how AI agents work in this project (meta-level).
   before coding — review returned ZERO must-fix findings for the first time; the four
   should-fixes were all NEW patterns (confirm focus dance, F7 date param in a new spot),
   not re-violations. The escalation works; keep the rules-in-plan step mandatory.
+- NUANCE (Journal phase, same day): rules-in-plan held for the NEW screen, but both
+  review recurrences (F6 focus-restore placement, F6 shared-map-as-own-module) were
+  introduced while EXTRACTING a shared component out of an existing screen. Extraction
+  is implementation too: when moving code to a new home, re-check the rules against the
+  component's NEW role (a modal extracted for reuse owns its whole a11y contract; a map
+  exported "on the side" of a component becomes a module the moment a second consumer
+  appears).
 
 ## Docs as source of truth
 
