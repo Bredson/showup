@@ -50,6 +50,17 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
   rozjechać w ciszy. Testuj też brzegi (result 0, wariant z estymacji).
 - Każda bramka `throw` w builderze ma testy negatywne (po jednym na klasę złego wejścia).
 
+## Throw'ujące funkcje domeny wołane z UI — pokryj stan brzegowy pierwszego dnia (faza pętli)
+
+- Funkcje domenowe z `throw` na invariantach (`computeProgram` na pustej historii)
+  są bezpieczne w testach domeny, ale KAŻDE miejsce wywołania w UI to potencjalny
+  crash renderu, którego testy domenowe nie zobaczą (BLOCKER z review pętli:
+  biały ekran zaraz po onboardingu, przy 165 zielonych testach).
+- Zasada: dla każdego wywołania throw'ującej funkcji w UI zadaj pytanie „co jest
+  najmniejszym możliwym światem w tym miejscu?" — dzień założycielski (jedyny wpis
+  = dzisiejszy) to kanoniczny stan minimalny Showup i obowiązkowy scenariusz
+  weryfikacji wizualnej.
+
 ## Definition of Done dla feature
 
 Feature nie jest ukończony, dopóki `npm test` i `npm run build` nie przechodzą.

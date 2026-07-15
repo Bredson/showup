@@ -147,6 +147,29 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
   profilu jest flagą „onboarded" — porażka w środku nie może zostawić profilu bez
   wpisu założycielskiego.
 
+## UI (React) — wzorce z fazy Pętla dzienna (TodayScreen, 2026-07-15)
+
+- **Derywacja „świat bez dziś" musi obsłużyć dzień założycielski**: `computeProgram`
+  rzuca na pustej historii, a wpis onboardingowy JEST dzisiejszym wpisem w dniu
+  instalacji — `entries.filter(date !== today)` daje wtedy `[]` i bramka crashuje
+  render (BLOCKER z review; 165 testów zielonych, bo crash żył tylko w ścieżce UI).
+  Pusta historia → nie porównuj stanów, pokaż `gate.calibrated` (reuse istniejącego
+  copy zamiast nowych kluczy — komunikat „test ustawił twój plan" jest prawdziwy).
+- **Boot z resume synchronizuje prev-ref focusa**: `prevStep.current = resumed`
+  PRZED `setStep(resumed)` — wznowienie kroku po otwarciu apki to nie jest ZMIANA
+  kroku i nie może kraść focusa na h1 (rozszerzenie wzorca F8 na boot asynchroniczny).
+- **Zamknięcie interstitiala odmontowuje sfokusowany przycisk** → focus spada na
+  `body` bez zmiany `step`. Efekt focusa nasłuchuje też sygnału dismiss (drugi
+  prev-ref, deps `[step, comeback]`) i przenosi focus na nagłówek kroku.
+- **Kontrolowany input czyszczony dopiero PO sukcesie zapisu**: żadnego
+  `setInput('')` przed `persist` — błąd zapisu z retry nie może wymagać przepisania
+  wartości; przy sukcesie czyści remount `key={idx}` (spójność z wzorcem retry
+  pozostałych kroków).
+- **Wynik bramki liczony lazy na renderze done**, nie zapisywany przy completion:
+  porównanie `computeProgram(historia)` vs `computeProgram(historia + dziś)` jest
+  deterministyczne — reload dnia ukończonego pokazuje tę samą bramkę za darmo
+  (konsekwencja zakazu „nie persystować stanów wyliczalnych").
+
 ## Deploy i produkcja (Faza 6)
 
 - **`base: '/showup/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/showup/` w kodzie aplikacji.

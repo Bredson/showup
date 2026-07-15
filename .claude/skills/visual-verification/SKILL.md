@@ -74,6 +74,28 @@ za szybko na screenshot. Monkey-patch przed kliknięciem:
 - Znika samoczynnie po `reload` — nie wymaga sprzątania w kodzie.
 - Patchuj **tylko na czas jednego screenshota**, potem od razu reload.
 
+## Scenariusz obowiązkowy: dzień założycielski
+
+Zawsze sprawdź ekran ZARAZ po świeżym onboardingu (pusta baza → onboarding →
+finisz): wpis testu założycielskiego jest wtedy JEDYNYM wpisem i dzisiejszym
+wpisem naraz — minimalna historia wywala derywacje, których testy domenowe nie
+pokrywają (crash „świat bez dziś" żył tylko w renderze UI).
+
+## Klikanie w przepływach wielokrokowych — uid churn
+
+Po edycjach plików (HMR) uidy ze snapshotu chrome-devtools dezaktualizują się
+natychmiast (`Element uid not found`). W przepływach wielokrokowych klikaj przez
+`evaluate_script` po tekście przycisku:
+
+```js
+() => { const b = [...document.querySelectorAll('button')]
+  .find(x => x.textContent?.trim() === 'Dalej' && !x.disabled);
+  if (b) b.click(); return { clicked: !!b }; }
+```
+
+Wartość kontrolowanego inputa ustawiaj przez natywny setter + `dispatchEvent(new
+Event('input', { bubbles: true }))` — zwykłe `input.value =` nie budzi Reacta.
+
 ## Checklist sprzątania (obowiązkowy)
 
 1. Usuń/przywróć wszystkie zmienione wpisy (porównaj z backupem z wyniku narzędzia).
