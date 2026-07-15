@@ -13,6 +13,7 @@ import { computeTestCurve, type TestCurve } from '../../domain/testCurve';
 import { program } from '../../content/program';
 import type { StorageAdapter } from '../../storage/adapter';
 import { localToday } from '../clock';
+import EntrySheet from '../components/EntrySheet';
 import { formatDayLong, formatDayShort, formatWeekdayNarrow } from '../dates';
 import { useLang, useT } from '../LangContext';
 
@@ -33,8 +34,6 @@ export default function ProgressScreen({ adapter, profile }: Props) {
 
   const [boot, setBoot] = useState<Boot>({ phase: 'loading' });
   const [sheetEntry, setSheetEntry] = useState<DailyEntry | null>(null);
-  // Focus returns to the calendar dot that opened the sheet (a11y: modal contract).
-  const sheetOpener = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -94,14 +93,7 @@ export default function ProgressScreen({ adapter, profile }: Props) {
 
       <section className="card">
         <h2>{t('progress.calendar.title')}</h2>
-        <Calendar
-          days={days}
-          today={today}
-          onOpen={(entry, el) => {
-            sheetOpener.current = el;
-            setSheetEntry(entry);
-          }}
-        />
+        <Calendar days={days} today={today} onOpen={setSheetEntry} />
       </section>
 
       <section className="card">
@@ -112,14 +104,7 @@ export default function ProgressScreen({ adapter, profile }: Props) {
       {state !== null && <PositionCard state={state} />}
 
       {sheetEntry !== null && (
-        <EntrySheet
-          entry={sheetEntry}
-          today={today}
-          onClose={() => {
-            setSheetEntry(null);
-            sheetOpener.current?.focus();
-          }}
-        />
+        <EntrySheet entry={sheetEntry} today={today} onClose={() => setSheetEntry(null)} />
       )}
     </div>
   );
@@ -137,7 +122,7 @@ function Calendar({
 }: {
   days: CalendarDay<DailyEntry>[];
   today: ISODate;
-  onOpen: (entry: DailyEntry, el: HTMLElement) => void;
+  onOpen: (entry: DailyEntry) => void;
 }) {
   const t = useT();
   const lang = useLang();
@@ -161,7 +146,7 @@ function Calendar({
                 type="button"
                 className={`cal-dot cal-dot--${d.status}`}
                 aria-label={label}
-                onClick={(e) => onOpen(entry, e.currentTarget)}
+                onClick={() => onOpen(entry)}
               >
                 {dayNum}
               </button>
@@ -324,63 +309,3 @@ function PositionCard({ state }: { state: ProgramState }) {
   );
 }
 
-/** Entry preview bottom sheet — dialog semantics, Escape/overlay dismissal.
- *  The close button is the only focusable control, so the "trap" is a Tab
- *  no-op: without it Tab would land on background controls that aria-modal
- *  declares hidden (keyboard and SR views would diverge). */
-function EntrySheet({ entry, today, onClose }: { entry: DailyEntry; today: ISODate; onClose: () => void }) {
-  const t = useT();
-  const lang = useLang();
-  const closeRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    closeRef.current?.focus();
-  }, []);
-
-  return (
-    <div
-      className="sheet-overlay"
-      role="presentation"
-      onClick={onClose}
-      onKeyDown={(e) => {
-        if (e.key === 'Escape') onClose();
-        if (e.key === 'Tab') e.preventDefault();
-      }}
-    >
-      <div
-        className="sheet-panel"
-        role="dialog"
-        aria-modal="true"
-        aria-label={formatDayLong(entry.date, lang, today)}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="sheet-header">
-          <h2>{formatDayLong(entry.date, lang, today)}</h2>
-          <button
-            ref={closeRef}
-            type="button"
-            className="loop-close"
-            aria-label={t('progress.sheet.close')}
-            onClick={onClose}
-          >
-            ✕
-          </button>
-        </div>
-        <p className="badge">
-          {t('progress.sheet.kindVariant', {
-            kind: t(`today.title.${entry.kind}`),
-            variant: t(`variant.${entry.variant}`),
-          })}
-        </p>
-        {entry.downgradedTo === 'easy' && <p className="muted">{t('progress.sheet.degraded')}</p>}
-        {entry.sets !== null && entry.sets.length > 0 && (
-          <p>{t('progress.sheet.sets', { sets: entry.sets.join(' · ') })}</p>
-        )}
-        {entry.testResult !== null && <p>{t('today.test.result', { result: entry.testResult })}</p>}
-        {entry.easyContent !== null && <p>{t(`progress.sheet.easy.${entry.easyContent}`)}</p>}
-        {entry.reflection !== null && entry.reflection !== '' && (
-          <p className="muted">{t('progress.sheet.reflection', { text: entry.reflection })}</p>
-        )}
-      </div>
-    </div>
-  );
-}

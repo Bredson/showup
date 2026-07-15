@@ -154,6 +154,7 @@ export const pl = {
   'nav.label': 'Nawigacja',
   'nav.today': 'Dziś',
   'nav.progress': 'Progres',
+  'nav.journal': 'Dziennik',
   'nav.settings': 'Ustawienia',
 
   // Settings (PRD §5.6)
@@ -224,14 +225,22 @@ export const pl = {
   'progress.position.regen': 'Tydzień regeneracji',
   'progress.position.sessions': 'Sesje w tym tygodniu: {done} z {total}',
 
-  // Progress — entry preview bottom sheet
-  'progress.sheet.close': 'Zamknij',
-  'progress.sheet.kindVariant': '{kind} · {variant}',
-  'progress.sheet.reflection': '„{text}”',
-  'progress.sheet.degraded': 'Dzień wykonany w wersji lekkiej (sygnał bólu).',
-  'progress.sheet.sets': 'Serie: {sets}',
-  'progress.sheet.easy.gtg-set': 'Luźna seria — minimum dnia',
-  'progress.sheet.easy.warmup': 'Rozgrzewka — minimum dnia',
+  // Entry preview bottom sheet (shared: Progress calendar + Journal)
+  'sheet.close': 'Zamknij',
+  'sheet.kindVariant': '{kind} · {variant}',
+  'sheet.feel': 'Samopoczucie: {feel}',
+  'sheet.reflection': '„{text}”',
+  'sheet.degraded': 'Dzień wykonany w wersji lekkiej (sygnał bólu).',
+  'sheet.sets': 'Serie: {sets}',
+  'sheet.easy.gtg-set': 'Luźna seria — minimum dnia',
+  'sheet.easy.warmup': 'Rozgrzewka — minimum dnia',
+
+  // Journal (ux-spec §5) — reverse-chronological feed; never judges execution
+  'journal.title': 'Dziennik',
+  'journal.empty': 'Tu pojawią się twoje refleksje po pierwszej sesji.',
+  'journal.date.today': 'Dziś',
+  'journal.date.yesterday': 'Wczoraj',
+  'journal.noReflection': '—',
 
   // Pushup variant names (ladder)
   'variant.wall': 'Pompki przy ścianie',

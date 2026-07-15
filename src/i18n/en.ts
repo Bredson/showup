@@ -155,6 +155,7 @@ export const en: Record<keyof typeof pl, string> = {
   'nav.label': 'Navigation',
   'nav.today': 'Today',
   'nav.progress': 'Progress',
+  'nav.journal': 'Journal',
   'nav.settings': 'Settings',
 
   // Settings (PRD §5.6)
@@ -225,14 +226,22 @@ export const en: Record<keyof typeof pl, string> = {
   'progress.position.regen': 'Regeneration week',
   'progress.position.sessions': 'Sessions this week: {done} of {total}',
 
-  // Progress — entry preview bottom sheet
-  'progress.sheet.close': 'Close',
-  'progress.sheet.kindVariant': '{kind} · {variant}',
-  'progress.sheet.reflection': '“{text}”',
-  'progress.sheet.degraded': 'Day done as the light version (pain signal).',
-  'progress.sheet.sets': 'Sets: {sets}',
-  'progress.sheet.easy.gtg-set': 'One relaxed set — the daily minimum',
-  'progress.sheet.easy.warmup': 'Warm-up — the daily minimum',
+  // Entry preview bottom sheet (shared: Progress calendar + Journal)
+  'sheet.close': 'Close',
+  'sheet.kindVariant': '{kind} · {variant}',
+  'sheet.feel': 'Feeling: {feel}',
+  'sheet.reflection': '“{text}”',
+  'sheet.degraded': 'Day done as the light version (pain signal).',
+  'sheet.sets': 'Sets: {sets}',
+  'sheet.easy.gtg-set': 'One relaxed set — the daily minimum',
+  'sheet.easy.warmup': 'Warm-up — the daily minimum',
+
+  // Journal (ux-spec §5) — reverse-chronological feed; never judges execution
+  'journal.title': 'Journal',
+  'journal.empty': 'Your reflections will appear here after your first session.',
+  'journal.date.today': 'Today',
+  'journal.date.yesterday': 'Yesterday',
+  'journal.noReflection': '—',
 
   // Pushup variant names (ladder)
   'variant.wall': 'Wall pushups',

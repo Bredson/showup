@@ -1,6 +1,6 @@
 // Shell — bottom navigation between the MVP tabs (user decisions: 2026-07-15 start
-// with "Dziś" + "Progres"; Settings joined as the third tab in the Settings phase;
-// the bar still grows with future phases — Journal is next, no placeholder tabs).
+// with "Dziś" + "Progres"; Settings joined in the Settings phase; Journal slotted
+// in before Settings in the Journal phase — the ux-spec §1 bar is now complete).
 // Tab state is ephemeral: a reload always lands on Today.
 import { useState } from 'react';
 import type { UserProfile } from '../domain/types';
@@ -8,13 +8,15 @@ import type { StorageAdapter } from '../storage/adapter';
 import { useT } from './LangContext';
 import TodayScreen from './screens/TodayScreen';
 import ProgressScreen from './screens/ProgressScreen';
+import JournalScreen from './screens/JournalScreen';
 import SettingsScreen from './screens/SettingsScreen';
 
-type Tab = 'today' | 'progress' | 'settings';
+type Tab = 'today' | 'progress' | 'journal' | 'settings';
 
 const TABS: ReadonlyArray<{ id: Tab; icon: string; labelKey: `nav.${Tab}` }> = [
   { id: 'today', icon: '💪', labelKey: 'nav.today' },
   { id: 'progress', icon: '📈', labelKey: 'nav.progress' },
+  { id: 'journal', icon: '✎', labelKey: 'nav.journal' },
   { id: 'settings', icon: '⚙️', labelKey: 'nav.settings' },
 ];
 
@@ -43,6 +45,8 @@ export default function Shell({
         <TodayScreen adapter={adapter} profile={profile} />
       ) : tab === 'progress' ? (
         <ProgressScreen adapter={adapter} profile={profile} />
+      ) : tab === 'journal' ? (
+        <JournalScreen adapter={adapter} />
       ) : (
         <SettingsScreen
           adapter={adapter}

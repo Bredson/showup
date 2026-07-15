@@ -694,6 +694,10 @@ button.cal-dot::after {
 .sheet-panel {
   width: 100%;
   max-width: 480px;
+  /* A long reflection must never push the header (and its ✕) above the viewport —
+     that would make the sheet undismissable on touch (no Escape key). */
+  max-height: 85dvh;
+  overflow-y: auto;
   background: var(--surface);
   border-radius: var(--radius-card) var(--radius-card) 0 0;
   padding: 20px 24px calc(20px + env(safe-area-inset-bottom));
