@@ -25,9 +25,19 @@ Full specification: `docs/data-model.md` (Showup version, post-review 2026-07-15
    (immutable snapshot). Pain degradation is recorded in `downgradedTo`, never by mutating
    `kind`. Block position is counted in scheduled session SLOTS (3 per block week), not
    calendar weeks; pause > 14 days freezes position and forces a retest.
-7. **Schema versioning:** `meta.schemaVersion` integer + ordered pure migration functions run
-   at startup AND on JSON import. Export = full JSON blob with `app: 'showup'`
-   (intentionally incompatible with Unstuck exports), never includes program content.
+7. **Schema versioning:** `meta.schemaVersion` integer, `CURRENT_SCHEMA_VERSION = 2`.
+   v1→v2 has NO migration: v1 data is junk from the Unstuck clone, so the IDB upgrade
+   wipes all stores and v1 blobs are rejected on import (`invalid`, "no migration");
+   `schemaVersion > current` → `newer`. Future versions (3+) get ordered pure migration
+   functions run at startup AND on JSON import. Export = full JSON blob with
+   `app: 'showup'` (intentionally incompatible with Unstuck exports), never includes
+   program content.
+9. **Import validation enforces the §1 cross-field invariants**, not just field types:
+   each result field (`sets`, `testResult`, `easyContent`, `reflection`, `feelBefore`,
+   `downgradedTo`) may be non-null ONLY on the day shape it belongs to — a foreign value
+   would poison `ProgramState` derivation. Deliberately unchecked: which fields must be
+   non-null when `completed` (in_progress entries legitimately have nulls) and
+   `completedAt` ⇔ status (not spec'd).
 8. **`bracket` is purely derived from `lastMT`** (`bracketFor(lastMT)`). After variant
    graduation, `lastMT` is seeded (`variantSeedFactor × old MT`) until the first real test
    on the new variant.

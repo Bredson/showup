@@ -32,6 +32,16 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
   starych fixture'ów — najpierw sprawdź, czy to fixture kłamał, zanim „naprawisz" kod.
 - Punkt startowy fixture'ów: `START='2026-07-06'` (poniedziałek), profil Mon/Wed/Fri `[1,3,5]`.
 
+## Fixture'y muszą przestrzegać invariantów spec (lekcja 2026-07-15, faza storage)
+
+- Zaostrzenie walidatora importu wykryło, że NASZE własne fixture'y łamały spec
+  (easy day z `sets:[3]` — wg §1 sets tylko na niedegradowanej sesji).
+- Zasada: po każdym zaostrzeniu walidacji przepuść przez nią istniejące fixture'y
+  i happy-path'y — fixture „przechodzący" przy luźnej walidacji może kodować błąd.
+- Testy formatu blobu przypinają wersję literałem (`const CURRENT = 2`), celowo NIE
+  importują `CURRENT_SCHEMA_VERSION`: bump wersji ma wymusić nowe fixture'y, a nie
+  po cichu przecelować stare.
+
 ## Definition of Done dla feature
 
 Feature nie jest ukończony, dopóki `npm test` i `npm run build` nie przechodzą.
