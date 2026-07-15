@@ -84,6 +84,9 @@ Rules for how AI agents work in this project (meta-level).
   component's NEW role (a modal extracted for reuse owns its whole a11y contract; a map
   exported "on the side" of a component becomes a module the moment a second consumer
   appears).
+- HELD (Block-funnel phase, same day): domain refactor + new card — review verdict
+  approve, 2 minors, both NEW patterns (type predicate at filter boundary, full-return
+  assertion), zero re-violations. Third consecutive phase confirming rules-in-plan.
 
 ## Docs as source of truth
 
