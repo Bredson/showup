@@ -1,39 +1,47 @@
-# Product Principles (binding for all agents)
+# Product Principles (binding for all agents — Showup)
 
 These principles bind every product and code decision in this project. When in doubt, re-read.
 
-## 1. One challenge per day
+## 1. One program day per screen
 
-The home screen shows exactly one challenge. Any feature competing for attention on the home
-screen is rejected by default.
+The home screen shows exactly today's program day (session / easy / test) and nothing else.
+Any feature competing for attention on the home screen is rejected by default.
 
-## 2. Don't over-engineer
+## 2. Habit = showing up, not the result
 
-Procrastination is an emotion regulation problem (Sirois & Pychyl 2013), not a productivity
-problem. This app is NOT a todo list, NOT a planner, NOT a time tracker. Reject features that
-drift toward productivity tooling.
+The streak rewards presence (2-minute minimum), never rep counts or test results
+(Phillips & Gardner 2016). Ability progression is gated ONLY by scheduled Max Tests —
+"your test decides, not the calendar". NO gamification of daily max attempts, ever.
 
 ## 3. Self-compassion over pressure
 
 - A missed day never triggers guilt mechanics (no broken-streak shaming, no red warnings).
 - Forgiving streak: one missed day does not reset progress.
+- A failed test is a "consolidation block", never a failure message.
 - Copy tone: warm, non-judgmental, never commanding.
 
 ## 4. The daily loop is sacred
 
-emotion check → challenge → IF-THEN → do it (2-min rule) → reflection → reinforcement.
-Full loop must take < 5 minutes. Every added second needs justification.
+Hard session: feel check → session plan (auto-adjusted) → log sets → reflection →
+reinforcement, < 60 s of app interaction. Easy day: 2-min minimum → check off, < 20 s.
+Every added second needs justification.
 
-## 5. Privacy first
+## 5. Safety is built into the loop
 
-All user data (emotions, journal) stays on device. No external analytics, no accounts in MVP.
+Feel check gates every session and test ("pain" → day downgraded to easy + red-flags copy).
+Deloads and rest days are features, not obstacles. Health disclaimer before every Max Test.
 
-## 6. Bilingual by design
+## 6. Privacy first
+
+All user data (feel, sets, tests, journal) stays on device. No external analytics,
+no accounts in MVP.
+
+## 7. Bilingual by design
 
 Every user-facing string goes through i18n (PL/EN). Hardcoded strings = bug.
 
 ## Source of truth
 
-- Method: `docs/titd-method.en.md`
+- Program: `docs/pushup-program-research.md` §3 (binding rule details: `docs/data-model.md` §4)
 - Scope: `docs/prd.md` — features listed as "out of MVP" are out. Adding them requires
   explicit user approval.

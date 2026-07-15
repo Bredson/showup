@@ -1,5 +1,10 @@
 # Unstuck — Specyfikacja ekranów MVP (UX)
 
+> ⚠ **DOKUMENT ODZIEDZICZONY Z UNSTUCK — NIEAKTUALNY DLA SHOWUP.** Opisuje ekrany wyzwań
+> Unstuck (quiz, poziomy, pula wyzwań), które w Showup nie istnieją. Wiążące dla Showup są
+> `prd.md` i `data-model.md`; spec UX Showup powstanie w osobnej fazie. Zachowany jako
+> referencja wzorców (nawigacja, tokeny, konwencje ekranów).
+
 > Faza 2. Fundament: PRD §4–5, design-direction.md, product-principles.md (wiążące), metoda TITD.
 > Zasady przekrojowe: **jeden główny CTA na ekran**, pętla dzienna < 5 min, zero mechanik winy,
 > mobile-first (~390px), i18n PL/EN, wszystkie dane lokalnie.

@@ -1,240 +1,289 @@
-# Unstuck — Specyfikacja modelu danych i storage
+# Showup — Specyfikacja modelu danych i storage
 
-> Faza 2 · Zakres: MVP wg `docs/prd.md` · Zasady wiążące: `.claude/rules/product-principles.md`, `.claude/rules/data-model.md`
-> Konteksty: 100% danych lokalnie, zero backendu, Capacitor-ready, streak wybaczający.
+> Zakres: MVP wg `docs/prd.md` · Program: `docs/pushup-program-research.md` §3
+> Odziedziczone z Unstuck bez zmian: IndexedDB + `idb`, StorageAdapter (Capacitor-ready),
+> migracje na blobie, import = replace, eksport jako jedyny backup, i18n w treściach.
+> Ten dokument opisuje różnice i nowe encje.
+> Status: po niezależnym review (FIX FIRST → poprawki naniesione, patrz §8).
 
-## 0. Zasada nadrzędna
+## 0. Zasada nadrzędna (odziedziczona, rozszerzona)
 
-**`DailyEntry` jest jedynym źródłem prawdy o postępie.** Streak, licznik ukończeń, poziom
-trudności i lista użytych wyzwań są **wyliczane** z wpisów (czysta funkcja
-`computeProgress(entries)`), nie przechowywane jako liczniki. Skala: ~3650 rekordów po 10 latach —
-przeliczenie przy starcie to milisekundy; eliminuje klasę bugów desynchronizacji.
+**`DailyEntry` jest jedynym źródłem prawdy.** Passa, pozycja w programie (wariant, przedział,
+tydzień bloku), historia testów — wszystko **wyliczane** z wpisów czystą funkcją
+`computeProgram(entries, profile, program)`. Zero persystowanych liczników.
+
+**Wyjątek-snapshot:** raz zapisany wpis (jego `kind`, `variant`) zawsze wygrywa z derywacją —
+derywacja wyznacza tylko dni jeszcze nieotwarte. (Rozwiązuje to też onboardingowy test
+i dni przesunięte — patrz §4.)
+
+> Ryzyko zapisane w fitness-research.md: jeśli wyliczanie pozycji okaże się kruche
+> (szum danych), dopuszczamy persystowany snapshot pozycji — ale dopiero po dowodzie
+> z dogfoodingu, nie prewencyjnie.
 
 ## 1. Encje (notacja TypeScript)
 
 ```ts
 type Lang = 'pl' | 'en';
-type ISODate = string;      // YYYY-MM-DD, strefa lokalna; granica dnia = lokalna północ
-type ISODateTime = string;  // pełny ISO 8601
-type DifficultyLevel = 1 | 2 | 3;
+type ISODate = string;
+type ISODateTime = string;
 
-/** Klucze techniczne EN, etykiety zawsze przez i18n */
-type Emotion = 'anxiety' | 'boredom' | 'overwhelm' | 'aversion' | 'confusion';
-type ChallengeStatus = 'in_progress' | 'completed' | 'skipped';
+/** Drabinka wariantów — kolejność = trudność (pushup-program-research §3) */
+type Variant = 'wall' | 'incline-high' | 'incline-low' | 'knee' | 'full';
+
+/** Check przed startem (tylko sesja/test; na dzień łatwy zawsze null) */
+type Feel = 'fresh' | 'ok' | 'tired' | 'pain';
+//           świeżo    OK     zmęczony/  coś boli → degradacja do dnia
+//                            zakwasy → sesja -1 seria     łatwego (downgradedTo)
+
+type DayKind = 'session' | 'easy' | 'test';
+type EntryStatus = 'in_progress' | 'completed';
+// Brak 'skipped': dzień bez ukończenia = wpis in_progress lub brak wpisu; nie ma
+// jawnego "pomiń" w pętli (przesunięcie sesji i degradacja bólowa to osobne mechanizmy).
+
+type Weekday = 0 | 1 | 2 | 3 | 4 | 5 | 6;  // 0 = niedziela (jak Date.getDay())
 
 interface UserProfile {
   id: 'singleton';
   language: Lang;
   startDate: ISODate;
-  quiz: QuizResult;
+  /** Stałe dni sesji (onboarding); walidacja: żadne dwa nie sąsiadują (mod 7) */
+  sessionDays: [Weekday, Weekday, Weekday];
+  ifThen: string | null;                    // kotwica: "Kiedy [sygnał], robię sesję"
+  disclaimerAcceptedAt: ISODateTime;        // PAR-Q-style, warunek pierwszego testu
   createdAt: ISODateTime;
 }
 
-interface QuizResult {
-  answers: Record<string, string>;   // surowe odpowiedzi (przeliczalne po zmianie quizu)
-  dominantTriggers: Emotion[];       // pochodna; w MVP wpływa na ton, nie na dobór wyzwań
-  completedAt: ISODateTime;
-}
-
-type ChallengeCategory = 'small-steps' | 'two-minute' | 'emotion' | 'starting';
-
-interface Challenge {
-  id: string;                        // "l1-007" — NIEZMIENNE NA ZAWSZE
-  level: DifficultyLevel;
-  category: ChallengeCategory;
-  i18n: Record<Lang, ChallengeContent>;
-}
-
-interface ChallengeContent {
-  lesson: string;      // 2–4 zdania
-  task: string;        // konkretne zadanie
-  reflection: string;  // pytanie refleksyjne
-}
-
 interface DailyEntry {
-  date: ISODate;                    // KLUCZ GŁÓWNY — jeden wpis na dzień
-  challengeId: string;              // przydzielony raz, trwały
-  emotionBefore: Emotion | null;
-  ifThen: string | null;
-  status: ChallengeStatus;          // 'in_progress' od przydzielenia
-  reflection: string | null;
+  date: ISODate;                 // KLUCZ GŁÓWNY — jeden wpis na dzień
+  kind: DayKind;                 // snapshot przy otwarciu dnia — NIGDY nie mutowany
+  variant: Variant;              // wariant obowiązujący tego dnia (trwały snapshot)
+  feelBefore: Feel | null;       // tylko kind='session'|'test'
+  /** feel='pain' NIE zmienia kind; zapisuje degradację (sesja/test wykonane jako easy) */
+  downgradedTo: 'easy' | null;
+  status: EntryStatus;
+  /** kind='session' bez degradacji: wykonane powtórzenia per seria */
+  sets: number[] | null;
+  /** kind='test' bez degradacji: wynik Max Testu (powtórzenia do upadku technicznego) */
+  testResult: number | null;
+  /** kind='easy' lub downgradedTo='easy': co wykonano jako 2-min minimum */
+  easyContent: 'gtg-set' | 'warmup' | null;
+  reflection: string | null;     // tylko po sesji/teście
   completedAt: ISODateTime | null;
   updatedAt: ISODateTime;
 }
 
-/** Pochodny, NIE persystowany — wyliczany przy starcie */
-interface ProgressState {
-  currentStreak: number;
+/** Pochodny, NIE persystowany */
+interface ProgramState {
+  variant: Variant;              // bieżący wariant drabinki
+  /** Ostatni testResult na bieżącym wariancie; po awansie wariantu i przy onboardingu
+      na wariant nietestowany: SEED = round(variantSeedFactor × lastMT poprzedniego
+      wariantu) do czasu pierwszego realnego testu (blocker #1 review) */
+  lastMT: number;
+  lastMTisSeed: boolean;
+  bracket: BracketId;            // ZAWSZE = bracketFor(lastMT) — czysto pochodny (blocker #3)
+  blockWeek: 1 | 2 | 3 | 4 | 'regen';  // 'regen' = tydzień regeneracyjny po oblanym teście
+  volumeModifier: 1 | 0.9;       // 0.9 = blok powtarzany po regeneracji
+  sessionsDoneThisWeek: number;
+  consolidations: number;        // ile razy blok powtórzony (framing: normalne)
+  failedTestsInRow: number;      // inkrement gdy newMT <= lastMT; 2 → zejście przedział/wariant
+  goalReachedAt: ISODate | null; // pierwszy testResult >= 100 na 'full' → ekran celebracji
+  currentStreak: number;         // obecność (patrz §3)
   longestStreak: number;
-  totalCompleted: number;
-  completedByLevel: Record<DifficultyLevel, number>;
-  currentLevel: DifficultyLevel;
-  usedChallengeIds: Set<string>;
-  lastCompletedDate: ISODate | null;
+  testHistory: Array<{ date: ISODate; variant: Variant; result: number; seed?: boolean }>;
 }
 ```
 
 Uwagi:
-- Wpis powstaje przy przydzieleniu wyzwania (status `in_progress`) — „otwarty nieukończony" ≠ „appka nieotwarta".
-- Dzień bez wpisu = opuszczony; nie tworzymy wpisów wstecz.
-- `skipped` = świadome odłożenie; dla streaka jak brak wpisu, w UI bez kary.
+- `variant` i `kind` są **snapshotem w momencie przydziału**: restart appki, awans ani
+  degradacja bólowa nie zmieniają już otwartego dnia (degradacja żyje w `downgradedTo`).
+- Dzień bez wpisu = opuszczony; nie tworzymy wpisów wstecz (odziedziczone).
+- `sets` = wykonane powtórzenia; plan z tabeli jest wyliczalny, więc niepersystowany.
+- Pierwszy Max Test (onboarding) zapisuje się jako normalny `DailyEntry` `kind='test'`
+  z datą `startDate` — dzięki regule snapshotu z §0 nie koliduje z derywacją typu dnia,
+  a `testHistory` widzi test #1.
 
-## 2. Storage: **IndexedDB** (wrapper `idb`)
+## 2. Storage
 
-| Kryterium | localStorage | IndexedDB |
-|---|---|---|
-| Rozmiar (nasze ~180 KB/rok) | mieści się | bez znaczenia |
-| Model | synchroniczny, cały JSON naraz | rekordy + zakresy po kluczu (kalendarz!) |
-| Ryzyko utraty | jeden uszkodzony JSON = cały dziennik | punktowe, per-rekord |
-| Capacitor webview | historycznie czyszczony w WKWebView | trwały w kontenerze appki |
-
-**Decyzja: IndexedDB.** Dziennik emocji jest cenny i rośnie latami — atomowość i trwałość > prostota.
-Dodatkowo `navigator.storage.persist()` przy pierwszym uruchomieniu.
-
-### Adapter (Capacitor-ready — wiążące)
-
-Domena nigdy nie dotyka IndexedDB bezpośrednio:
-
-```ts
-interface StorageAdapter {
-  getProfile(): Promise<UserProfile | null>;
-  saveProfile(p: UserProfile): Promise<void>;
-  getEntry(date: ISODate): Promise<DailyEntry | null>;
-  putEntry(e: DailyEntry): Promise<void>;
-  getEntriesInRange(from: ISODate, to: ISODate): Promise<DailyEntry[]>;
-  getAllEntries(): Promise<DailyEntry[]>;
-  getMeta(): Promise<Meta>;
-  saveMeta(m: Meta): Promise<void>;
-  clearAll(): Promise<void>;
-}
-```
-
-Ewentualna przyszła podmiana na `@capacitor-community/sqlite` bez dotykania domeny.
-
-### Schemat bazy
+Bez zmian koncepcyjnych vs Unstuck. Różnice:
 
 ```
-Baza "unstuck" (version = schemaVersion)
-  store "profile" — keyPath "id"   (singleton)
-  store "entries" — keyPath "date" (YYYY-MM-DD sortuje się leksykograficznie = chronologicznie)
+Baza "showup" (⚠ WIĄŻĄCE: wspólny origin bredson.github.io z Unstuck — nazwa musi być inna)
+  store "profile" — keyPath "id"
+  store "entries" — keyPath "date"
   store "meta"    — keyPath "id"
 ```
 
-Bez dodatkowych indeksów w MVP.
+`StorageAdapter` — interfejs odziedziczony 1:1 (getEntry/putEntry/getEntriesInRange/…).
 
-## 3. Streak wybaczający
+## 3. Passa obecności (streak)
 
-Definicja (wiążąca):
-- Streak = liczba **ukończonych** dni w bieżącej serii (dzień wybaczony nie dodaje +1, nie kasuje).
-- Grace **odnawialny**: każda pojedyncza 1-dniowa przerwa wybaczona; 2+ kolejnych dni → seria od nowa.
-- Dzień dzisiejszy „pending" do lokalnej północy — nigdy nie łamie streaka.
-- `skipped` = jak brak wpisu (bez kary w UI).
+**Odziedziczone bez zmian są FUNKCJE `computeStreak` / `computeLongestStreak` /
+`daysBetween`** (dotykają tylko `status` i `date` — zweryfikowane w review). Reszta modułu
+`streak.ts` (`levelFromChallengeId`, `currentLevel`, `computeProgress`,
+`COMPLETIONS_TO_ADVANCE`) jest sprzężona z modelem wyzwań Unstuck i zostaje **zastąpiona**
+przez nowy `program.ts`. ⚠ `src/domain/types.ts` po forku wciąż ma kształt Unstuck —
+migracja typów to pierwszy krok prac silnika, przed jakimkolwiek feature'em.
+
+Semantyka „ukończenia":
+- dzień liczy się do passy, gdy `status='completed'` **niezależnie od `kind`** —
+  odhaczony dzień łatwy (2-min minimum) = pełnoprawny dzień passy;
+- passa NIGDY nie zależy od liczby powtórzeń ani wyniku testu;
+- dzień łatwy z samą rozgrzewką nadgarstków = też `completed`;
+- dzień zdegradowany bólem (`downgradedTo='easy'`) ukończony = też `completed`.
+
+## 4. Silnik programu (zastępuje dobór wyzwania z puli)
+
+### Pozycja w bloku (derywacja — blocker #4)
+
+Pozycja liczona w **slotach zaplanowanych sesji** (3 sloty = 1 tydzień bloku), nie
+w tygodniach kalendarzowych:
 
 ```
-computeStreak(entries, today):
-    completed = daty wpisów status=='completed', malejąco
-    if pusta: return 0
-    anchor = completed[0]
-    if daysBetween(anchor, today) > 2: return 0
-    streak = 1; prev = anchor
-    for d in completed[1:]:
-        diff = daysBetween(d, prev)
-        if diff <= 2: streak += 1; prev = d   # diff==2: 1 dzień wybaczony
-        else: break                            # diff>=3: koniec serii
-    return streak
+slot zaliczony = zaplanowany dzień sesji, który minął (completed LUB przepadł)
+blockWeek = 1 + (sloty od startu bloku) div 3   (cap: patrz test poniżej)
 ```
 
-Przykłady: `✓✓✓[pending]`→3 · `✓✓·[pending]`→2 · `✓✓··[pending]`→0 · `✓·✓·✓✓`→4 · `✓··✓✓`→2
+- Sesja przepada bez kary, ale **slot mija** — program płynie do przodu; tydzień się nie „psuje".
+- **Pauza:** jeżeli od ostatniego `completed` (dowolnego kind) minęło > 14 dni, pozycja
+  zamarza, a pierwszym dniem po powrocie jest **retest** (`kind='test'`) — dopiero jego
+  wynik osadza nowy blok. (Reguła „przerwa > 2 tyg. → najpierw retest" działa przy
+  otwarciu dnia, w `dayKind`, nie w bramce.)
 
-## 4. Dobór wyzwania dnia
-
-### Progresja
+### Typ dnia
 ```
-currentLevel: L1 dopóki <7 ukończeń L1; potem L2 dopóki <7 ukończeń L2; potem L3
-```
-Awans po 7/10 (nie trzeba „zaliczyć wszystkiego"). Quiz NIE wpływa na dobór w MVP.
-
-### Algorytm (deterministyczny, bez powtórek)
-```
-getTodaysChallenge(today):
-    entry = storage.getEntry(today)
-    if entry: return challengeById(entry.challengeId)     # trwałość przydziału
-
-    level = currentLevel(computeProgress(all))
-    pool = nieużyte wyzwania poziomu level, sortBy(id)
-    if pool puste and level < 3: pool = nieużyte z level+1     # fallback 1
-    if pool puste: challenge = LRU z poziomu level              # fallback 2 (powtórki)
-    else: challenge = pool[fnv1aHash(today) % pool.length]
-
-    storage.putEntry({date: today, challengeId, status: 'in_progress', ...})
+dayKind(today, entries, profile, state):
+    if istnieje wpis(today): return jego kind                 # snapshot wygrywa (§0)
+    if pauza > 14 dni: return 'test'                          # retest po przerwie
+    if state.blockWeek == 'regen': return 'easy'              # tydzień regeneracyjny
+    if today ∈ sessionDays(profile) or dziś_dozwolone_przesunięcie(entries):
+        if blockWeek == 4 and slot == 3. slot tygodnia: return 'test'
+        #  test opuszczony/zdegradowany → wędruje na NASTĘPNY zaplanowany dzień sesji
+        #  (tydzień 4 się wydłuża; bramka czeka na wynik) — major #7
+        return 'session'
+    return 'easy'
 ```
 
-Decyzja: dzień `skipped`/opuszczony **zużywa** wyzwanie (unika „appka męczy mnie tym samym").
-Zmiana = jeden filtr, jeśli dogfooding pokaże inaczej.
+**Przesunięcie o 1 (major #6):** opuszczona sesja w stały dzień może być wykonana
+następnego dnia TYLKO gdy przesunięty dzień jest ≥ 48 h od poprzedniej twardej sesji
+**i** ≥ 48 h przed następnym zaplanowanym dniem sesji. Inaczej sesja przepada — **bez
+kaskady** (kaskadowe przesuwanie niszczy stały sygnał nawykowy, Kaushal & Rhodes).
+Detekcja: wczorajszy zaplanowany slot bez wpisu `completed` + warunki 48 h.
+
+### Plan sesji (minor #11 — kolejność: baza → deload → feel)
+```
+sessionPlan(state, program, feel):
+    week = state.blockWeek == 4 ? tydzień 3 : state.blockWeek
+    base = program.brackets[state.bracket].weeks[week].sets
+    plan = base.map(pct => round(pct * state.lastMT * state.volumeModifier))
+           ostatni element "A" → AMRAP-1
+    if state.blockWeek == 4: plan = plan × deloadVolumeFactor, "A" → zwykła seria  # deload
+    if feel == 'tired': usuń jedną środkową serię z planu
+    if feel == 'pain':  downgradedTo='easy' (kind bez zmian) + copy czerwonych flag
+                        # dotyczy też kind='test' — test wędruje na następny slot
+```
+
+### Bramka testowa (po każdym ukończonym teście)
+```
+gate(newMT, state):
+    if newMT >= 100 and variant == 'full': goalReached                    # minor #16
+    if newMT >= 1.15 * lastMT or bracketFor(newMT) != bracketFor(lastMT):
+        nowy blok; tabela ZAWSZE wg bracketFor(newMT)                     # blocker #3
+    elif newMT > lastMT:  powtórz blok (konsolidacja), volumeModifier = 1
+    else:                 failedTestsInRow += 1                           # minor #14
+                          tydzień 'regen' (same easy, passa nietknięta),
+                          potem POPRZEDNI blok z volumeModifier = 0.9
+    if failedTestsInRow == 2: zejście o przedział lub wariant + prompt o śnie/bolesności
+    if variant != 'full' and newMT >= variantGraduateMT:
+        awans wariantu; lastMT = round(variantSeedFactor × newMT), lastMTisSeed = true
+        # seed do pierwszego realnego testu na nowym wariancie (blocker #1);
+        # komunikat do użytkownika: "nowy max będzie niższy — to normalne"
+```
+
+### Onboarding: pierwszy Max Test (major #10)
+
+Kaskada z góry: start od `full`; wynik < `fullEntryMinMT` (5) → po przerwie **jedna** próba
+na łatwiejszym wariancie; maksymalnie **2 realne próby** w onboardingu — jeżeli druga też
+poniżej progu wejścia (`variantEntryMinMT` = 6), pozostałe warianty **estymowane** seedem
+(`variantSeedFactor` w drugą stronę) i trening zaczyna się na najłatwiejszym dopasowanym.
+Podłoga drabinki: `wall` z MT < 6 → mimo wszystko trenuj `wall` na najniższym przedziale
+(nic łatwiejszego nie istnieje). Wynik = `DailyEntry` `kind='test'` na `startDate`.
 
 ## 5. Wersjonowanie + eksport
 
+Mechanizm odziedziczony (migracje na blobie, replace, walidacja). Różnice:
+
 ```ts
-interface Meta { id: 'meta'; schemaVersion: number; installedAt: ISODateTime; }
-
-interface Migration {
-  from: number; to: number;                  // zawsze from+1
-  migrate(data: ExportBlob): ExportBlob;     // czysta funkcja NA BLOBIE, nie na DB
-}
-
 interface ExportBlob {
-  app: 'unstuck';
+  app: 'showup';               // ⚠ celowo niekompatybilne z 'unstuck' — appki nie mieszają danych
   schemaVersion: number;
   exportedAt: ISODateTime;
   profile: UserProfile;
   entries: DailyEntry[];
 }
 ```
+Eksport: `showup-export-YYYY-MM-DD.json`.
 
-- Migracje operują na formacie eksportu: `load → toBlob → applyMigrations → replaceAll`.
-  Jedna ścieżka dla upgrade'u appki i importu starego pliku.
-- Eksport: `unstuck-export-YYYY-MM-DD.json` (Blob + `<a download>`). Bez treści wyzwań.
-- Import = **replace** (nie merge); walidacja `app` + `schemaVersion <= CURRENT`.
-  Zaimplementowane (F8.1): `validateExportBlob` w `src/domain/import.ts` (result type,
-  zbiera wszystkie błędy; `schemaVersion > CURRENT` → osobny powód `newer`),
-  `replaceAll` w adapterach (jedna transakcja: profil+wpisy zastąpione, `meta`
-  zachowane — `installedAt` opisuje to urządzenie, `quizDraft` czyszczony),
-  UI w Ustawieniach (file picker → inline confirm z datą i liczbą wpisów).
-  Po imporcie App remountuje Shell — boot czyta stan na nowo z IndexedDB.
-- Eksport = jedyny backup; delikatne przypomnienie co ~30 dni.
+## 6. Parametry programu: `program.json`
 
-## 6. Treści: `challenges.json`
-
-Plik statyczny bundlowany z appką (nigdy w IndexedDB). Aktualizacja treści = deploy.
+Odpowiednik `challenges.json`, ale to **plik parametrów, nie katalog treści** — tabele
+i progi są strojone bez zmian kodu (research: progi to konwencje, nie stałe).
+Teksty instruktażowe (opisy wariantów, standard formy, copy bezpieczeństwa) mieszkają
+w i18n, nie tutaj.
 
 ```jsonc
 {
-  "contentVersion": 1,
-  "challenges": [
+  "programVersion": 1,
+  "variants": ["wall", "incline-high", "incline-low", "knee", "full"],
+  "variantEntryMinMT": 6,        // trenuj najtrudniejszy wariant z MT >= 6…
+  "fullEntryMinMT": 5,           // …ale pełne pompki już od MT >= 5 (major #5)
+  "variantGraduateMT": 20,       // MT >= 20 → następny wariant
+  "variantSeedFactor": 0.4,      // seed lastMT po awansie wariantu (blocker #1)
+  "testGateImprovement": 0.15,
+  "deloadVolumeFactor": 0.6,
+  "easySetFactor": [0.4, 0.5],   // widełki serii GtG dnia łatwego (× lastMT, seed też OK)
+  "brackets": [
     {
-      "id": "l1-001", "level": 1, "category": "two-minute",
-      "i18n": {
-        "pl": { "lesson": "…", "task": "…", "reflection": "…" },
-        "en": { "lesson": "…", "task": "…", "reflection": "…" }
-      }
+      "id": "b1", "minMT": 5, "maxMT": 10,
+      "weeks": [                  // % lastMT per seria; "A" = AMRAP-1 (tylko ostatnia)
+        { "sets": [0.6, 0.7, 0.5, 0.5, "A"] },
+        { "sets": [0.65, 0.75, 0.55, 0.55, "A"] },
+        { "sets": [0.7, 0.8, 0.6, 0.6, "A"] },
+        { "deload": true }
+      ]
     }
+    // kolejne przedziały: 11–20, 21–35, 36–50, 51–75, 76–100
   ]
 }
 ```
 
-- Oba języki w jednym rekordzie — brak `en` = błąd walidacji builda, nie cichy fallback.
-- Walidacja: unikalne id `l{level}-{nnn}`, komplet pl+en, min. 10 wyzwań/poziom.
-- Usuwanie wyzwania dozwolone (dziennik pokaże wpis bez treści); zmiana id **zabroniona**.
+Walidacja builda (wzorzec `src/content/index.ts`, rozszerzona wg minor #15):
+- przedziały posortowane, przylegające, pokrywają `min(fullEntryMinMT, …)`–100 bez dziur
+  i nakładek; `min(bracket.minMT) <= min(progi wejścia)` (łapie rozjazd 6-vs-5);
+- 4 tygodnie per przedział, czwarty = `deload`; dokładnie 5 elementów `sets`
+  w tygodniach 1–3; `"A"` wyłącznie jako ostatni element;
+- mnożniki niemalejące tydzień 1→3 **per pozycja serii** (slot `"A"` pomijany);
+- `0 < testGateImprovement < 1`, `0 < variantSeedFactor < 1`, `deloadVolumeFactor < 1`.
 
 ## 7. Decyzje i trade-offy
 
 | # | Decyzja | Odrzucone | Dlaczego |
 |---|---|---|---|
-| 1 | IndexedDB + `idb` | localStorage | trwałość wieloletniego dziennika, atomowość per-rekord |
-| 2 | ProgressState wyliczany | persystowane liczniki | zero desynchronizacji |
-| 3 | Grace odnawialny | jednorazowy | self-compassion > gamifikacyjna „uczciwość" |
-| 4 | Przydział wyzwania trwały | czysto obliczeniowy | restart appki nie zmienia wyzwania |
-| 5 | Migracje na blobie | na surowym IndexedDB | jedna ścieżka: upgrade + import |
-| 6 | Import = replace | merge | merge to pole minowe; brak sync jest świadomy |
-| 7 | Treści poza DB, id niezmienne | wyzwania w DB | deploy = aktualizacja treści, zero migracji |
-| 8 | StorageAdapter | bezpośrednie wywołania | Capacitor-ready, podmiana na SQLite bez zmian w domenie |
+| 1–8 | odziedziczone z Unstuck | — | patrz historia gita: data-model.md Unstuck §7 |
+| 9 | Pozycja programu wyliczana z wpisów | persystowany stan programu | ta sama zasada co ProgressState; snapshot dopuszczalny dopiero po dowodzie z dogfoodingu |
+| 10 | Baza `showup`, eksport `app:'showup'` | współdzielenie z Unstuck | wspólny origin github.io; appki muszą być izolowane danymi |
+| 11 | Tabele jako % maxa w `program.json` | sztywne tabele Speirsa | jeden plik parametrów zamiast setek wierszy; progi strojone bez kodu |
+| 12 | `variant`+`kind` snapshotowane, degradacja w `downgradedTo` | mutowalny `kind` | niezmienny snapshot = derywacja stabilna; przypadek „test pominięty przez ból" reprezentowalny |
+| 13 | Plan sesji niepersystowany, tylko wykonanie | plan+wykonanie | plan wyliczalny; mniej stanu = mniej desynchronizacji |
+| 14 | Passa liczy `completed` każdego rodzaju dnia | passa tylko za sesje | nawyk = obecność; sesje wymusza harmonogram, nie passa |
+| 15 | `bracket` czysto pochodny z `lastMT` | awans przedziału jako akcja bramki | tabela zawsze skalibrowana do realnej zdolności (bezpieczeństwo) |
+| 16 | Pozycja bloku w slotach sesji, nie tygodniach kalendarza | tygodnie kalendarzowe | pauza nie przesuwa programu za test; „wróć do tygodnia, w którym stanąłeś" |
+| 17 | Seed `lastMT` po awansie wariantu (0.4×) | natychmiastowy retest | retest łamie „MT na świeżo"; seed strojony parametrem, koryguje go pierwszy realny test |
+| 18 | Bez `skipped` w statusach | enum z Unstuck | martwy stan: nie ma jawnego „pomiń"; przesunięcie i degradacja to osobne mechanizmy |
+
+## 8. Review
+
+Niezależny review (2026-07-15): werdykt FIX FIRST — 4 blockery (seed lastMT po awansie
+wariantu; mutacja `kind` przy bólu; `bracket` definiowany dwuznacznie; niederywowalny
+`blockWeek` + brak stanów regen/90%), 6 majorów, 6 minorów. Wszystkie naniesione w tej
+wersji. Poprawka do research §3 („awans przedziału" → tabela zawsze wg `bracketFor(newMT)`)
+odnotowana w pushup-program-research.md.

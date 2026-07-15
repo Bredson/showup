@@ -68,7 +68,9 @@ naprawiają dokładnie poprawki 1–3.
 - Kadencja testów: co 4. tydzień.
 
 **Reguły bramki testowej**
-- MT +≥15% lub nowy przedział → następny blok z wyższej tabeli.
+- MT +≥15% lub nowy przedział → następny blok. Tabela ZAWSZE wg przedziału z nowego MT
+  (`bracketFor(newMT)`) — „wyższa tabela" to skutek, nie osobna akcja awansu.
+  [doprecyzowanie po review 2026-07-15; wiążąca wersja reguł: data-model.md §4]
 - MT +<15% ale >0 → powtórz blok („blok konsolidacyjny" — normalne, większość
   potrzebuje 1–2 powtórek na przedział; to „powtórz tydzień bez wstydu" w skali bloku).
 - MT płaski lub NIŻSZY → wymuszona regeneracja: pełny łatwy tydzień (tylko ED,
