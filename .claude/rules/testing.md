@@ -4,11 +4,13 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
 
 ## Priorytety pokrycia
 
-1. **`src/domain/` — obowiązkowe testy jednostkowe.** Zwłaszcza:
-   - algorytm streaka wybaczającego (1 dzień przerwy nie zeruje, 2+ zeruje, grace odnawialny),
-   - progresja poziomów (7/10 ukończeń),
-   - dobór wyzwania (bez powtórek, poziom użytkownika).
-   Przypadki brzegowe: zmiana dnia o północy, pierwszy dzień, dzień wybaczony.
+1. **`src/domain/` — obowiązkowe testy jednostkowe.** Zwłaszcza silnik programu
+   (`program.ts`, spec: `docs/data-model.md` §4):
+   - bramka testowa (nowy blok / konsolidacja / fail+regen / step-down / graduacja / seed-kalibracja),
+   - derywacja pozycji (sloty od blockAnchor, freeze pauzy, okno przesunięcia 48 h, slot testowy),
+   - `dayKindFor` i `sessionPlan` (deload, feel, regen → throw),
+   - streak wybaczający (obecność, nigdy wynik).
+   Przypadki brzegowe: pierwszy dzień, granice bracketów, pauza dokładnie 14 dni, slot 11.
 2. **`src/storage/`** — testy adaptera na fake/in-memory IndexedDB; test migracji bloba.
 3. **UI** — testy zachowań krytycznych przepływów (pętla dzienna 6 kroków), nie szczegółów implementacji.
 
@@ -18,6 +20,17 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
 - Nazwy testów opisowe, po angielsku: `"resets streak after two missed days"`.
 - Arrange / Act / Assert; daty w testach zawsze jawne (bez `new Date()` bez argumentu — wstrzykiwać zegar/datę jako parametr funkcji domenowej).
 - Testy domenowe bez mocków — czysta logika przyjmuje dane wejściowe, zwraca wynik.
+
+## Fixture'y silnika programu — pułapka pauzy (lekcja 2026-07-15, ugryzła DWA razy)
+
+- Reguła pauzy (>14 dni od ostatniego completed → freeze + retest-kalibracja) jest globalna:
+  **każdy** scenariusz z odstępem >14 dni między wpisami wpada w nią przypadkiem i maskuje
+  właściwe oczekiwania (np. „oblany test" staje się „kalibracją po pauzie").
+- Zasada: fixture'y rozciągnięte w czasie trzymają wpisy keep-alive (np. `session('2026-07-24')`
+  albo easy na off-day) i komentarz *dlaczego* ten wpis tam jest.
+- Przy każdej zmianie reguły zależnej od odstępów między wpisami: spodziewaj się pęknięcia
+  starych fixture'ów — najpierw sprawdź, czy to fixture kłamał, zanim „naprawisz" kod.
+- Punkt startowy fixture'ów: `START='2026-07-06'` (poniedziałek), profil Mon/Wed/Fri `[1,3,5]`.
 
 ## Definition of Done dla feature
 

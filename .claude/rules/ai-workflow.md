@@ -43,6 +43,21 @@ Rules for how AI agents work in this project (meta-level).
   derived value stay defined?), pause/resume, and edge slots (first/last of a cycle).
 - Record the review verdict and applied fixes in the doc itself (see data-model.md §8).
 
+## Engine implementation lessons (program engine, 2026-07-15)
+
+- The spec→implement→review loop paid off twice: the data-model review caught 4 blockers,
+  the post-implementation code review caught 2 majors (unsorted entries fed to a
+  date-window check; a lapsed regen day opening a shift) + 8 minors. Always run BOTH
+  reviews for engine-grade code.
+- Pattern: any SYNTHETIC state value (step-down MT, graduation seed, estimated onboarding)
+  must be flagged (`lastMTisSeed`) so the next real measurement calibrates instead of
+  being judged against an estimate. Grep for state writes that fabricate values and check
+  each one carries the flag.
+- Pattern: history arrays exposed to UI (charts) should include synthetic transition points
+  (`seed: true`) — otherwise variant/bracket changes look like data gaps.
+- `noUncheckedIndexedAccess` is on and vitest/esbuild does NOT typecheck — always run
+  `npx tsc -b` before `npm test`.
+
 ## Docs as source of truth
 
 - Implementation phases read `docs/`, not conversation history.
