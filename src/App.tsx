@@ -1,11 +1,11 @@
-// Temporary app shell for the storage-rewrite phase: the legacy Unstuck UI is gone,
-// the pushup program UI is not built yet. This keeps the live PWA honest ("under
-// construction") while still booting storage — so persistence and language survive.
+// App shell: no profile → onboarding; with profile → the program UI (for now still
+// the "under construction" placeholder — the daily loop arrives in the next phase).
 // The adapter is injected from main.tsx, so tests can pass the memory adapter.
 import { useEffect, useState } from 'react';
-import type { Lang } from './domain/types';
+import type { Lang, UserProfile } from './domain/types';
 import type { StorageAdapter } from './storage/adapter';
 import { LangContext, useT } from './ui/LangContext';
+import OnboardingScreen from './ui/screens/OnboardingScreen';
 
 /** Sensible default before a profile exists; a stored profile wins after boot. */
 function detectLang(): Lang {
@@ -23,19 +23,26 @@ function UnderConstruction({ error }: { error: boolean }) {
   );
 }
 
+type Boot =
+  | { state: 'loading' }
+  | { state: 'error' }
+  | { state: 'ready'; profile: UserProfile | null };
+
 export default function App({ adapter }: { adapter: StorageAdapter }) {
   const [lang, setLang] = useState<Lang>(detectLang);
-  const [bootError, setBootError] = useState(false);
+  const [boot, setBoot] = useState<Boot>({ state: 'loading' });
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
         const profile = await adapter.getProfile();
-        if (!cancelled && profile) setLang(profile.language);
+        if (cancelled) return;
+        if (profile) setLang(profile.language);
+        setBoot({ state: 'ready', profile });
       } catch (err) {
         console.error('Showup boot failed', err);
-        if (!cancelled) setBootError(true);
+        if (!cancelled) setBoot({ state: 'error' });
       }
     })();
     return () => {
@@ -45,7 +52,16 @@ export default function App({ adapter }: { adapter: StorageAdapter }) {
 
   return (
     <LangContext.Provider value={lang}>
-      <UnderConstruction error={bootError} />
+      {boot.state === 'ready' && boot.profile === null ? (
+        <OnboardingScreen
+          adapter={adapter}
+          lang={lang}
+          onLangChange={setLang}
+          onDone={(profile) => setBoot({ state: 'ready', profile })}
+        />
+      ) : boot.state === 'loading' ? null : (
+        <UnderConstruction error={boot.state === 'error'} />
+      )}
     </LangContext.Provider>
   );
 }
