@@ -165,7 +165,7 @@ export const pl = {
   // Settings (PRD §5.6)
   'settings.title': 'Ustawienia',
   'settings.language': 'Język',
-  'settings.language.error': 'Nie udało się zapisać języka — zmiana może zniknąć po odświeżeniu. Spróbuj ponownie.',
+  'settings.language.error': 'Nie udało się zapisać języka — zmiana może zniknąć po odświeżeniu.',
   'settings.days.title': 'Dni sesji',
   'settings.days.save': 'Zapisz dni',
   'settings.days.saving': 'Zapisuję…',

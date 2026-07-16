@@ -166,7 +166,7 @@ export const en: Record<keyof typeof pl, string> = {
   // Settings (PRD §5.6)
   'settings.title': 'Settings',
   'settings.language': 'Language',
-  'settings.language.error': 'Could not save the language — the change may not survive a refresh. Please try again.',
+  'settings.language.error': 'Could not save the language — the change may not survive a refresh.',
   'settings.days.title': 'Session days',
   'settings.days.save': 'Save days',
   'settings.days.saving': 'Saving…',

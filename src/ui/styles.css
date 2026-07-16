@@ -438,24 +438,6 @@
   outline: 2px solid var(--primary);
 }
 
-/* Level progress dots (step 3.6 / Today) */
-.level-dots {
-  display: flex;
-  gap: 6px;
-  justify-content: center;
-}
-
-.level-dots span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--surface-alt);
-}
-
-.level-dots span.filled {
-  background: var(--success);
-}
-
 /* Reinforcement animation — warm, brief (~1.5s), not fireworks */
 @keyframes bloom {
   0% {
@@ -821,12 +803,6 @@ button.cal-dot::after {
 .journal-empty-art {
   font-size: 3rem;
   margin: 0;
-}
-
-.done-check {
-  color: var(--success);
-  font-size: 3rem;
-  text-align: center;
 }
 
 /* Timer ring (step 3.4) — soft, not an alarm */
