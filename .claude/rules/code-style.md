@@ -429,6 +429,30 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
   po stronie UI (loop.ts bez kroku rest — pomoc, nie bramka: input następnej
   serii żywy cały czas, zapis = naturalny skip).
 
+## UI + domena — wzorce z fazy Long-set + guard nudge'a (Showup, 2026-07-16)
+
+- **Opcjonalny input liczbowy = derywowany tri-state, nie synchronizowany stan**:
+  z `choice` + surowego stringa wylicza się na renderze
+  `null` (pominięte/nie dotyczy) | `number` (poprawny) | `undefined` (śmieci —
+  blokuje CTA). Przełączenie opcji na inną automatycznie daje `null` bez
+  czyszczenia stanu inputu (stale digits w polu są nieszkodliwe — derywacja
+  wygrywa). Zero `useEffect` do „sprzątania".
+- **Predykat kadencji tygodniowej w domenie ma guard `e.date < today`**: wpis
+  DZISIEJSZY nie wycisza własnej opcji — `entries` aktualizują się po `persist()`
+  PRZED przejściem kroku, więc bez guardu opcja znikałaby w połowie flow
+  (między zapisem a ekranem done). Test dokumentuje to wprost
+  („today's own completed long-set is still offered").
+- **Guard celebracji w UI, nie w domenie**: nudge nie może podciąć sceny „goal",
+  ale `balanceNudgeDue` z projektu nie zna werdyktów bramki — `outcome?.type
+  !== 'goal'` żyje w DoneStep z komentarzem WHY. `outcome` jest `null` poza
+  testami, więc `null?.type !== 'goal'` = zachowanie sprzed zmiany (guard
+  wyłącznie zawęża). Weryfikacja wizualna OBUSTRONNA: scena goal bez karty
+  ORAZ kontrpróba (wynik nie-goal → karta jest) — pozytywny screenshot bez
+  negatywnego nie dowodzi, że guard cokolwiek robi.
+- **Feature „uśpiony do progu" weryfikuj też po przywróceniu stanu**: po chirurgii
+  DB przywrócenie oryginału (MT 12 < 50) to darmowy negatywny test progu w
+  realnym UI — opcja ma zniknąć. Restore stanu = część weryfikacji, nie sprzątanie.
+
 ## Deploy i produkcja (Faza 6)
 
 - **`base: '/showup/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/showup/` w kodzie aplikacji.

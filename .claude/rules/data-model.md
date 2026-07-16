@@ -41,3 +41,16 @@ Full specification: `docs/data-model.md` (Showup version, post-review 2026-07-15
 8. **`bracket` is purely derived from `lastMT`** (`bracketFor(lastMT)`). After variant
    graduation, `lastMT` is seeded (`variantSeedFactor × old MT`) until the first real test
    on the new variant.
+10. **Additive field = no schema bump** (lesson: `longSetReps`, 2026-07-16). A new
+    nullable field on `DailyEntry` keeps `schemaVersion` when: old records/blobs simply
+    LACK the key (reads as `undefined`), every read site treats missing-as-null
+    (`!= null`, not `!== null`), import accepts the missing key (`undefined` passes,
+    only present-but-malformed rejects), and old IDB records are never re-persisted via
+    spread (entries are always rewritten from freshly created objects). Import tests MUST
+    include a delete-the-key "pre-feature blob" case — the shared fixture will have the
+    key, so the backward-compat test must remove it explicitly.
+11. **"Poisons derivation" (§9) includes offering/cadence predicates**, not just
+    `ProgramState`: a forged degraded day with `easyContent: 'long-set'` never feeds the
+    engine, yet suppresses `longSetOffered` for the whole week — that's derived-state
+    poisoning too, so import rejects it. When adding a derivation over entries, re-ask
+    which impossible shapes now become load-bearing.

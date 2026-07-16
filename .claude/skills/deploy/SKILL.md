@@ -25,6 +25,10 @@ Use when asked to deploy, release, or ship the application to any environment.
    emulate Offline in DevTools, reload, app must boot from service worker cache
 5. Deploy: `git push` (Actions does the rest); watch with
    `gh run watch <id> --repo Bredson/showup --exit-status`
+   - **Stale-run trap:** `gh run watch` started right after push may latch onto the
+     PREVIOUS run. Always resolve the id first via
+     `gh run list --repo Bredson/showup --json databaseId,headSha,status --limit 3`
+     and match `headSha` against your pushed commit.
    - **Multi-account trap:** the keychain holds two GitHub accounts
      (`ext-piotr-brejnak_ACC` work + `Bredson` personal) and the osxkeychain
      credential helper uses the ACTIVE `gh` account — a 403 on push means the
@@ -33,6 +37,12 @@ Use when asked to deploy, release, or ship the application to any environment.
 6. Smoke test on the live URL: page renders, console clean,
    `navigator.serviceWorker.ready` scope = `https://bredson.github.io/showup/`,
    `manifest.webmanifest` has `scope`/`start_url` = `/showup/`
+   - **Shared-origin rule (CRITICAL):** `bredson.github.io` hosts Unstuck too — same
+     browser origin, so opening the prod app can touch/pollute real IndexedDB data.
+     Prefer a zero-side-effect smoke test via curl: fetch `/showup/`, extract the
+     hashed asset name (`assets/index-*.js`), then grep the bundle for a string
+     unique to the new feature (an i18n value works well). Open the app in a browser
+     only for read-only probes, never write.
 7. Report deployment status
 
 ## Testing tricks (proven in Faza 6)

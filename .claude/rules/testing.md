@@ -61,6 +61,18 @@ Stack testowy: **Vitest + Testing Library + jsdom** (skonfigurowane w `vite.conf
   = dzisiejszy) to kanoniczny stan minimalny Showup i obowiązkowy scenariusz
   weryfikacji wizualnej.
 
+## Nowe pole wymagane w DailyEntry = pękają WSZYSTKIE fixture'y (lekcja 2026-07-16)
+
+- Dodanie pola do `DailyEntry` (nawet nullable, ale wymaganego w typie) łamie każdy
+  fixture `entry()` w testach — to koszt mechaniczny, nie sygnał złego projektu.
+  Kolejność: najpierw pole w types.ts, potem `npm run build` jako wykrywacz miejsc.
+- **`npx tsc --noEmit` NIE wystarcza jako bramka typów**: przepuścił fixture'y,
+  które `npm run build` (tsc -b, project references, pliki testowe) odrzucił.
+  Bramka typów = zawsze `npm run build`, nie goły tsc.
+- Pułapka bulk-edytów: `perl -0pi ... unless /pattern/` na zeslurpowanym pliku
+  pomija CAŁY plik, gdy pattern występuje gdziekolwiek (np. w nowym teście) —
+  do chirurgicznych zmian fixture'ów używaj narzędzia edit per plik.
+
 ## Definition of Done dla feature
 
 Feature nie jest ukończony, dopóki `npm test` i `npm run build` nie przechodzą.
