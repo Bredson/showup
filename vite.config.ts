@@ -24,7 +24,7 @@ export default defineConfig({
       manifest: {
         name: 'Showup',
         short_name: 'Showup',
-        description: 'One small challenge a day, no pressure.',
+        description: 'Your road to 100 push-ups — one session at a time.',
         theme_color: '#fdf6ec',
         background_color: '#fdf6ec',
         display: 'standalone',

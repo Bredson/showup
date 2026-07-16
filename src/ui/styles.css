@@ -434,7 +434,8 @@
 }
 
 .text-input:focus {
-  outline: 2px solid var(--primary-soft);
+  /* --primary (not -soft): focus indicators need >=3:1 contrast (WCAG 1.4.11) */
+  outline: 2px solid var(--primary);
 }
 
 /* Level progress dots (step 3.6 / Today) */
@@ -616,7 +617,7 @@ button.cal-dot::after {
   font-size: 0.8rem;
 }
 
-/* today, still open — dashed soft-amber outline, never a miss marker */
+/* today, still open — dashed soft-teal outline, never a miss marker */
 .cal-dot--pending {
   background: var(--surface);
   border-style: dashed;

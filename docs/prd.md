@@ -116,6 +116,12 @@ Jak Unstuck: architektura Capacitor-ready (odziedziczona), TWA/Capacitor po wali
 Odziedziczony kierunek Unstuck (jasny, ciepły, kremowo-pomarańczowy) w MVP — spójność rodziny
 produktów i zero pracy. Rewizja tożsamości wizualnej (ikona! — obecnie kiełek Unstuck) po MVP.
 
+**Rewizja po MVP (2026-07-16, zrealizowana):** własna ikona „schodki + kropka obecności ze
+śladem skoków" oraz zmiana palety akcentów na kremowo-turkusową (`--primary #0D8478`,
+`--primary-soft #2BB3A3`) — turkus kojarzony ze sportem/fitnessem, wyraźnie odróżnia Showup
+od pomarańczowego Unstuck. Kremowe tło `#FDF6EC` i miękka zieleń `--success` bez zmian
+(sygnatura rodziny). Szczegóły: `docs/design-direction.md`.
+
 ## 9. Wymagania niefunkcjonalne
 
 - **Prywatność:** 100% danych lokalnie; zero analityki zewnętrznej

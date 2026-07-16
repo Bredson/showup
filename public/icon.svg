@@ -1,15 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <!-- Showup app icon — sprout motif (🌿 "passa trwa"), palette from src/tokens.css.
+  <!-- Showup app icon: "steps + hop trail" motif. The presence dot just landed on the
+       top step, leaving a dashed hop trail behind ("pokazuj sie, wskakuj wyzej").
+       Teal ramp aligned with src/tokens.css (primary #0d8478, primary-soft #2bb3a3);
+       amber dot #f5a623 is the family link to Unstuck's warm palette.
        Full-bleed design: OS applies its own mask (rounded corners / circle).
-       Motif kept inside the central 80% safe zone for maskable icons.
-       Draw order matters: mound is painted LAST so the stem grows out of the soil. -->
+       Motif kept inside the central 80% safe zone for maskable icons. -->
   <rect width="512" height="512" fill="#fdf6ec"/>
-  <!-- stem (bottom hidden behind the mound) -->
-  <path d="M256 360 L256 176" stroke="#7bb662" stroke-width="26" stroke-linecap="round" fill="none"/>
-  <!-- right leaf -->
-  <path d="M262 222 C 320 226, 364 190, 374 126 C 312 126, 268 164, 262 222 Z" fill="#7bb662"/>
-  <!-- left leaf -->
-  <path d="M250 282 C 192 286, 148 250, 138 186 C 200 186, 244 224, 250 282 Z" fill="#7bb662"/>
-  <!-- soil mound (on top, occludes stem base) -->
-  <path d="M96 400 Q 256 262 416 400 Z" fill="#f08a3c"/>
+  <!-- ascending steps: light teal, primary-soft, primary -->
+  <rect x="112" y="292" width="76" height="112" rx="22" fill="#6fd0c5"/>
+  <rect x="218" y="222" width="76" height="182" rx="22" fill="#2bb3a3"/>
+  <rect x="324" y="152" width="76" height="252" rx="22" fill="#0d8478"/>
+  <!-- dashed hop trail: arcs over steps 1 and 2 toward the dot -->
+  <path d="M150 268 Q 203 158 252 198 M262 194 Q 309 88 336 132"
+        stroke="#f5a623" stroke-width="13" stroke-linecap="round"
+        stroke-dasharray="1 30" fill="none"/>
+  <!-- presence dot (amber sun) that just landed on the top step -->
+  <circle cx="362" cy="116" r="26" fill="#f5a623"/>
 </svg>

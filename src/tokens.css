@@ -2,12 +2,14 @@
    RULE: components use only these variables — no raw hex values in component CSS. */
 
 :root {
-  /* Palette: warm cream + orange (zenlife direction) */
+  /* Palette: warm cream + teal accent (Showup identity; cream bg is the family signature).
+     Teal #0d8478 chosen for WCAG AA: exactly 4.50:1 with near-white --surface text on
+     .btn-primary — do not lighten --primary or darken --surface without re-checking. */
   --bg: #fdf6ec;
   --surface: #fffdf9;
   --surface-alt: #fbeed9;
-  --primary: #f08a3c;
-  --primary-soft: #f5a623;
+  --primary: #0d8478;
+  --primary-soft: #2bb3a3;
   --text: #3d3428;
   --text-muted: #8c7f6d;
   --success: #7bb662;

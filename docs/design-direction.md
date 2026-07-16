@@ -1,7 +1,10 @@
-# Unstuck — Design Direction
+# Showup — Design Direction
 
-> Zaakceptowany kierunek (Faza 2). Wzorce: `docs/design-samples/` (5 screenshotów).
-> Decyzja użytkownika: jasny, bardzo przyjazny, NIE ciemny i techniczny. Paleta: kremowo-pomarańczowa (wzorzec „zenlife").
+> Zaakceptowany kierunek (Faza 2 Unstuck, odziedziczony). Wzorce: `docs/design-samples/` (5 screenshotów).
+> Decyzja użytkownika: jasny, bardzo przyjazny, NIE ciemny i techniczny.
+> Rewizja tożsamości po MVP (2026-07-16): paleta akcentów zmieniona na kremowo-turkusową —
+> turkus jest silniej kojarzony ze sportem/fitnessem i odróżnia Showup od pomarańczowego Unstuck.
+> Kremowe tło i ciepły ton pozostają sygnaturą rodziny produktów.
 
 ## Nastrój
 
@@ -14,7 +17,8 @@ produktywności. Spójne z regułą product-principles #3 (self-compassion over 
 |---|---|---|
 | `--bg` | `#FDF6EC` (kremowy) | Tło główne |
 | `--surface` | `#FFFDF9` | Karty |
-| `--primary` | `#F5A623` → `#F08A3C` (ciepły pomarańcz) | Akcje, akcenty, CTA |
+| `--primary` | `#0D8478` (turkus; AA 4.5:1 z tekstem `--surface`) | Akcje, akcenty, CTA |
+| `--primary-soft` | `#2BB3A3` (jaśniejszy turkus) | Dekoracje, focus, kropka „dziś otwarte" |
 | `--text` | `#3D3428` (ciepła ciemna czerń) | Tekst główny |
 | `--text-muted` | `#8C7F6D` | Tekst drugorzędny |
 | `--success` | `#7BB662` (miękka zieleń) | Ukończenia, progres |
@@ -31,7 +35,11 @@ komunikujemy ciepłym neutralnym tonem, nie kolorem ostrzegawczym.
 - **Ilustracje:** przyjazne postaci w stylu line-art z akcentem koloru (jak zenlife); używane
   na ekranach onboardingu, pustych stanach i komunikatach self-compassion
 - **Nawigacja:** dolny pasek, max 4 pozycje, aktywna pozycja wyróżniona pigułką
-- **Progres:** miękkie ringi/paski, ciepła zieleń; kalendarz ukończeń w stylu łagodnych kropek
+- **Progres:** miękkie ringi/paski (ring w kolorze primary, wypełnienia ukończeń w miękkiej
+  zieleni `--success`); kalendarz ukończeń w stylu łagodnych kropek
+- **Ikona aplikacji:** `public/icon.svg` — schodki (turkusowa rampa `#6FD0C5` → `#2BB3A3`
+  → `#0D8478`) + bursztynowa kropka obecności ze śladem skoków; bursztyn `#F5A623` to
+  łącznik z ciepłą paletą Unstuck. Po zmianie: `npm run generate-pwa-assets`
 
 ## Zasady layoutu
 
