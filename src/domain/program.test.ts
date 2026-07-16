@@ -13,6 +13,7 @@ import {
   resolveOnboardingResult,
   sessionPlan,
   validateSessionDays,
+  withSessionDays,
 } from './program';
 
 // --- fixtures ---------------------------------------------------------------
@@ -99,6 +100,30 @@ describe('validateSessionDays', () => {
     expect(validateSessionDays([0, 2, 6])).toBe(false); // 6 and 0 adjacent mod 7
     expect(validateSessionDays([1, 1, 4])).toBe(false);
     expect(validateSessionDays([1, 4] as unknown as Weekday[])).toBe(false);
+  });
+});
+
+// --- withSessionDays ------------------------------------------------------------
+
+describe('withSessionDays', () => {
+  it('returns a new profile with the days in canonical sorted order', () => {
+    const before = profileWith();
+    const after = withSessionDays(before, [6, 2, 4]);
+    expect(after).toEqual({ ...before, sessionDays: [2, 4, 6] }); // ONLY the days change
+    expect(after).not.toBe(before);
+  });
+
+  it('does not mutate the input profile or the days argument', () => {
+    const before = profileWith();
+    const days: Weekday[] = [6, 2, 4];
+    withSessionDays(before, days);
+    expect(before.sessionDays).toEqual([1, 3, 5]);
+    expect(days).toEqual([6, 2, 4]); // sort works on a copy
+  });
+
+  it('throws on invalid days (final gate mirrors the onboarding builder)', () => {
+    expect(() => withSessionDays(profileWith(), [1, 2, 4])).toThrow(/invalid session days/);
+    expect(() => withSessionDays(profileWith(), [1, 3])).toThrow(/invalid session days/);
   });
 });
 

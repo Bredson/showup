@@ -63,6 +63,33 @@ export function validateSessionDays(days: readonly Weekday[]): boolean {
   return true;
 }
 
+/**
+ * Validate-and-canonicalize gate shared by the onboarding builder and Settings (extract,
+ * don't copy). Throws because each caller's UI disables its CTA until the days validate —
+ * reaching here with bad days is a bug, not a user error. Canonical sorted order keeps
+ * exports/diffs stable regardless of click order.
+ */
+export function canonicalSessionDays(
+  days: readonly Weekday[],
+  caller: 'onboarding' | 'settings',
+): [Weekday, Weekday, Weekday] {
+  if (!validateSessionDays(days)) {
+    throw new Error(`${caller}: invalid session days (need 3 distinct, non-adjacent)`);
+  }
+  // Tuple cast is safe: validateSessionDays just proved length === 3.
+  return [...days].sort((a, b) => a - b) as [Weekday, Weekday, Weekday];
+}
+
+/**
+ * Profile with changed session days (Settings, PRD §2 "requiz"). No schedule history is
+ * persisted — derivation reinterprets the past window with the new days, which moves the
+ * in-block position by at most ±1 slot (slots pass whether completed or lapsed) while
+ * entry snapshots stay untouched.
+ */
+export function withSessionDays(profile: UserProfile, days: readonly Weekday[]): UserProfile {
+  return { ...profile, sessionDays: canonicalSessionDays(days, 'settings') };
+}
+
 function weekdayOf(date: ISODate): Weekday {
   return new Date(toUtcMs(date)).getUTCDay() as Weekday;
 }

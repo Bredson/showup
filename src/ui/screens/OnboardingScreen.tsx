@@ -18,6 +18,7 @@ import { program } from '../../content/program';
 import type { StorageAdapter } from '../../storage/adapter';
 import { localToday, nowISO } from '../clock';
 import type { ISODate, ISODateTime } from '../../domain/types';
+import DayPicker from '../components/DayPicker';
 import { useT } from '../LangContext';
 
 type Step = 'welcome' | 'disclaimer' | 'standard' | 'test' | 'rest' | 'result' | 'days';
@@ -33,9 +34,6 @@ const DOT: Record<Step, number> = {
   days: 4,
 };
 const DOTS = 5;
-
-/** Monday-first display order for the weekday chips (Weekday: 0 = Sunday). */
-const WEEK_MON_FIRST: readonly Weekday[] = [1, 2, 3, 4, 5, 6, 0];
 
 interface Props {
   adapter: StorageAdapter;
@@ -305,19 +303,7 @@ export default function OnboardingScreen({ adapter, lang, onLangChange, onDone }
         {t('onb.days.title')}
       </h1>
       <p className="muted">{t('onb.days.hint')}</p>
-      <div className="chip-row" role="group" aria-label={t('onb.days.title')}>
-        {WEEK_MON_FIRST.map((d) => (
-          <button
-            key={d}
-            type="button"
-            className={`chip ${days.includes(d) ? 'chip--selected' : ''}`}
-            aria-pressed={days.includes(d)}
-            onClick={() => toggleDay(d)}
-          >
-            {t(`weekday.${d}`)}
-          </button>
-        ))}
-      </div>
+      <DayPicker value={days} onToggle={toggleDay} label={t('onb.days.title')} />
       <p className="muted" role="status" aria-live="polite">
         {daysValid
           ? null

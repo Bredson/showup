@@ -8,7 +8,7 @@
 //     resolveOnboardingResult, never persisted.
 import type { DailyEntry, ISODate, ISODateTime, Lang, UserProfile, Weekday } from './types';
 import type { OnboardingAttempt } from './program';
-import { validateSessionDays } from './program';
+import { canonicalSessionDays } from './program';
 
 export interface OnboardingInput {
   language: Lang;
@@ -28,14 +28,12 @@ export interface OnboardingRecords {
 }
 
 /**
- * Pure assembly + final validation gate. Throws on invalid session days: the UI
- * disables the CTA until they validate, so reaching here with bad days is a bug,
- * not a user error.
+ * Pure assembly + final validation gates (session days validate inside
+ * canonicalSessionDays). Throws: the UI disables the CTA until the input validates,
+ * so reaching here with bad data is a bug, not a user error.
  */
 export function buildOnboardingRecords(input: OnboardingInput): OnboardingRecords {
-  if (!validateSessionDays(input.sessionDays)) {
-    throw new Error('onboarding: invalid session days (need 3 distinct, non-adjacent)');
-  }
+  const sessionDays = canonicalSessionDays(input.sessionDays, 'onboarding');
   const { result } = input.lastAttempt;
   if (!Number.isInteger(result) || result < 0) {
     throw new Error('onboarding: attempt result must be a non-negative integer');
@@ -45,8 +43,7 @@ export function buildOnboardingRecords(input: OnboardingInput): OnboardingRecord
     id: 'singleton',
     language: input.language,
     startDate: input.today,
-    // Sorted canonical order: exports/diffs stay stable regardless of click order.
-    sessionDays: [...input.sessionDays].sort((a, b) => a - b) as [Weekday, Weekday, Weekday],
+    sessionDays,
     ifThen: ifThen === '' ? null : ifThen,
     disclaimerAcceptedAt: input.disclaimerAcceptedAt,
     createdAt: input.now,

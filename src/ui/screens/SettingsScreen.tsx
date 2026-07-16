@@ -6,15 +6,17 @@
 // operation disables EVERY other control (code-style F9: a save committing mid-wipe
 // would resurrect deleted data; App holds the second guard layer).
 import { useEffect, useRef, useState } from 'react';
-import type { ExportBlob, Lang, UserProfile } from '../../domain/types';
+import type { ExportBlob, Lang, UserProfile, Weekday } from '../../domain/types';
 import { buildExportBlob, exportFilename } from '../../domain/export';
 import { validateExportBlob } from '../../domain/import';
+import { validateSessionDays, withSessionDays } from '../../domain/program';
 import type { StorageAdapter } from '../../storage/adapter';
 import { CURRENT_SCHEMA_VERSION } from '../../storage/adapter';
 import { localToday, nowISO } from '../clock';
 import { formatDayLong } from '../dates';
 import { downloadJSON } from '../download';
 import { readJSONFile } from '../upload';
+import DayPicker from '../components/DayPicker';
 import { useLang, useT } from '../LangContext';
 
 /** Calm, self-clearing outcome messages (all failures share one status region). */
@@ -90,6 +92,33 @@ export default function SettingsScreen({
     } catch {
       // Already logged in App; the UI switched optimistically — say so honestly.
       setOp({ phase: 'message', key: 'settings.language.error' });
+    }
+  };
+
+  // Session-days change (PRD §2 "requiz"): explicit save CTA because intermediate
+  // selections (2 days, adjacent days) are invalid states — save-on-tap would persist
+  // them. No schedule history: derivation reinterprets the past window (±1 slot max).
+  const [days, setDays] = useState<readonly Weekday[]>(profile.sessionDays);
+  const [daysOp, setDaysOp] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
+  const daysValid = validateSessionDays(days);
+  // profile.sessionDays is canonical (sorted), so compare against the sorted selection.
+  const daysDirty =
+    [...days].sort((a, b) => a - b).join(',') !== profile.sessionDays.join(',');
+
+  const toggleDay = (d: Weekday) => {
+    setDaysOp('idle'); // a new selection invalidates the last save outcome message
+    setDays((prev) => (prev.includes(d) ? prev.filter((x) => x !== d) : [...prev, d]));
+  };
+
+  const saveDays = async () => {
+    setDaysOp('saving');
+    try {
+      await onProfileChange(withSessionDays(profile, days));
+      setDaysOp('saved');
+    } catch {
+      // Optimistic like the language switch: the plan already follows the new days
+      // in memory, but the save missed the disk — say so honestly.
+      setDaysOp('error');
     }
   };
 
@@ -176,6 +205,41 @@ export default function SettingsScreen({
             </button>
           ))}
         </div>
+      </section>
+
+      <section className="settings-section">
+        <h2>{t('settings.days.title')}</h2>
+        <p className="muted">{t('onb.days.hint')}</p>
+        {/* Chips freeze during the save too: a toggle would reset daysOp to idle and the
+            late completion would announce "saved" for a selection that was never saved. */}
+        <DayPicker
+          value={days}
+          onToggle={toggleDay}
+          disabled={busy || daysOp === 'saving'}
+          label={t('settings.days.title')}
+        />
+        {/* Always-rendered status region (onboarding contract): count hint below 3 picks,
+            adjacency error, then the save outcome. Silence only in the pristine state —
+            nothing changed, nothing to say. */}
+        <p className="muted" role="status" aria-live="polite">
+          {!daysValid
+            ? days.length < 3
+              ? t('onb.days.count', { n: days.length })
+              : t('onb.days.invalid')
+            : daysOp === 'saved'
+              ? t('settings.days.saved')
+              : daysOp === 'error'
+                ? t('settings.days.error')
+                : null}
+        </p>
+        <button
+          type="button"
+          className="btn-secondary"
+          disabled={!daysValid || !daysDirty || busy || daysOp === 'saving'}
+          onClick={() => void saveDays()}
+        >
+          {daysOp === 'saving' ? t('settings.days.saving') : t('settings.days.save')}
+        </button>
       </section>
 
       <section className="settings-section">
