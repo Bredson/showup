@@ -102,6 +102,24 @@ snapshocie a11y).
 - Przechwycenie EKSPORTU (download) → `.claude/skills/deploy/SKILL.md` (patch
   `HTMLAnchorElement.prototype.click`).
 
+## Technika 5: obserwacja rederywacji „dziś" (pułapka snapshot-wins)
+
+Zmiana ustawień wpływających na harmonogram (np. `sessionDays`) NIE zmieni ekranu
+Dziś, jeśli dzisiejszy wpis już istnieje — `dayKindFor` zwraca `existing.kind`
+(snapshot wins, `kind` nigdy nie mutowany). To poprawne zachowanie domenowe,
+nie stale props i nie bug — reload niczego nie zmieni.
+
+Żeby zobaczyć świeżą derywację pod nowymi ustawieniami:
+
+1. Backup + `store.delete(dzisiejsza_data)` (Technika 1 — backup w wyniku narzędzia).
+2. Reload → Dziś derywuje od zera (uwaga: samo wejście na Dziś **odtwarza** wpis
+   in_progress z nowym `kind`).
+3. Sprzątanie: `store.put(backup)` nadpisuje odtworzony wpis, reload, snapshot
+   potwierdzający stan wyjściowy.
+
+Diagnoza „stale props vs domena" w jednym kroku: reload strony — jeśli po reloadzie
+widok się nie zmienia, przyczyna jest w derywacji/danych, nie w propagacji propsów.
+
 ## Scenariusz obowiązkowy: dzień założycielski
 
 Zawsze sprawdź ekran ZARAZ po świeżym onboardingu (pusta baza → onboarding →

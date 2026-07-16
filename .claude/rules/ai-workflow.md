@@ -87,6 +87,17 @@ Rules for how AI agents work in this project (meta-level).
 - HELD (Block-funnel phase, same day): domain refactor + new card — review verdict
   approve, 2 minors, both NEW patterns (type predicate at filter boundary, full-return
   assertion), zero re-violations. Third consecutive phase confirming rules-in-plan.
+- NUANCE (Session-days phase, 2026-07-16): first blocker after three clean phases —
+  and it was an INTERPRETATION gap, not a skipped rule. F9 "operacja w toku blokuje
+  wszystko" was read as "global busy disables controls", but a NEW local op state
+  (`daysOp`) created its own in-flight window that global busy did not cover
+  (chips stayed live during the save; a toggle would reset the op and the late
+  completion would lie in the status region). Lesson for rules-in-plan: when a plan
+  introduces a new async-op state, the plan must explicitly map WHICH inputs that op
+  freezes — re-reading the rule is not enough when the rule's subject ("everything")
+  silently grew. Also RECURRED: F6 extract-don't-copy (validate+canonicalize trio
+  copied from the onboarding builder instead of extracted) — caught by review, cost
+  a round; canonicalization gates now have a named pattern in code-style.
 
 ## Docs as source of truth
 
