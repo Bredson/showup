@@ -136,6 +136,41 @@ może pokazywać błąd dla stanu niemożliwego w UI (dni sąsiadujące), to tyl
 testowy. Po screenshotach zrób też **negatywny check wizualny**: przywróć jeden
 wyciszający wpis i potwierdź snapshotem, że karta znika (nie tylko unit testem).
 
+## Technika 7: time-shift do stanów „po deadline" (timery)
+
+Stany „odliczanie minęło" (timer przerwy liczy `endAt - nowMs()`) osiąga się
+patchem zegara zamiast czekania:
+
+```js
+() => { const orig = Date.now; Date.now = () => orig() + 95000; return 'shifted'; }
+```
+
+- Patch znika przy reloadzie (jak Technika 3) — zero sprzątania w kodzie.
+- Przesunięcie > długość timera (np. +95s przy 90s) — kolejny tick interwału
+  przeliczy sekundy z nowego `Date.now` i przełączy UI w stan końcowy.
+- Działa, bo `clock.ts#nowMs` deleguje do `Date.now` — gdyby zegar trzymał
+  referencję z importu, patch by nie zadziałał (to też szybki test, że kod
+  faktycznie liczy deadline, a nie dekrementuje).
+
+## Sondy strukturalne a11y zamiast screenshota
+
+Kontrakty typu „region live zamontowany PRZED zmianą treści", „pusty element bez
+marginesu", „role zniknęło/zostało" weryfikuj `evaluate_script` po rolach — snapshot
+a11y pokazuje tylko elementy z treścią, a screenshot nie pokaże pustego regionu:
+
+```js
+() => ({
+  timer: document.querySelector('[role="timer"]')?.textContent ?? null,
+  statusMounted: !!document.querySelector('.card [role="status"]'),
+  statusText: document.querySelector('.card [role="status"]')?.textContent,
+  margin: getComputedStyle(document.querySelector('.card [role="status"]')).marginTop,
+})
+```
+
+Sekwencja dowodowa dla live regionu: sonda W TRAKCIE odliczania (region jest,
+pusty, margines 0) → time-shift → sonda po (cyfry zniknęły, treść w TYM SAMYM,
+już-żywym regionie).
+
 ## Scenariusz obowiązkowy: dzień założycielski
 
 Zawsze sprawdź ekran ZARAZ po świeżym onboardingu (pusta baza → onboarding →

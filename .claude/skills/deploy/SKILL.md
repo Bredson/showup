@@ -25,6 +25,11 @@ Use when asked to deploy, release, or ship the application to any environment.
    emulate Offline in DevTools, reload, app must boot from service worker cache
 5. Deploy: `git push` (Actions does the rest); watch with
    `gh run watch <id> --repo Bredson/showup --exit-status`
+   - **Multi-account trap:** the keychain holds two GitHub accounts
+     (`ext-piotr-brejnak_ACC` work + `Bredson` personal) and the osxkeychain
+     credential helper uses the ACTIVE `gh` account — a 403 on push means the
+     work account is active, not a permissions change. Fix:
+     `gh auth switch --user Bredson` then push again.
 6. Smoke test on the live URL: page renders, console clean,
    `navigator.serviceWorker.ready` scope = `https://bredson.github.io/showup/`,
    `manifest.webmanifest` has `scope`/`start_url` = `/showup/`
