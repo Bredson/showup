@@ -122,6 +122,11 @@ export const en: Record<keyof typeof pl, string> = {
   'today.done.degraded.body':
     'Listening to your body is training too. If the pain returns next time, see a specialist.',
 
+  // Today — muscle-balance nudge (1x/week on the done screen; PRD §5 "Done from backlog")
+  'today.nudge.title': 'Something for your back?',
+  'today.nudge.body':
+    'This week brings plenty of pushing. If you feel like it, 1–2 relaxed sets of rows or band pull-aparts anytime this week will help your shoulders stay balanced. No obligation — just a friendly tip.',
+
   // Test gate outcomes (PRD §4: advance / consolidation / regeneration)
   'gate.goal.title': '100 pushups. Goal reached!',
   'gate.goal.body':

@@ -329,6 +329,15 @@ function isCompleted(e: DailyEntry): boolean {
   return e.status === 'completed';
 }
 
+/**
+ * Completed hard pushing work: a session or test finished without pain degradation.
+ * Single source of truth for "hard" — shift windows, weekly counters and the
+ * balance nudge (nudge.ts) must never drift apart on what counts.
+ */
+export function isHardCompleted(e: DailyEntry): boolean {
+  return isCompleted(e) && e.downgradedTo === null && (e.kind === 'session' || e.kind === 'test');
+}
+
 /** A completed test that carries a gate-relevant result (a pain-downgraded test wanders instead). */
 export function isGateTest(e: DailyEntry): e is DailyEntry & { testResult: number } {
   return e.kind === 'test' && isCompleted(e) && e.downgradedTo === null && e.testResult !== null;
@@ -526,13 +535,7 @@ function shiftWindowOpen(
   if (sessionDaysInclude(profile, shiftedDay)) return false; // scheduled day: no shift needed
   const prevHard = [...sorted]
     .reverse()
-    .find(
-      (e) =>
-        isCompleted(e) &&
-        e.downgradedTo === null &&
-        (e.kind === 'session' || e.kind === 'test') &&
-        daysBetween(e.date, shiftedDay) > 0,
-    );
+    .find((e) => isHardCompleted(e) && daysBetween(e.date, shiftedDay) > 0);
   if (prevHard !== undefined && daysBetween(prevHard.date, shiftedDay) < SHIFT_REST_DAYS) return false;
   const next = nextScheduledDayAfter(shiftedDay, profile);
   if (daysBetween(shiftedDay, next) < SHIFT_REST_DAYS) return false;
@@ -564,11 +567,7 @@ function countSessionsThisWeek(
   if (windowStart === undefined) return 0;
   return sorted.filter(
     (e) =>
-      isCompleted(e) &&
-      e.downgradedTo === null &&
-      (e.kind === 'session' || e.kind === 'test') &&
-      daysBetween(windowStart, e.date) >= 0 &&
-      daysBetween(e.date, today) >= 0,
+      isHardCompleted(e) && daysBetween(windowStart, e.date) >= 0 && daysBetween(e.date, today) >= 0,
   ).length;
 }
 

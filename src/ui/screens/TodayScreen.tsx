@@ -21,6 +21,7 @@ import {
   sessionPlan,
   type GateOutcome,
 } from '../../domain/program';
+import { balanceNudgeDue } from '../../domain/nudge';
 import { computeStreak } from '../../domain/streak';
 import {
   comebackKind,
@@ -544,6 +545,7 @@ function DoneStep({
 }) {
   const t = useT();
   const streak = computeStreak(entries, today);
+  const showNudge = balanceNudgeDue(entries, today);
   const isRealTest = entry.kind === 'test' && entry.downgradedTo === null && entry.testResult !== null;
 
   // The gate reports its own verdict (computeGateLog replays every test through it) —
@@ -568,6 +570,12 @@ function DoneStep({
       )}
       <p className="muted center">{body}</p>
       <p className="badge center">{t('today.streak', { n: streak })}</p>
+      {showNudge && (
+        <div className="card card--alt">
+          <h2>{t('today.nudge.title')}</h2>
+          <p className="muted">{t('today.nudge.body')}</p>
+        </div>
+      )}
     </div>
   );
 }

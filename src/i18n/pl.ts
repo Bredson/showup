@@ -121,6 +121,11 @@ export const pl = {
   'today.done.degraded.body':
     'Wysłuchanie ciała to też trening. Jeśli ból wróci następnym razem, skonsultuj się ze specjalistą.',
 
+  // Today — muscle-balance nudge (1x/tydz. na ekranie done; PRD §5 „Zrealizowane z backlogu")
+  'today.nudge.title': 'Coś dla pleców?',
+  'today.nudge.body':
+    'Ten tydzień przyniesie sporo pchania. Jeśli masz ochotę, 1–2 luźne serie wiosłowania albo band pull-apart w dowolnym momencie tygodnia pomogą barkom zachować równowagę. Zero obowiązku — to tylko życzliwa podpowiedź.',
+
   // Test gate outcomes (PRD §4: awans / konsolidacja / regeneracja)
   'gate.goal.title': '100 pompek. Cel osiągnięty!',
   'gate.goal.body':

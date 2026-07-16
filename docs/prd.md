@@ -51,7 +51,7 @@ samowspółczucie, zero presji), inna domena i inna progresja.
 | Pozytywne wzmocnienie | Komunikat po sesji + wykres maxów z testów | ✅ |
 | Refleksja | 1 zdanie po sesji (jak Unstuck) | ✅ |
 | Progress tracker | Passa obecności + kalendarz + krzywa Max Testów | ✅ |
-| Balans mięśniowy | Opcjonalny nudge: wiosłowanie/band pull-apart 1–2x/tydz. | ⬜ po MVP |
+| Balans mięśniowy | Opcjonalny nudge: wiosłowanie/band pull-apart 1–2x/tydz. | ✅ (post-MVP, 2026-07-16) |
 | Long set practice (50→100) | Dodatkowa cotygodniowa wolna seria od bloku ~5 | ⬜ po MVP (dotyczy późnej fazy programu) |
 
 ## 4. Pętla dzienna (serce produktu)
@@ -96,8 +96,19 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
 
 **Poza MVP (świadomie):**
 - inne programy (yoga, codzienny ruch) — architektura gotowa, treści nie
-- powiadomienia, konta, sync, statystyki zaawansowane, nudge balansu, long-set practice
+- powiadomienia, konta, sync, statystyki zaawansowane, long-set practice
 - timer przerw między seriami (do rozważenia po dogfoodingu — telefon i tak leży obok)
+
+**Zrealizowane z backlogu po MVP:**
+- **Nudge balansu mięśniowego (2026-07-16, decyzje użytkownika):** karta informacyjna na
+  ekranie „Zrobione" po PIERWSZEJ ukończonej ciężkiej pracy (sesja lub test, niezdegradowane
+  bólem) w tygodniu kalendarzowym (pn–nd) — rytm zgodny z researchem 1–2×/tydz.
+  (pushup-program-research.md, sekcja Bezpieczeństwo). Treść: sugestia wiosłowania /
+  band pull-apart, ton życzliwy, zero presji. Bez wyłącznika w v1 (dodamy, jeśli dogfooding
+  pokaże potrzebę); zero nowej persystencji — trigger w pełni wyliczany z wpisów
+  (`balanceNudgeDue` w domenie). Nudge NIE dotyka passy ani nie jest nagradzany
+  (zasada „minimum wystarcza"). Odrzucone warianty: hint w dzień easy (konkurencja
+  z 2-min minimum), sekcja w Progres (łatwa do przeoczenia).
 
 ## 6. Kryteria sukcesu MVP
 
