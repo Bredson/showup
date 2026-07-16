@@ -244,6 +244,7 @@ w i18n, nie tutaj.
   "testGateImprovement": 0.15,
   "deloadVolumeFactor": 0.6,
   "easySetFactor": [0.4, 0.5],   // widełki serii GtG dnia łatwego (× lastMT, seed też OK)
+  "restSeconds": 90,             // przerwa między seriami (środek widełek 60–120 s z researchu)
   "brackets": [
     {
       "id": "b1", "minMT": 5, "maxMT": 10,
@@ -265,7 +266,9 @@ Walidacja builda (wzorzec `src/content/index.ts`, rozszerzona wg minor #15):
 - 4 tygodnie per przedział, czwarty = `deload`; dokładnie 5 elementów `sets`
   w tygodniach 1–3; `"A"` wyłącznie jako ostatni element;
 - mnożniki niemalejące tydzień 1→3 **per pozycja serii** (slot `"A"` pomijany);
-- `0 < testGateImprovement < 1`, `0 < variantSeedFactor < 1`, `deloadVolumeFactor < 1`.
+- `0 < testGateImprovement < 1`, `0 < variantSeedFactor < 1`, `deloadVolumeFactor < 1`;
+- `restSeconds` — dodatnia liczba całkowita (timer przerw jest w całości po stronie UI;
+  `sessionPlan` i `PlannedSet` nie niosą danych czasowych).
 
 ## 7. Decyzje i trade-offy
 

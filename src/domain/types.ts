@@ -123,6 +123,8 @@ export interface ProgramConfig {
   deloadVolumeFactor: number;
   /** Easy-day GtG set range as [min, max] × lastMT. */
   easySetFactor: [number, number];
+  /** Rest between session sets, in seconds — UI countdown only, never in the plan (data-model §6). */
+  restSeconds: number;
   /** Sorted, adjacent, covering min(fullEntryMinMT, …)–100. */
   brackets: ProgramBracket[];
 }

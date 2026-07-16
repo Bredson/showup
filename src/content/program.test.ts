@@ -20,6 +20,7 @@ function validConfig(): ProgramConfig {
     testGateImprovement: 0.15,
     deloadVolumeFactor: 0.6,
     easySetFactor: [0.4, 0.5],
+    restSeconds: 90,
     brackets: [
       { id: 'b1', minMT: 5, maxMT: 20, weeks: structuredClone(weeks) },
       { id: 'b2', minMT: 21, maxMT: 100, weeks: structuredClone(weeks) },
@@ -95,6 +96,16 @@ describe('validateProgram', () => {
     const c2 = validConfig();
     c2.variantSeedFactor = 1.4;
     expect(() => validateProgram(c2)).toThrow(/variantSeedFactor/);
+  });
+
+  it('rejects a non-positive or fractional restSeconds', () => {
+    const c1 = validConfig();
+    c1.restSeconds = 0;
+    expect(() => validateProgram(c1)).toThrow(/restSeconds/);
+
+    const c2 = validConfig();
+    c2.restSeconds = 90.5;
+    expect(() => validateProgram(c2)).toThrow(/restSeconds/);
   });
 
   it('rejects a broken variant ladder', () => {

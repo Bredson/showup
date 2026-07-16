@@ -59,6 +59,9 @@ export function validateProgram(config: ProgramConfig): ProgramConfig {
   if (!isFraction(easyMin) || !isFraction(easyMax) || easyMin > easyMax) {
     errors.push('easySetFactor must be [min, max] with 0 < min <= max < 1');
   }
+  if (!Number.isInteger(config.restSeconds) || config.restSeconds < 1) {
+    errors.push('restSeconds must be an integer >= 1');
+  }
 
   // Brackets: sorted, adjacent, covering min(entry thresholds)–100 (data-model §6).
   const entryFloor = Math.min(config.fullEntryMinMT, config.variantEntryMinMT);

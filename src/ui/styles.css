@@ -805,12 +805,18 @@ button.cal-dot::after {
   margin: 0;
 }
 
-/* Timer ring (step 3.4) — soft, not an alarm */
+/* Rest countdown between sets — soft, not an alarm */
 .timer {
   text-align: center;
   font-size: 2rem;
   font-weight: 700;
   color: var(--text);
+}
+
+/* The finish status region stays mounted (empty) during the countdown so screen
+   readers reliably announce the end — don't let the empty <p> add UA margins. */
+p[role='status']:empty {
+  margin: 0;
 }
 
 /* Onboarding quiz (ux-spec §1) */

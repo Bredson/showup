@@ -90,6 +90,8 @@ export const pl = {
   'today.sets.inputLabel': 'Ile powtórzeń?',
   'today.sets.confirm': 'Zapisz serię',
   'today.sets.restHint': 'Między seriami odpocznij 60–120 sekund.',
+  'today.sets.timerLabel': 'Odliczanie przerwy',
+  'today.sets.timerDone': 'Przerwa za tobą. Chcesz jeszcze chwilę, czy robisz kolejną serię?',
 
   // Today — easy day (2-minute minimum)
   'today.easy.title': 'Dwuminutowe minimum',

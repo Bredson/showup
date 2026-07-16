@@ -91,6 +91,8 @@ export const en: Record<keyof typeof pl, string> = {
   'today.sets.inputLabel': 'How many reps?',
   'today.sets.confirm': 'Save set',
   'today.sets.restHint': 'Rest 60–120 seconds between sets.',
+  'today.sets.timerLabel': 'Rest countdown',
+  'today.sets.timerDone': 'Rest is up. Want another moment, or ready for the next set?',
 
   // Today — easy day (2-minute minimum)
   'today.easy.title': 'The two-minute minimum',

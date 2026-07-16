@@ -34,7 +34,7 @@ import {
 } from '../../domain/loop';
 import { program } from '../../content/program';
 import type { StorageAdapter } from '../../storage/adapter';
-import { localToday, nowISO } from '../clock';
+import { localToday, nowISO, nowMs } from '../clock';
 import { useT } from '../LangContext';
 
 interface Props {
@@ -441,14 +441,43 @@ function SetsStep({
 }) {
   const t = useT();
   const [input, setInput] = useState('');
+  const doneSets = entry.sets ?? [];
+  const idx = doneSets.length;
+
+  // Rest countdown (PRD §5, decision 2026-07-16): auto-starts only when idx grows,
+  // i.e. on a successful persist of a non-final set — never on mount, so a reload
+  // mid-rest resumes without a stale timer (endAt is ephemeral by design).
+  const [endAt, setEndAt] = useState<number | null>(null);
+  const [, setTick] = useState(0); // re-render driver while counting down
+  const prevIdxRef = useRef(idx);
+  useEffect(() => {
+    if (idx > prevIdxRef.current) {
+      setEndAt(nowMs() + program.restSeconds * 1000);
+      // Clearing the controlled input is owned here, and only on a grown idx:
+      // after a save failure the typed reps must survive for retry (idx unchanged).
+      // Fixes a stale-value bug where a second tap on the still-enabled button
+      // logged a phantom set. (Reps typed during the ms-scale in-flight persist
+      // are cleared too — the save semantics win.)
+      setInput('');
+    }
+    prevIdxRef.current = idx;
+  }, [idx]);
+  // Deadline math, not tick decrements — background tabs throttle intervals
+  // (code-style: "Odliczanie = deadline, nie ticki").
+  const secondsLeft = endAt === null ? null : Math.max(0, Math.ceil((endAt - nowMs()) / 1000));
+  const restOver = secondsLeft !== null && secondsLeft <= 0;
+  useEffect(() => {
+    if (endAt === null || restOver) return;
+    const id = setInterval(() => setTick((n) => n + 1), 250);
+    return () => clearInterval(id);
+  }, [endAt, restOver]);
+
   // Invariant, not a fallback: the step machine only reaches 'sets' with feel answered.
   if (entry.feelBefore === null) throw new Error('sets step without a feel check');
   const state = computeProgram(entries, profile, program, today);
   const plan = sessionPlan(state, program, entry.feelBefore);
   if (plan.kind !== 'plan') throw new Error('sets step on a downgraded day');
 
-  const doneSets = entry.sets ?? [];
-  const idx = doneSets.length;
   const current = plan.sets[idx];
   if (current === undefined) throw new Error('sets step past the plan length');
   const reps = /^\d{1,3}$/.test(input.trim()) ? Number(input.trim()) : null;
@@ -461,11 +490,28 @@ function SetsStep({
       <div className="card">
         <p>{current.type === 'reps' ? t('today.sets.target', { reps: current.reps }) : t('today.sets.amrapTarget')}</p>
         <p className="muted">{current.type === 'amrap' ? t('today.sets.amrapHint') : t('today.sets.restHint')}</p>
+        {/* Help, not a gate: the input below stays live — saving the next set IS the skip.
+            Ticking digits are silent for screen readers (role="timer" defaults to
+            aria-live="off"); only the finish is announced via the status region below,
+            which stays mounted for the whole rest — a live region inserted together
+            with its content is often not announced (code-style: aria-live regions
+            are always rendered, content is toggled). */}
+        {secondsLeft !== null && (
+          <>
+            {!restOver && (
+              <p className="timer" role="timer" aria-label={t('today.sets.timerLabel')}>
+                {formatRest(secondsLeft)}
+              </p>
+            )}
+            <p className="muted" role="status">
+              {restOver ? t('today.sets.timerDone') : ''}
+            </p>
+          </>
+        )}
       </div>
       <label>
         <span className="muted">{t('today.sets.inputLabel')}</span>
         <input
-          key={idx}
           className="text-input"
           name="set-reps"
           type="text"
@@ -483,7 +529,7 @@ function SetsStep({
         onClick={() => {
           if (reps === null) return;
           // No setInput('') here: on save failure the typed reps must survive for
-          // retry; on success key={idx} remounts the input empty anyway.
+          // retry; on success the idx-grew effect above clears it.
           onSet(reps, idx + 1 >= plan.sets.length);
         }}
       >
@@ -492,6 +538,13 @@ function SetsStep({
       {saveErrorNote}
     </div>
   );
+}
+
+/** m:ss for the rest countdown — rest is always minutes-scale, hours never happen. */
+function formatRest(totalSeconds: number): string {
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
 }
 
 function ReflectionStep({

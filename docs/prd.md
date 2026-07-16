@@ -97,9 +97,20 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
 **Poza MVP (świadomie):**
 - inne programy (yoga, codzienny ruch) — architektura gotowa, treści nie
 - powiadomienia, konta, sync, statystyki zaawansowane, long-set practice
-- timer przerw między seriami (do rozważenia po dogfoodingu — telefon i tak leży obok)
 
 **Zrealizowane z backlogu po MVP:**
+- **Timer przerw między seriami (2026-07-16, decyzje użytkownika):** wyciągnięty
+  z „poza MVP" po dogfoodingu. Odliczanie startuje **automatycznie po zapisaniu serii**
+  (zero dodatkowych tapnięć — kryterium < 60 s interakcji nienaruszone); długość
+  z parametru `restSeconds: 90` w `program.json` (środek widełek 60–120 s z researchu,
+  strojony bez zmian kodu). Timer to pomoc, nie bramka: input następnej serii aktywny
+  przez cały czas (wpisanie serii = naturalne pominięcie), zero dźwięku/wibracji
+  (powiadomienia poza MVP; sygnał na zablokowanym telefonie niemożliwy bez nowych API),
+  koniec odliczania = miękki komunikat-pytanie (`role="status"`), zero auto-akcji.
+  Stan timera ulotny — reload w trakcie przerwy wznawia przy następnej serii bez
+  odliczania (spójne z zasadą „zero persystowanych wyliczalnych"). Odrzucone:
+  ręczny start przyciskiem (precedens Unstuck, ale +1 tap na każdą przerwę),
+  osobny krok `rest` w pętli (zmiany domeny + mętne wznowienie).
 - **Nudge balansu mięśniowego (2026-07-16, decyzje użytkownika):** karta informacyjna na
   ekranie „Zrobione" po PIERWSZEJ ukończonej ciężkiej pracy (sesja lub test, niezdegradowane
   bólem) w tygodniu kalendarzowym (pn–nd) — rytm zgodny z researchem 1–2×/tydz.

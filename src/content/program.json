@@ -8,6 +8,7 @@
   "testGateImprovement": 0.15,
   "deloadVolumeFactor": 0.6,
   "easySetFactor": [0.4, 0.5],
+  "restSeconds": 90,
   "brackets": [
     {
       "id": "b1",
