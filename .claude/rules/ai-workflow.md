@@ -26,6 +26,20 @@ Rules for how AI agents work in this project (meta-level).
   with a recommendation and let the user decide.
 - Record every user decision in the relevant doc (e.g. "Rozstrzygnięcia dylematów" section).
 
+## Visual decision workflow (lesson from icon/retheme phase, 2026-07-16)
+
+- Visual identity dilemmas (icon motif, palette) are decided by the user from
+  RENDERED artifacts, not verbal descriptions: build a throwaway HTML comparison
+  page in the temp dir (`/var/folders/.../opencode/`, outside the repo), render
+  all variants side by side at real sizes (incl. small favicon size), screenshot
+  it, and ask via the `question` tool.
+- Decompose into SEPARATE sequential decisions: motif first, then color, then
+  scope (icon-only vs whole app). Bundling them into one question hides trade-offs.
+- Iterate on the chosen variant: the user's follow-up tweak requests ("add a
+  trail of dots") go back into the same comparison page before implementation.
+  The winning mockup is the spec; record the decision + rejected variants in
+  `docs/design-direction.md`.
+
 ## Fork hygiene (lesson from Showup rebranding, 2026-07-15)
 
 - Rebranding a fork must cover SEMANTICS, not just names: `.claude/rules/` files still

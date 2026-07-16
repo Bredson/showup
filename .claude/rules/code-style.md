@@ -312,6 +312,34 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
   istniejące wpisy (`kind` nigdy nie mutowany) — w tym DZISIEJSZY wpis, jeśli już
   powstał: nowy harmonogram widać na Dziś dopiero od pierwszego dnia bez wpisu.
 
+## Tożsamość wizualna — wzorce z fazy ikony i retheme (2026-07-16)
+
+- **Pipeline ikon jest jednokierunkowy**: edytuj TYLKO `public/icon.svg`, potem
+  `npm run generate-pwa-assets` regeneruje wszystkie PNG/favicon. Ręczna edycja
+  wygenerowanych plików = nadpisanie przy następnym przebiegu.
+- **Pułapka: `--` w komentarzach SVG**: parser XML pwa-assets-generatora odrzuca
+  `--` wewnątrz `<!-- ... -->` (spec XML). Nie pisz nazw tokenów jak `--primary`
+  w komentarzach SVG — pisz „primary" bez kresek.
+- **Kontrast mierzony PRZED wyborem tokenu, wynik w komentarzu przy tokenie**:
+  kandydat na `--primary` liczony node one-linerem (luminancja względna → ratio)
+  względem KAŻDEGO tła, na którym niesie tekst/ikonę. Wynik zapisany przy tokenie
+  (`#0d8478` = dokładnie 4.50:1 AA z `--surface`) — wartości na granicy nie wolno
+  „rozjaśnić o włos" bez ponownego pomiaru. Poprzedni pomarańcz miał 2.46:1 i nikt
+  o tym nie wiedział, bo nikt nie zmierzył.
+- **Retheme = edycja tokenów, audyt konsumentów**: zmiana tożsamości kolorystycznej
+  to 2 linie w `tokens.css` (payoff zakazu kolorów inline) + przegląd WSZYSTKICH
+  użyć zmienianego tokenu (grep `--primary`) pod kątem ról nie-tekstowych: focus
+  outline i inne wskaźniki UI wymagają ≥3:1 z tłem (WCAG 1.4.11), nie 4.5:1.
+- **Maskable safe zone**: motyw ikony musi mieścić się w centralnych 80% viewBoxa
+  (409.6/512) — weryfikuj numerycznie współrzędne skrajnych elementów, nie na oko.
+- **`theme_color` ≠ `--primary`**: kolor paska systemowego to świadoma decyzja
+  (u nas krem `#fdf6ec` — spójny z tłem apki); nie podmieniaj automatycznie przy
+  retheme.
+- **Fork-leftovery brandingu**: przy zmianie tożsamości grep za opisami/nazwami
+  poprzedniej apki poza kodem UI — manifest `description` (vite.config), martwe
+  SVG w `public/` i `src/assets/`, tytuły w docs. Manifest Showup niósł opis
+  Unstuck przez całe MVP.
+
 ## Deploy i produkcja (Faza 6)
 
 - **`base: '/showup/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/showup/` w kodzie aplikacji.
