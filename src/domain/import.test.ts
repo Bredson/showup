@@ -28,6 +28,7 @@ function entry(date: string, overrides: Partial<DailyEntry> = {}): DailyEntry {
     sets: [4, 5, 3, 3, 6],
     testResult: null,
     easyContent: null,
+    longSetReps: null,
     reflection: 'ok',
     completedAt: `${date}T12:00:00.000Z`,
     updatedAt: `${date}T12:00:00.000Z`,
@@ -271,6 +272,51 @@ describe('validateExportBlob', () => {
       expect(result.errors.some((e) => e.includes('entries[1].easyContent'))).toBe(true);
       expect(result.errors.some((e) => e.includes('entries[2].reflection'))).toBe(true);
     }
+  });
+
+  it('accepts longSetReps: missing key (pre-feature blob), null, or int >= 1 on a long-set day', () => {
+    // A blob exported before the feature has no longSetReps key at all — it must import cleanly.
+    const preFeature = validBlob() as { entries: Record<string, unknown>[] };
+    for (const e of preFeature.entries) delete e.longSetReps;
+    expect(validateExportBlob(preFeature, CURRENT).ok).toBe(true);
+
+    const raw = validBlob() as { entries: Record<string, unknown>[] };
+    raw.entries[2]!.easyContent = 'long-set';
+    raw.entries[2]!.longSetReps = 32;
+    expect(validateExportBlob(raw, CURRENT).ok).toBe(true);
+
+    raw.entries[2]!.longSetReps = null;
+    expect(validateExportBlob(raw, CURRENT).ok).toBe(true);
+  });
+
+  it('rejects malformed longSetReps and reps outside a long-set day', () => {
+    const bad = [0, 1.5, '32'];
+    for (const v of bad) {
+      const raw = validBlob() as { entries: Record<string, unknown>[] };
+      raw.entries[2]!.easyContent = 'long-set';
+      raw.entries[2]!.longSetReps = v;
+      const result = validateExportBlob(raw, CURRENT);
+      expect(result.ok).toBe(false);
+      if (!result.ok) expect(result.errors.some((e) => e.includes('entries[2].longSetReps'))).toBe(true);
+    }
+
+    // Valid number, wrong day shape: easyContent is not 'long-set'.
+    const raw = validBlob() as { entries: Record<string, unknown>[] };
+    raw.entries[2]!.longSetReps = 32; // easyContent stays 'gtg-set'
+    const result = validateExportBlob(raw, CURRENT);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.some((e) => e.includes('entries[2].longSetReps'))).toBe(true);
+  });
+
+  it('rejects a long set on a pain-degraded day (never offered, would poison the weekly cadence)', () => {
+    const raw = validBlob() as { entries: Record<string, unknown>[] };
+    raw.entries[1]!.feelBefore = 'pain';
+    raw.entries[1]!.downgradedTo = 'easy';
+    raw.entries[1]!.sets = null;
+    raw.entries[1]!.easyContent = 'long-set';
+    const result = validateExportBlob(raw, CURRENT);
+    expect(result.ok).toBe(false);
+    if (!result.ok) expect(result.errors.some((e) => e.includes('entries[1].easyContent'))).toBe(true);
   });
 
   it('rejects sets on a degraded session (the degradation replaced them)', () => {

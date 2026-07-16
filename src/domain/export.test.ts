@@ -23,6 +23,7 @@ const entry: DailyEntry = {
   sets: [4, 5, 3, 3, 6],
   testResult: null,
   easyContent: null,
+  longSetReps: null,
   reflection: 'ok',
   completedAt: '2026-07-02T12:00:00.000Z',
   updatedAt: '2026-07-02T12:00:00.000Z',

@@ -96,7 +96,7 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
 
 **Poza MVP (świadomie):**
 - inne programy (yoga, codzienny ruch) — architektura gotowa, treści nie
-- powiadomienia, konta, sync, statystyki zaawansowane, long-set practice
+- powiadomienia, konta, sync, statystyki zaawansowane
 
 **Zrealizowane z backlogu po MVP:**
 - **Timer przerw między seriami (2026-07-16, decyzje użytkownika):** wyciągnięty
@@ -121,7 +121,37 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
   (zasada „minimum wystarcza"). Odrzucone warianty: hint w dzień easy (konkurencja
   z 2-min minimum), sekcja w Progres (łatwa do przeoczenia). Follow-up z review
   (obserwować w dogfoodingu): nudge pod celebracją „100 pompek — cel!" jest tonalnie
-  zgrzytliwy; ewentualna 1-liniowa poprawka `outcome !== 'goal'` po decyzji użytkownika.
+  zgrzytliwy; ewentualna 1-liniowa poprawka `outcome !== 'goal'` po decyzji użytkownika
+  → **zrealizowane** (guard poniżej, 2026-07-16).
+- **Guard nudge'a przy celebracji celu (2026-07-16, decyzja użytkownika):** karta nudge'a
+  balansu NIE renderuje się, gdy werdykt bramki to `goal` („100 pompek — cel!") — celebracja
+  jest jednorazowa i nic nie może z nią konkurować. Nudge tego tygodnia po prostu przepada
+  (trigger liczy pierwszy ciężki dzień tygodnia, więc kolejna sesja go nie wskrzesi) —
+  akceptowalne: to cotygodniowy rytm zdrowotny, a dzień celu zdarza się raz. Warunek w UI
+  (`DoneStep`), nie w domenie: `balanceNudgeDue` nie zna werdyktów bramki i ma nie znać
+  (czysty trigger z wpisów); weryfikacja wizualna zamiast testu jednostkowego.
+- **Long-set practice (2026-07-16, decyzje użytkownika):** wyciągnięta z „poza MVP".
+  Research: 1×/tydz. jedna **wolna, nieprzerwana** seria na 60–70% maxa jako odrębny trening
+  tempa i oddechu — najbardziej spekulatywny element rekomendacji (research §Ograniczenia:
+  faza 50→100 jest najsłabiej udokumentowana; parametry to ekstrapolacja, strojone
+  w `program.json`). Decyzje:
+  - **Miejsce: opcja w dniu łatwym** — trzecia opcja obok serii GtG i rozgrzewki, gdy
+    dostępna. Zero zmian w twardych sesjach, slotach i bramkach. Odrzucone: modyfikacja
+    twardej sesji (zmienia tabele i obciążenie), czwarty dzień treningowy (przeczy zasadzie
+    3 dni + regeneracja).
+  - **Aktywacja: próg z testu, nie kalendarz** — opcja pojawia się od `lastMT >= longSetMinMT`
+    (50, bloki 4–5 researchu) i tylko przy realnym (nie seedowanym) maxie — % z estymaty
+    byłby zgadywaniem. Do tego czasu kod śpi (wdrożony, nieaktywny).
+  - **Kadencja 1×/tydz. wyliczana z wpisów:** opcja znika do końca tygodnia kalendarzowego
+    (pn–nd, jak nudge) po ukończonym dniu z `easyContent='long-set'`. Bez licznika bloków,
+    bez persystencji. Dzień zdegradowany bólem nigdy nie proponuje long-set.
+  - **Opcjonalny zapis wyniku** — po wybraniu opcji pole na liczbę powtórzeń (można pominąć,
+    CTA zawsze aktywne — „minimum wystarcza"). Wynik trafia do `longSetReps` i jest widoczny
+    w Dzienniku; NIE wpływa na silnik (o progresji decyduje wyłącznie Max Test). Odrzucone:
+    zapis obowiązkowy (łamie < 20 s interakcji dnia łatwego), brak zapisu (user chciał ślad
+    w dzienniku).
+  - Long-set NIE liczy się jako ciężka praca (`isHardCompleted` bez zmian): dzień pozostaje
+    łatwy dla okien przesunięć, nudge'a i liczników tygodnia.
 
 ## 6. Kryteria sukcesu MVP
 

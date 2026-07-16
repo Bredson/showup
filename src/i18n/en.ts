@@ -99,6 +99,10 @@ export const en: Record<keyof typeof pl, string> = {
   'today.easy.hint': 'Pick one and check it off. Showing up counts, not volume.',
   'today.easy.gtg': 'One relaxed set: {min}–{max} reps',
   'today.easy.warmup': 'Wrist and shoulder warm-up (2 minutes)',
+  'today.easy.longSet': 'One long set: {min}–{max} reps',
+  'today.easy.longSetHint':
+    'Slow and unbroken — this trains pacing and breathing, not a record. Stop when your form breaks.',
+  'today.easy.longSetReps': 'How many reps did you get? (optional)',
   'today.easy.cta': 'Done',
 
   // Today — Max Test (warmup reuses the onboarding safety copy: onb.disclaimer.redFlags)
@@ -258,6 +262,8 @@ export const en: Record<keyof typeof pl, string> = {
   'sheet.sets': 'Sets: {sets}',
   'sheet.easy.gtg-set': 'One relaxed set — the daily minimum',
   'sheet.easy.warmup': 'Warm-up — the daily minimum',
+  'sheet.easy.long-set': 'Long set — the daily minimum',
+  'sheet.easy.longSetReps': 'Long-set result: {n}',
 
   // Journal (ux-spec §5) — reverse-chronological feed; never judges execution
   'journal.title': 'Journal',

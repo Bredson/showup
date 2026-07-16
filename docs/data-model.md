@@ -66,7 +66,12 @@ interface DailyEntry {
   /** kind='test' bez degradacji: wynik Max Testu (powtórzenia do upadku technicznego) */
   testResult: number | null;
   /** kind='easy' lub downgradedTo='easy': co wykonano jako 2-min minimum */
-  easyContent: 'gtg-set' | 'warmup' | null;
+  easyContent: 'gtg-set' | 'warmup' | 'long-set' | null;
+  /** tylko easyContent='long-set': opcjonalny wynik długiej serii (integer >= 1).
+      Surowa dana (nie wyliczalna), NIE wpływa na silnik — o progresji decyduje Max Test.
+      Wpisy sprzed feature'u nie mają klucza — brak czytamy jak null (addytywne pole,
+      schemaVersion bez zmian) */
+  longSetReps: number | null;
   reflection: string | null;     // tylko po sesji/teście
   completedAt: ISODateTime | null;
   updatedAt: ISODateTime;
@@ -245,6 +250,8 @@ w i18n, nie tutaj.
   "deloadVolumeFactor": 0.6,
   "easySetFactor": [0.4, 0.5],   // widełki serii GtG dnia łatwego (× lastMT, seed też OK)
   "restSeconds": 90,             // przerwa między seriami (środek widełek 60–120 s z researchu)
+  "longSetMinMT": 50,            // long-set practice od lastMT >= 50 (realny, nie seed)
+  "longSetFactor": [0.6, 0.7],   // widełki długiej serii (× lastMT; research: 60–70% maxa)
   "brackets": [
     {
       "id": "b1", "minMT": 5, "maxMT": 10,
@@ -268,7 +275,9 @@ Walidacja builda (wzorzec `src/content/index.ts`, rozszerzona wg minor #15):
 - mnożniki niemalejące tydzień 1→3 **per pozycja serii** (slot `"A"` pomijany);
 - `0 < testGateImprovement < 1`, `0 < variantSeedFactor < 1`, `deloadVolumeFactor < 1`;
 - `restSeconds` — dodatnia liczba całkowita (timer przerw jest w całości po stronie UI;
-  `sessionPlan` i `PlannedSet` nie niosą danych czasowych).
+  `sessionPlan` i `PlannedSet` nie niosą danych czasowych);
+- `longSetMinMT` — dodatnia liczba całkowita; `longSetFactor` — `[min, max]`,
+  `0 < min <= max < 1` (jak `easySetFactor`).
 
 ## 7. Decyzje i trade-offy
 

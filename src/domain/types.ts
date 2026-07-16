@@ -21,7 +21,7 @@ export type Feel = 'fresh' | 'ok' | 'tired' | 'pain';
 export type DayKind = 'session' | 'easy' | 'test';
 
 /** What was done as the 2-minute minimum on easy/degraded days. */
-export type EasyContent = 'gtg-set' | 'warmup';
+export type EasyContent = 'gtg-set' | 'warmup' | 'long-set';
 
 /**
  * No 'skipped': a day without completion is an in_progress entry or no entry at all.
@@ -63,6 +63,12 @@ export interface DailyEntry {
   testResult: number | null;
   /** kind='easy' or downgradedTo='easy': what was done as the 2-minute minimum. */
   easyContent: EasyContent | null;
+  /**
+   * Only easyContent='long-set': optional recorded result (integer >= 1). Raw data, never
+   * feeds the engine (progression is decided by Max Tests alone). Entries persisted before
+   * the feature lack the key — readers treat missing as null (additive field, no schema bump).
+   */
+  longSetReps: number | null;
   /** Only after sessions/tests. */
   reflection: string | null;
   completedAt: ISODateTime | null;
@@ -125,6 +131,10 @@ export interface ProgramConfig {
   easySetFactor: [number, number];
   /** Rest between session sets, in seconds — UI countdown only, never in the plan (data-model §6). */
   restSeconds: number;
+  /** Long-set practice offered from lastMT >= this (real MT only, never a seed). */
+  longSetMinMT: number;
+  /** Long-set size range as [min, max] × lastMT (research: 60–70% of max). */
+  longSetFactor: [number, number];
   /** Sorted, adjacent, covering min(fullEntryMinMT, …)–100. */
   brackets: ProgramBracket[];
 }

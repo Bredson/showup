@@ -76,6 +76,7 @@ export default function EntrySheet({
         {entry.sets !== null && entry.sets.length > 0 && <p>{t('sheet.sets', { sets: entry.sets.join(' · ') })}</p>}
         {entry.testResult !== null && <p>{t('today.test.result', { result: entry.testResult })}</p>}
         {entry.easyContent !== null && <p>{t(`sheet.easy.${entry.easyContent}`)}</p>}
+        {entry.longSetReps != null && <p>{t('sheet.easy.longSetReps', { n: entry.longSetReps })}</p>}
         {entry.reflection !== null && entry.reflection !== '' && (
           <p className="muted">{t('sheet.reflection', { text: entry.reflection })}</p>
         )}

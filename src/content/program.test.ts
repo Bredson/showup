@@ -20,6 +20,8 @@ function validConfig(): ProgramConfig {
     testGateImprovement: 0.15,
     deloadVolumeFactor: 0.6,
     easySetFactor: [0.4, 0.5],
+    longSetMinMT: 50,
+    longSetFactor: [0.6, 0.7],
     restSeconds: 90,
     brackets: [
       { id: 'b1', minMT: 5, maxMT: 20, weeks: structuredClone(weeks) },
@@ -106,6 +108,20 @@ describe('validateProgram', () => {
     const c2 = validConfig();
     c2.restSeconds = 90.5;
     expect(() => validateProgram(c2)).toThrow(/restSeconds/);
+  });
+
+  it('rejects invalid long-set parameters', () => {
+    const c1 = validConfig();
+    c1.longSetMinMT = 0;
+    expect(() => validateProgram(c1)).toThrow(/longSetMinMT/);
+
+    const c2 = validConfig();
+    c2.longSetFactor = [0.7, 0.6]; // min > max
+    expect(() => validateProgram(c2)).toThrow(/longSetFactor/);
+
+    const c3 = validConfig();
+    c3.longSetFactor = [0.6, 1];
+    expect(() => validateProgram(c3)).toThrow(/longSetFactor/);
   });
 
   it('rejects a broken variant ladder', () => {

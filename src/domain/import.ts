@@ -35,7 +35,7 @@ const VARIANT_SET = {
 const VARIANTS = Object.keys(VARIANT_SET);
 const FEEL_SET = { fresh: true, ok: true, tired: true, pain: true } as const satisfies Record<Feel, true>;
 const FEELS = Object.keys(FEEL_SET);
-const EASY_CONTENT_SET = { 'gtg-set': true, warmup: true } as const satisfies Record<EasyContent, true>;
+const EASY_CONTENT_SET = { 'gtg-set': true, warmup: true, 'long-set': true } as const satisfies Record<EasyContent, true>;
 const EASY_CONTENTS = Object.keys(EASY_CONTENT_SET);
 
 const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
@@ -116,6 +116,15 @@ function checkEntry(raw: unknown, index: number, errors: string[]): raw is Daily
   if (raw.easyContent !== null && !EASY_CONTENTS.includes(raw.easyContent as string)) {
     errors.push(`${at}.easyContent: unknown "${String(raw.easyContent)}"`);
   }
+  // undefined passes: blobs exported before the long-set feature lack the key (additive
+  // field, same schemaVersion) — missing reads as null everywhere (data-model §1).
+  if (
+    raw.longSetReps !== undefined &&
+    raw.longSetReps !== null &&
+    !(typeof raw.longSetReps === 'number' && Number.isInteger(raw.longSetReps) && raw.longSetReps >= 1)
+  ) {
+    errors.push(`${at}.longSetReps: must be null or an integer >= 1`);
+  }
   if (!isNullOrString(raw.reflection)) errors.push(`${at}.reflection: not null/string`);
   if (!isNullOrString(raw.completedAt)) errors.push(`${at}.completedAt: not null/string`);
   if (typeof raw.updatedAt !== 'string') errors.push(`${at}.updatedAt: not a string`);
@@ -138,6 +147,14 @@ function checkEntry(raw: unknown, index: number, errors: string[]): raw is Daily
   }
   if (raw.easyContent !== null && raw.kind !== 'easy' && raw.downgradedTo !== 'easy') {
     errors.push(`${at}.easyContent: only easy or degraded days record easy content`);
+  }
+  if (raw.longSetReps != null && raw.easyContent !== 'long-set') {
+    errors.push(`${at}.longSetReps: only long-set days record a long-set result`);
+  }
+  // Degraded days never offer the long-set option (longSetOffered), and a forged one
+  // would suppress the whole week's cadence — that's derived state poisoning.
+  if (raw.easyContent === 'long-set' && raw.downgradedTo === 'easy') {
+    errors.push(`${at}.easyContent: a pain-degraded day cannot record a long set`);
   }
   if (raw.reflection !== null && raw.kind === 'easy') {
     errors.push(`${at}.reflection: easy days carry no reflection`);

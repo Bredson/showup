@@ -17,7 +17,7 @@ import type {
   Variant,
   Weekday,
 } from './types';
-import { addDays } from './calendar';
+import { addDays, mondayOf } from './calendar';
 import { computeLongestStreak, computeStreak, daysBetween, toUtcMs } from './streak';
 
 /** Pause longer than this (days since last completed entry, any kind) freezes the program → retest. */
@@ -685,4 +685,36 @@ export function sessionPlan(state: ProgramState, program: ProgramConfig, feel: F
 export function easyContentRange(state: ProgramState, program: ProgramConfig): [number, number] {
   const [lo, hi] = program.easySetFactor;
   return [Math.max(1, Math.round(lo * state.lastMT)), Math.max(1, Math.round(hi * state.lastMT))];
+}
+
+/** Long-set size range: longSetFactor × lastMT (PRD §5 long-set practice). */
+export function longSetRange(state: ProgramState, program: ProgramConfig): [number, number] {
+  const [lo, hi] = program.longSetFactor;
+  return [Math.max(1, Math.round(lo * state.lastMT)), Math.max(1, Math.round(hi * state.lastMT))];
+}
+
+/**
+ * Should today's easy day offer the long-set option? (PRD §5 long-set practice)
+ * - lastMT >= longSetMinMT and REAL (never a seed — a % of an estimate is a guess);
+ * - at most once per calendar week (Mon–Sun, same week definition as the balance nudge):
+ *   a completed 'long-set' entry earlier this week hides the option until Monday;
+ * - never on a pain-degraded day (today's entry with downgradedTo='easy').
+ * Fully derived from entries + state — nothing about the cadence is persisted.
+ */
+export function longSetOffered(
+  entries: readonly DailyEntry[],
+  state: ProgramState,
+  program: ProgramConfig,
+  today: ISODate,
+): boolean {
+  if (state.lastMTisSeed || state.lastMT < program.longSetMinMT) return false;
+  if (entries.some((e) => e.date === today && e.downgradedTo === 'easy')) return false;
+  const monday = mondayOf(today);
+  return !entries.some(
+    (e) =>
+      e.date >= monday &&
+      e.date < today &&
+      e.status === 'completed' &&
+      e.easyContent === 'long-set',
+  );
 }

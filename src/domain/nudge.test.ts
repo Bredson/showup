@@ -16,6 +16,7 @@ function entry(date: string, overrides: Partial<DailyEntry> = {}): DailyEntry {
     sets: [8, 8, 6],
     testResult: null,
     easyContent: null,
+    longSetReps: null,
     reflection: null,
     completedAt: `${date}T18:00:00.000Z`,
     updatedAt: `${date}T18:00:00.000Z`,

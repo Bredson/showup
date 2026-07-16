@@ -60,6 +60,7 @@ export function buildOnboardingRecords(input: OnboardingInput): OnboardingRecord
     sets: null,
     testResult: input.lastAttempt.result,
     easyContent: null,
+    longSetReps: null,
     reflection: null,
     completedAt: input.now,
     updatedAt: input.now,

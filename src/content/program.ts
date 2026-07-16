@@ -62,6 +62,13 @@ export function validateProgram(config: ProgramConfig): ProgramConfig {
   if (!Number.isInteger(config.restSeconds) || config.restSeconds < 1) {
     errors.push('restSeconds must be an integer >= 1');
   }
+  if (!Number.isInteger(config.longSetMinMT) || config.longSetMinMT < 1) {
+    errors.push('longSetMinMT must be an integer >= 1');
+  }
+  const [longMin, longMax] = config.longSetFactor;
+  if (!isFraction(longMin) || !isFraction(longMax) || longMin > longMax) {
+    errors.push('longSetFactor must be [min, max] with 0 < min <= max < 1');
+  }
 
   // Brackets: sorted, adjacent, covering min(entry thresholds)–100 (data-model §6).
   const entryFloor = Math.min(config.fullEntryMinMT, config.variantEntryMinMT);

@@ -9,6 +9,8 @@ import {
   computeProgram,
   dayKindFor,
   easyContentRange,
+  longSetOffered,
+  longSetRange,
   onboardingNextStep,
   resolveOnboardingResult,
   sessionPlan,
@@ -43,6 +45,7 @@ function entry(partial: Partial<DailyEntry> & { date: ISODate; kind: DailyEntry[
     sets: null,
     testResult: null,
     easyContent: null,
+    longSetReps: null,
     reflection: null,
     completedAt: `${partial.date}T18:00:00.000Z`,
     updatedAt: `${partial.date}T18:00:00.000Z`,
@@ -602,5 +605,71 @@ describe('easyContentRange', () => {
     const s = { lastMT: 10 } as ProgramState;
     expect(easyContentRange(s, program)).toEqual([4, 5]);
     expect(easyContentRange({ lastMT: 1 } as ProgramState, program)).toEqual([1, 1]);
+  });
+});
+
+// --- long-set practice (PRD §5) -------------------------------------------------------
+
+describe('longSetRange', () => {
+  it('scales longSetFactor (60–70%) by lastMT', () => {
+    expect(longSetRange({ lastMT: 50 } as ProgramState, program)).toEqual([30, 35]);
+    expect(longSetRange({ lastMT: 64 } as ProgramState, program)).toEqual([38, 45]);
+  });
+});
+
+describe('longSetOffered', () => {
+  // 2026-07-16 is a Thursday; the Mon–Sun week starts 2026-07-13.
+  const TODAY: ISODate = '2026-07-16';
+  const stateAt = (lastMT: number, lastMTisSeed = false): ProgramState =>
+    ({ lastMT, lastMTisSeed }) as ProgramState;
+
+  function easyDone(date: ISODate, easyContent: DailyEntry['easyContent']): DailyEntry {
+    return entry({ date, kind: 'easy', easyContent });
+  }
+
+  it('requires lastMT >= longSetMinMT (50)', () => {
+    expect(longSetOffered([], stateAt(49), program, TODAY)).toBe(false);
+    expect(longSetOffered([], stateAt(50), program, TODAY)).toBe(true);
+  });
+
+  it('never offers on a seeded MT — a % of an estimate is a guess', () => {
+    expect(longSetOffered([], stateAt(60, true), program, TODAY)).toBe(false);
+  });
+
+  it('hides after a completed long-set earlier the same Mon–Sun week', () => {
+    const monThisWeek = easyDone('2026-07-13', 'long-set');
+    expect(longSetOffered([monThisWeek], stateAt(60), program, TODAY)).toBe(false);
+    // Last week's long-set does not count — the cadence resets on Monday.
+    const friLastWeek = easyDone('2026-07-10', 'long-set');
+    expect(longSetOffered([friLastWeek], stateAt(60), program, TODAY)).toBe(true);
+  });
+
+  it('ignores this week\'s non-long-set and non-completed entries', () => {
+    const gtg = easyDone('2026-07-14', 'gtg-set');
+    const abandonedLongSet = entry({
+      date: '2026-07-14',
+      kind: 'easy',
+      easyContent: 'long-set',
+      status: 'in_progress',
+      completedAt: null,
+    });
+    expect(longSetOffered([gtg, abandonedLongSet], stateAt(60), program, TODAY)).toBe(true);
+  });
+
+  it('counts today\'s own completed long-set as still offered (date < today guard)', () => {
+    // The option must not vanish mid-flow when today's entry is being completed.
+    const todays = easyDone(TODAY, 'long-set');
+    expect(longSetOffered([todays], stateAt(60), program, TODAY)).toBe(true);
+  });
+
+  it('never offers on a pain-degraded day', () => {
+    const degraded = entry({
+      date: TODAY,
+      kind: 'session',
+      downgradedTo: 'easy',
+      status: 'in_progress',
+      completedAt: null,
+    });
+    expect(longSetOffered([degraded], stateAt(60), program, TODAY)).toBe(false);
   });
 });

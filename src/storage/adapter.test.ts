@@ -28,6 +28,7 @@ function entry(date: string, status: EntryStatus = 'completed'): DailyEntry {
     sets: [5, 6, 4, 4, 7],
     testResult: null,
     easyContent: null,
+    longSetReps: null,
     reflection: null,
     completedAt: status === 'completed' ? `${date}T12:00:00.000Z` : null,
     updatedAt: `${date}T12:00:00.000Z`,

@@ -39,6 +39,7 @@ describe('buildOnboardingRecords', () => {
       sets: null,
       testResult: 8,
       easyContent: null,
+      longSetReps: null,
       reflection: null,
       completedAt: '2026-07-15T18:30:00.000Z',
       updatedAt: '2026-07-15T18:30:00.000Z',

@@ -30,6 +30,15 @@ export function addDays(date: ISODate, delta: number): ISODate {
 }
 
 /**
+ * Monday of the calendar week containing `date` (Monday-first, as the UI day picker).
+ * Weekly rhythms (balance nudge, long-set cadence) share this one definition of "week".
+ */
+export function mondayOf(date: ISODate): ISODate {
+  const dow = new Date(toUtcMs(date)).getUTCDay(); // 0 = Sunday
+  return addDays(date, -((dow + 6) % 7));
+}
+
+/**
  * Last 28 days, oldest first, ending on `today`.
  * Forgiven days mirror computeStreak's rule: every single 1-day gap between two completions
  * is forgiven; the day between the last completion and a still-pending `today` is forgiven too

@@ -4,16 +4,9 @@
 // RULE: pure functions only; no React/storage/i18n imports; dates passed in, never read
 // from the clock. Fully derived from entries — nothing about the nudge is persisted.
 
-import { addDays } from './calendar';
+import { mondayOf } from './calendar';
 import { isHardCompleted } from './program';
-import { toUtcMs } from './streak';
 import type { DailyEntry, ISODate } from './types';
-
-/** Monday of the calendar week containing `date` (Monday-first, as the UI day picker). */
-function mondayOf(date: ISODate): ISODate {
-  const dow = new Date(toUtcMs(date)).getUTCDay(); // 0 = Sunday
-  return addDays(date, -((dow + 6) % 7));
-}
 
 /**
  * True iff today's entry is the FIRST completed hard pushing day of the current

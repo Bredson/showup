@@ -98,6 +98,10 @@ export const pl = {
   'today.easy.hint': 'Wybierz jedno i odhacz. Liczy się obecność, nie objętość.',
   'today.easy.gtg': 'Jedna luźna seria: {min}–{max} powtórzeń',
   'today.easy.warmup': 'Rozgrzewka nadgarstków i barków (2 minuty)',
+  'today.easy.longSet': 'Jedna długa seria: {min}–{max} powtórzeń',
+  'today.easy.longSetHint':
+    'Powoli i bez przerwy — to trening tempa i oddechu, nie rekord. Przerwij, gdy forma siada.',
+  'today.easy.longSetReps': 'Ile powtórzeń wyszło? (opcjonalnie)',
   'today.easy.cta': 'Zrobione',
 
   // Today — Max Test (warmup reuses the onboarding safety copy: onb.disclaimer.redFlags)
@@ -257,6 +261,8 @@ export const pl = {
   'sheet.sets': 'Serie: {sets}',
   'sheet.easy.gtg-set': 'Luźna seria — minimum dnia',
   'sheet.easy.warmup': 'Rozgrzewka — minimum dnia',
+  'sheet.easy.long-set': 'Długa seria — minimum dnia',
+  'sheet.easy.longSetReps': 'Wynik długiej serii: {n}',
 
   // Journal (ux-spec §5) — reverse-chronological feed; never judges execution
   'journal.title': 'Dziennik',

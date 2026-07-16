@@ -18,6 +18,8 @@ import {
   computeProgram,
   dayKindFor,
   easyContentRange,
+  longSetOffered,
+  longSetRange,
   sessionPlan,
   type GateOutcome,
 } from '../../domain/program';
@@ -222,7 +224,9 @@ export default function TodayScreen({ adapter, profile }: Props) {
         header={header}
         saving={saving}
         saveErrorNote={saveErrorNote}
-        onComplete={(content) => complete({ easyContent: content }, nextStep(entry.kind, downgraded, 'easy'))}
+        onComplete={(content, longSetReps) =>
+          complete({ easyContent: content, longSetReps }, nextStep(entry.kind, downgraded, 'easy'))
+        }
       />
     );
   }
@@ -336,13 +340,33 @@ function EasyStep({
   entries: readonly DailyEntry[];
   profile: UserProfile;
   today: ISODate;
-  onComplete: (content: EasyContent) => void;
+  onComplete: (content: EasyContent, longSetReps: number | null) => void;
 }) {
   const t = useT();
   const [choice, setChoice] = useState<EasyContent | null>(null);
+  const [repsInput, setRepsInput] = useState('');
   const state = computeProgram(entries, profile, program, today);
   const [min, max] = easyContentRange(state, program);
   const degraded = entry.downgradedTo === 'easy';
+  // long-set is a third option only past the MT threshold, ~1x/week, never on a
+  // pain-degraded day (all gating lives in longSetOffered, domain/program.ts).
+  const options: readonly EasyContent[] = longSetOffered(entries, state, program, today)
+    ? ['gtg-set', 'warmup', 'long-set']
+    : ['gtg-set', 'warmup'];
+  const [longMin, longMax] = longSetRange(state, program);
+  const labels: Record<EasyContent, string> = {
+    'gtg-set': t('today.easy.gtg', { min, max }),
+    warmup: t('today.easy.warmup'),
+    'long-set': t('today.easy.longSet', { min: longMin, max: longMax }),
+  };
+  // Result field is optional: empty -> null (skipped), 1–999 -> number, junk -> undefined (blocks CTA).
+  const trimmed = repsInput.trim();
+  const longSetReps: number | null | undefined =
+    choice !== 'long-set' || trimmed === ''
+      ? null
+      : /^\d{1,3}$/.test(trimmed) && Number(trimmed) >= 1
+        ? Number(trimmed)
+        : undefined;
 
   return (
     <div className="screen today">
@@ -357,7 +381,7 @@ function EasyStep({
       <h2>{t('today.easy.title')}</h2>
       <p className="muted">{t('today.easy.hint')}</p>
       <div className="chip-row" role="group" aria-label={t('today.easy.title')}>
-        {(['gtg-set', 'warmup'] as const).map((c) => (
+        {options.map((c) => (
           <button
             key={c}
             type="button"
@@ -365,15 +389,33 @@ function EasyStep({
             aria-pressed={choice === c}
             onClick={() => setChoice(c)}
           >
-            {c === 'gtg-set' ? t('today.easy.gtg', { min, max }) : t('today.easy.warmup')}
+            {labels[c]}
           </button>
         ))}
       </div>
+      {choice === 'long-set' && (
+        <>
+          <p className="muted">{t('today.easy.longSetHint')}</p>
+          <label>
+            <span className="muted">{t('today.easy.longSetReps')}</span>
+            <input
+              className="text-input"
+              name="long-set-reps"
+              type="text"
+              inputMode="numeric"
+              pattern="\d*"
+              maxLength={3}
+              value={repsInput}
+              onChange={(e) => setRepsInput(e.target.value)}
+            />
+          </label>
+        </>
+      )}
       <button
         type="button"
         className="btn-primary"
-        disabled={choice === null || saving}
-        onClick={() => choice !== null && onComplete(choice)}
+        disabled={choice === null || saving || longSetReps === undefined}
+        onClick={() => choice !== null && longSetReps !== undefined && onComplete(choice, longSetReps)}
       >
         {t('today.easy.cta')}
       </button>
@@ -598,7 +640,6 @@ function DoneStep({
 }) {
   const t = useT();
   const streak = computeStreak(entries, today);
-  const showNudge = balanceNudgeDue(entries, today);
   const isRealTest = entry.kind === 'test' && entry.downgradedTo === null && entry.testResult !== null;
 
   // The gate reports its own verdict (computeGateLog replays every test through it) —
@@ -607,6 +648,11 @@ function DoneStep({
   const outcome: GateOutcome | null = isRealTest
     ? (computeGateLog(entries, program).find((i) => i.date === today)?.outcome ?? null)
     : null;
+
+  // Never undercut the 100-pushup celebration with a "too many easy days" nudge —
+  // a UI concern, so the guard lives here, not in balanceNudgeDue (which knows
+  // nothing about gate verdicts by design).
+  const showNudge = outcome?.type !== 'goal' && balanceNudgeDue(entries, today);
 
   const { title, body } = doneCopy(entry, outcome, t);
 

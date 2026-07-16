@@ -26,6 +26,7 @@ export function openDayEntry(
     sets: null,
     testResult: null,
     easyContent: null,
+    longSetReps: null,
     reflection: null,
     completedAt: null,
     updatedAt: now,
