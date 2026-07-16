@@ -364,6 +364,31 @@ Wiążące zasady kodu dla tego projektu (React 18 + TypeScript + Vite). Szczeg�
   rodziny Unstuck; decyzja zapisana w design-direction.md, żeby przyszły retheme
   nie „naprawił" jej automatycznie.
 
+## Domena — wzorce z fazy Nudge balansu (Showup, 2026-07-16)
+
+- **Predykat domenowy inline'owany drugi raz = wydziel PRZED dodaniem trzeciego użycia.**
+  `completed && downgradedTo===null && (session|test)` żył inline w dwóch miejscach
+  program.ts; nowy moduł (nudge) kopiujący go stworzyłby trzecie miejsce dryfu.
+  Review SHOULD: eksport `isHardCompleted` z program.ts, wszystkie trzy miejsca
+  konsumują jedno źródło. Sygnał: piszesz w nowym module warunek, który już
+  widziałeś w innym — najpierw grep, potem eksport, nigdy kopia.
+- **Arytmetyka „tydzień od poniedziałku" testuje jawnie niedzielę**: `(getUTCDay()+6)%7`
+  ma gałąź wrap tylko dla dow=0 — testy z `today` wyłącznie pon–czw przepuszczą
+  regresję do naiwnego `dow-1`. Zawsze przypadki: niedziela jako pierwszy twardy
+  dzień ORAZ poniedziałek wyciszający niedzielę tego samego tygodnia.
+- **Dwa pojęcia „tygodnia" w domenie — wybór dokumentowany w docstringu**: tydzień
+  blokowy (okno slotów od kotwicy, `countSessionsThisWeek`) vs kalendarzowy pn–nd
+  (rytm zdrowotny, `balanceNudgeDue`). Funkcja mówi, KTÓREGO używa i czemu; przyszły
+  czytelnik nie może zgadywać.
+- **Wpisy z datą po `today` (import z innego urządzenia, cofnięty zegar)**: derywacje
+  „pierwszy w oknie" ignorują przyszłość świadomie — zachowanie udokumentowane
+  w docstringu i przypięte testem, nie pozostawione przypadkowi implementacji.
+- **Copy karty warunkowej nie twierdzi o stanie, którego nie ma (F10)**: karta odpala
+  się po PIERWSZYM twardym dniu tygodnia, więc „sporo pchania w tym tygodniu" było
+  fałszem w momencie wyświetlenia — czas przyszły („ten tydzień przyniesie") jest
+  prawdziwy prospektywnie. Przy komunikatach warunkowych: sprawdź, co jest prawdą
+  DOKŁADNIE w chwili renderu.
+
 ## Deploy i produkcja (Faza 6)
 
 - **`base: '/showup/'` w vite.config.ts to jedyne miejsce definiujące ścieżkę produkcyjną** — vite-plugin-pwa wyprowadza z niej scope/start_url manifestu i ścieżki service workera; żadnych hardcodowanych `/showup/` w kodzie aplikacji.

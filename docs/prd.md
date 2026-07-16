@@ -108,7 +108,9 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
   pokaże potrzebę); zero nowej persystencji — trigger w pełni wyliczany z wpisów
   (`balanceNudgeDue` w domenie). Nudge NIE dotyka passy ani nie jest nagradzany
   (zasada „minimum wystarcza"). Odrzucone warianty: hint w dzień easy (konkurencja
-  z 2-min minimum), sekcja w Progres (łatwa do przeoczenia).
+  z 2-min minimum), sekcja w Progres (łatwa do przeoczenia). Follow-up z review
+  (obserwować w dogfoodingu): nudge pod celebracją „100 pompek — cel!" jest tonalnie
+  zgrzytliwy; ewentualna 1-liniowa poprawka `outcome !== 'goal'` po decyzji użytkownika.
 
 ## 6. Kryteria sukcesu MVP
 

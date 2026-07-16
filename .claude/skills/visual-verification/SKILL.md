@@ -120,6 +120,22 @@ nie stale props i nie bug — reload niczego nie zmieni.
 Diagnoza „stale props vs domena" w jednym kroku: reload strony — jeśli po reloadzie
 widok się nie zmienia, przyczyna jest w derywacji/danych, nie w propagacji propsów.
 
+## Technika 6: stan „pierwszy w oknie czasowym" (nudge, wyciszenia)
+
+Feature'y typu „pokaż X po PIERWSZYM zdarzeniu w tygodniu" wymagają dwóch mutacji
+naraz: (a) dziś musi spełniać warunek, (b) wcześniejsze wpisy okna NIE mogą.
+Najbezpieczniejsza edycja wcześniejszych twardych wpisów to **degradacja bólowa**
+(`feelBefore:'pain'`, `downgradedTo:'easy'`, `easyContent:'warmup'`, `sets:null`,
+status zostaje `completed`) — wpis przestaje liczyć się jako twardy, ale tydzień
+pozostaje ciągły (bez dziur → bez interstitiala „dzień pominięty", passa nietknięta).
+Usuwanie wpisów do tego celu = ryzyko trybu comeback zasłaniającego testowany ekran.
+
+Gdy warunek wymaga innego typu dnia niż w harmonogramie (np. sesja w czwartek przy
+dniach pn/śr/pt): dosiej `profile.sessionDays` razem z wpisem — walidator Ustawień
+może pokazywać błąd dla stanu niemożliwego w UI (dni sąsiadujące), to tylko stan
+testowy. Po screenshotach zrób też **negatywny check wizualny**: przywróć jeden
+wyciszający wpis i potwierdź snapshotem, że karta znika (nie tylko unit testem).
+
 ## Scenariusz obowiązkowy: dzień założycielski
 
 Zawsze sprawdź ekran ZARAZ po świeżym onboardingu (pusta baza → onboarding →
