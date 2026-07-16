@@ -2,25 +2,31 @@
    RULE: components use only these variables — no raw hex values in component CSS. */
 
 :root {
-  /* Palette: warm cream + teal accent (Showup identity; cream bg is the family signature).
-     Teal #0d8478 chosen for WCAG AA: exactly 4.50:1 with near-white --surface text on
-     .btn-primary — do not lighten --primary or darken --surface without re-checking. */
-  --bg: #fdf6ec;
-  --surface: #fffdf9;
-  --surface-alt: #fbeed9;
+  /* Palette: mint-teal "Mgiełka" (user decision 2026-07-16: whole app more teal;
+     variant T1 of the comparison mockups — mint bg, pure white cards).
+     Measured WCAG (do not lighten/darken without re-checking):
+       white text on --primary 4.58:1 AA · --text on bg/surface 11.5/12.7:1
+       --text-muted on --surface-alt 4.73:1 AA (pill--soft is small text)
+       --success is never body text — icon/fill roles only, evaluated under
+       SC 1.4.11 non-text (≥3:1): white ✓ on success and success-on-white 3.28:1.
+       Accepted exception: level-bar fill vs surface-alt track 2.71:1 — bar is
+       aria-hidden and duplicates the adjacent sessions text (ProgressScreen). */
+  --bg: #eaf6f3;
+  --surface: #ffffff;
+  --surface-alt: #d8eeea;
   --primary: #0d8478;
   --primary-soft: #2bb3a3;
-  --text: #3d3428;
-  --text-muted: #8c7f6d;
-  --success: #7bb662;
+  --text: #1e3733;
+  --text-muted: #4e6c67;
+  --success: #5f9d4a;
 
   /* NOTE: deliberately no alarm-red token — self-compassion rule (product-principles #3) */
 
   /* Shape & elevation */
   --radius-card: 24px;
   --radius-pill: 999px;
-  --shadow-card: 0 4px 20px rgba(61, 52, 40, 0.08);
-  --overlay: rgba(61, 52, 40, 0.35);
+  --shadow-card: 0 4px 20px rgba(30, 55, 51, 0.08);
+  --overlay: rgba(30, 55, 51, 0.35); /* same base as --shadow-card (= --text) */
 
   /* Spacing */
   --gap-cards: 16px;

@@ -25,8 +25,8 @@ export default defineConfig({
         name: 'Showup',
         short_name: 'Showup',
         description: 'Your road to 100 push-ups — one session at a time.',
-        theme_color: '#fdf6ec',
-        background_color: '#fdf6ec',
+        theme_color: '#eaf6f3',
+        background_color: '#eaf6f3',
         display: 'standalone',
         // Generated from public/icon.svg via `npm run generate-pwa-assets`.
         icons: [

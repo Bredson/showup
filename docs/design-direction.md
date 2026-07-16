@@ -4,7 +4,9 @@
 > Decyzja użytkownika: jasny, bardzo przyjazny, NIE ciemny i techniczny.
 > Rewizja tożsamości po MVP (2026-07-16): paleta akcentów zmieniona na kremowo-turkusową —
 > turkus jest silniej kojarzony ze sportem/fitnessem i odróżnia Showup od pomarańczowego Unstuck.
-> Kremowe tło i ciepły ton pozostają sygnaturą rodziny produktów.
+> Rewizja 2 (2026-07-16, ta sama doba): decyzją użytkownika CAŁE wnętrze apki przechodzi na
+> turkus — wariant „T1 Mgiełka" (miętowe tło, czysto białe karty) wybrany z 3 mockupów natężeń.
+> Kremowa pozostaje IKONA (`public/icon.svg`) — łącznik z rodziną Unstuck obok bursztynowej kropki.
 
 ## Nastrój
 
@@ -15,14 +17,14 @@ produktywności. Spójne z regułą product-principles #3 (self-compassion over 
 
 | Token | Wartość wyjściowa | Rola |
 |---|---|---|
-| `--bg` | `#FDF6EC` (kremowy) | Tło główne |
-| `--surface` | `#FFFDF9` | Karty |
-| `--primary` | `#0D8478` (turkus; AA 4.5:1 z tekstem `--surface`) | Akcje, akcenty, CTA |
+| `--bg` | `#EAF6F3` (jasna mięta) | Tło główne |
+| `--surface` | `#FFFFFF` | Karty |
+| `--primary` | `#0D8478` (turkus; 4.58:1 z białym tekstem) | Akcje, akcenty, CTA |
 | `--primary-soft` | `#2BB3A3` (jaśniejszy turkus) | Dekoracje, focus, kropka „dziś otwarte" |
-| `--text` | `#3D3428` (ciepła ciemna czerń) | Tekst główny |
-| `--text-muted` | `#8C7F6D` | Tekst drugorzędny |
-| `--success` | `#7BB662` (miękka zieleń) | Ukończenia, progres |
-| `--surface-alt` | `#FBEED9` | Wyróżnione sekcje |
+| `--text` | `#1E3733` (ciemny turkusowy grafit) | Tekst główny |
+| `--text-muted` | `#4E6C67` (4.73:1 na `--surface-alt`) | Tekst drugorzędny |
+| `--success` | `#5F9D4A` (zieleń; tylko glify/wypełnienia, nigdy tekst; SC 1.4.11: 3.28:1; wyjątek: wypełnienie level-bar vs tor 2.71:1 — pasek aria-hidden, dubluje sąsiedni tekst) | Ukończenia, progres |
+| `--surface-alt` | `#D8EEEA` | Wyróżnione sekcje |
 
 Zakaz: czerwieni alarmowych i „karzących" (reguła self-compassion). Błędy/pominięcia
 komunikujemy ciepłym neutralnym tonem, nie kolorem ostrzegawczym.
