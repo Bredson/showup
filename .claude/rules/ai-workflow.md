@@ -39,6 +39,13 @@ Rules for how AI agents work in this project (meta-level).
   trail of dots") go back into the same comparison page before implementation.
   The winning mockup is the spec; record the decision + rejected variants in
   `docs/design-direction.md`.
+- When the user asks for "more X" (e.g. "whole app more teal"), the variant axis
+  is INTENSITY: render a ladder of 3 intensities of the same hue (mist / medium /
+  deep-dark), each with contrast ratios pre-measured so every rung is shippable.
+  Confirmed by the full-palette retheme (2026-07-16): user picked the mist rung;
+  zero rework because all three were WCAG-checked before the question.
+- Measure contrast BEFORE building the mockup, not after the choice — a variant
+  that cannot ship must not appear in the comparison page.
 
 ## Fork hygiene (lesson from Showup rebranding, 2026-07-15)
 
