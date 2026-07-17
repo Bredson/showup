@@ -75,6 +75,29 @@ założycielskim (`kind:'test'` z `testResult`), inaczej `computeProgram` rzuca.
 **Zapisz listę dosianych dat** — sprzątanie to `store.delete(date)` dla każdej
 albo `indexedDB.deleteDatabase('showup')` + reload, gdy baza dev ma być pusta.
 
+## Technika 2b: pełny reseed wielotygodniowy (statystyki, wykresy historii)
+
+Sekcje agregujące tygodnie/testy (rytm, trend feel, agregat bramek) potrzebują
+spójnej historii 6–8+ tygodni — pojedyncze dosiewki nie wystarczą. Procedura:
+
+1. **Backup WSZYSTKICH stores w jednym wyniku narzędzia** (`entries` + `profile`
+   + `meta` przez `getAll`) — zanim cokolwiek zmienisz.
+2. **Przeczytaj progi bramek z `src/content/program.json` PRZED sianiem**
+   (`variantGraduateMT`, `testGateImprovement`, brackety): werdykty w logu
+   liczy `replayGates`, więc wynik testu decyduje o outcome — np. knee 21 przy
+   `variantGraduateMT: 20` = awans, pierwszy test po awansie = kalibracja.
+   Siej wyniki, które dają werdykty potrzebne na screenshocie.
+3. **Spójna oś czasu**: start historii = test założycielski w poniedziałek,
+   `profile.startDate` przesuwasz NA tę samą datę; sesje tylko w `sessionDays`;
+   żadnej przerwy > 14 dni między completed (pause rule zrobiłaby z kolejnego
+   testu seed/kalibrację). Dzień pain-downgraded (`feelBefore:'pain',
+   downgradedTo:'easy', sets:null`) wchodzi do trendu feel — dobry punkt danych.
+4. **Wpisy o dzisiejszych datach `in_progress` zostaw nietknięte** — snapshot
+   wins; reseed dotyczy tylko przeszłości.
+5. **Restore = delete listy dosianych dat + put obiektów z backupu + `getAll`
+   check w TYM SAMYM skrypcie** (zwróć `date:status` do porównania z backupem),
+   potem reload i snapshot potwierdzający stan wyjściowy.
+
 ## Technika 3: zamrożenie auto-advance do screenshota
 
 Stany przejściowe (zaznaczona emocja + dymek, przed 900 ms auto-advance) znikają
