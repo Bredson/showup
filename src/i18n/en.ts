@@ -236,8 +236,22 @@ export const en: Record<keyof typeof pl, string> = {
   'progress.curve.srPoint': '{variant}: {value}',
   'progress.curve.srSegment': '{variant}: from {from} to {to}',
 
+  // Progress — weekly presence rhythm (stats 2026-07-17; presence, never volume)
+  'progress.rhythm.title': 'Weekly rhythm',
+  'progress.rhythm.hint': 'Days of presence per week — every completed day counts, even the lightest ones.',
+  'progress.rhythm.srWeek': 'week of {date}: present {n} of 7',
+  'progress.rhythm.srCurrent': 'current week, in progress: present {n} of 7',
+
+  // Progress — feel-before trend (stats 2026-07-17; a trend, not a grade)
+  'progress.feel.title': 'How you felt before training',
+  'progress.feel.hint': 'Your answers before sessions and tests — a trend, not a grade.',
+  'progress.feel.srPoint': '{date}: {feel}',
+
   // Progress — block history funnel (PRD §6; short no-guilt labels — the gate's own verdicts)
   'progress.blocks.title': 'Block history',
+  'progress.blocks.summaryVariant': '{variant} — tests: {n}',
+  'progress.blocks.chip': '{count}× {label}',
+  'progress.blocks.advanceShort': 'Advance',
   'progress.blocks.result': '{result} ({variant})',
   'progress.blocks.goal': 'Goal: 100 push-ups',
   'progress.blocks.advance': 'Advance: {variant}',

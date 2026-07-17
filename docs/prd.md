@@ -152,6 +152,26 @@ Standard powtórzenia (egzekwowany w testach, uczony od onboardingu): deska biod
     w dzienniku).
   - Long-set NIE liczy się jako ciężka praca (`isHardCompleted` bez zmian): dzień pozostaje
     łatwy dla okien przesunięć, nudge'a i liczników tygodnia.
+- **Statystyki zaawansowane (2026-07-17, decyzje użytkownika):** wyciągnięte z „poza MVP".
+  Trzy nowe sekcje na ekranie Progres (decyzja: bez piątej zakładki — wszystko o progresie
+  w jednym miejscu). Zero nowej persystencji — wszystko derywowane z `DailyEntry` na render
+  (nowy moduł domenowy `stats.ts`). Filtr „minimum wystarcza": statystyki pokazują obecność,
+  rytm i progresję z testów; **odrzucone przez użytkownika:** suma powtórzeń/objętość
+  (nagradzałaby liczbę powtórzeń wbrew zasadzie nadrzędnej #1) i prognoza drogi do 100
+  (presja deadline'u + ekstrapolacja z najsłabiej udokumentowanej fazy researchu).
+  - **Rytm tygodniowy:** słupki dni obecności (wpisy `completed`, dowolny rodzaj) per
+    tydzień kalendarzowy pn–nd (`mondayOf` — jedna definicja tygodnia w domenie), ostatnie
+    maks. 12 tygodni od tygodnia pierwszego wpisu, skala 0–7. Bieżący tydzień oznaczony
+    jako „w toku", nigdy nie oceniany. Dni wybaczone (grace passy) NIE liczą się do słupka —
+    słupek raportuje obecność, nie mechanikę passy; zero linii celu, zero czerwieni.
+  - **Trend samopoczucia:** pasek kropek — ostatnie maks. 12 ukończonych dni sesyjnych/
+    testowych z odpowiedzią feel (fresh/ok/tired/pain na 4 poziomach, emoji z `FEEL_EMOJI`).
+    Dni zdegradowane bólem WCHODZĄ do trendu (feel='pain' to właśnie interesujący sygnał).
+    Sekcja ukryta, dopóki nie ma ani jednego punktu.
+  - **Zdawalność bramek (kryterium sukcesu MVP §6):** agregat per wariant dopisany do
+    istniejącej karty „Historia bloków" (jedna karta o bramkach, nie dwie): liczba testów
+    + liczniki werdyktów (reużycie etykiet `progress.blocks.*`). Neutralne liczniki bez
+    kategorii „zdane/oblane" — konsolidacja to nie porażka (zasada #3).
 
 ## 6. Kryteria sukcesu MVP
 

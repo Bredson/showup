@@ -5,7 +5,7 @@
 // "dni w rytmie" everywhere, seeds/estimates are hollow points on the curve.
 // RULE: everything here is derived from entries on render — nothing is persisted.
 import { useEffect, useRef, useState } from 'react';
-import type { DailyEntry, ISODate, ProgramState, UserProfile } from '../../domain/types';
+import type { DailyEntry, Feel, ISODate, ProgramState, UserProfile } from '../../domain/types';
 import { computeCalendar, type CalendarDay } from '../../domain/calendar';
 import {
   computeGateLog,
@@ -15,6 +15,14 @@ import {
   type GateLogItem,
   type GateOutcome,
 } from '../../domain/program';
+import {
+  computeFeelTrend,
+  computeGateSummary,
+  computeWeeklyRhythm,
+  type FeelPoint,
+  type VariantGateSummary,
+  type WeekRhythm,
+} from '../../domain/stats';
 import { computeStreak, computeLongestStreak } from '../../domain/streak';
 import { computeTestCurve, type TestCurve } from '../../domain/testCurve';
 import { program } from '../../content/program';
@@ -22,6 +30,7 @@ import type { StorageAdapter } from '../../storage/adapter';
 import { localToday } from '../clock';
 import EntrySheet from '../components/EntrySheet';
 import { formatDayLong, formatDayShort, formatWeekdayNarrow } from '../dates';
+import { FEEL_EMOJI } from '../feelEmoji';
 import { useLang, useT } from '../LangContext';
 
 interface Props {
@@ -77,6 +86,10 @@ export default function ProgressScreen({ adapter, profile }: Props) {
   const days = computeCalendar(entries, today);
   const curve = computeTestCurve(state?.testHistory ?? []);
   const gateLog = computeGateLog(entries, program); // [] pre-founding — card simply absent
+  // Advanced statistics (PRD backlog pull 2026-07-17) — pure derivations, nothing persisted.
+  const rhythm = computeWeeklyRhythm(entries, today);
+  const feelTrend = computeFeelTrend(entries, today);
+  const gateSummary = computeGateSummary(gateLog);
   // Ring = presence over the last 7 calendar days (completed + forgiven), matching
   // the forgiving-streak philosophy: rhythm, not perfection.
   const last7 = days.slice(-7).filter((d) => d.status === 'completed' || d.status === 'forgiven');
@@ -104,14 +117,18 @@ export default function ProgressScreen({ adapter, profile }: Props) {
         <Calendar days={days} today={today} onOpen={setSheetEntry} />
       </section>
 
+      {rhythm.length > 0 && <RhythmCard weeks={rhythm} />}
+
       <section className="card">
         <h2>{t('progress.curve.title')}</h2>
         <Curve curve={curve} />
       </section>
 
+      {feelTrend.length > 0 && <FeelCard trend={feelTrend} />}
+
       {state !== null && <PositionCard state={state} />}
 
-      {gateLog.length > 0 && <BlocksCard log={gateLog} today={today} />}
+      {gateLog.length > 0 && <BlocksCard log={gateLog} summary={gateSummary} today={today} />}
 
       {sheetEntry !== null && (
         <EntrySheet entry={sheetEntry} today={today} onClose={() => setSheetEntry(null)} />
@@ -297,13 +314,132 @@ function Curve({ curve }: { curve: TestCurve }) {
   );
 }
 
-/** Block history funnel (PRD §6) — one row per gate test, newest first (like the journal). */
-function BlocksCard({ log, today }: { log: readonly GateLogItem[]; today: ISODate }) {
+/**
+ * Weekly presence rhythm (stats, 2026-07-17) — one bar per Mon–Sun week, height =
+ * completed days / 7. No target line, no red, zero bars stay neutral (like the
+ * cream calendar dots); the current week is styled "in progress", never judged.
+ */
+function RhythmCard({ weeks }: { weeks: WeekRhythm[] }) {
+  const t = useT();
+  const lang = useLang();
+  const first = weeks[0];
+  const last = weeks[weeks.length - 1];
+  if (first === undefined || last === undefined) return null;
+  return (
+    <section className="card">
+      <h2>{t('progress.rhythm.title')}</h2>
+      {/* Text equivalent for screen readers — the bars below are decorative. */}
+      <p className="sr-only">
+        {weeks
+          .map((w) =>
+            t(w.current ? 'progress.rhythm.srCurrent' : 'progress.rhythm.srWeek', {
+              date: formatDayShort(w.weekStart, lang),
+              n: w.presentDays,
+            }),
+          )
+          .join('; ')}
+      </p>
+      <div className="rhythm-bars" aria-hidden="true">
+        {weeks.map((w) => (
+          <div key={w.weekStart} className="rhythm-col">
+            {/* Zero stays unlabelled on purpose — no number rubbing it in. */}
+            <span className="rhythm-count">{w.presentDays > 0 ? w.presentDays : ''}</span>
+            <div className="rhythm-track">
+              <div
+                className={w.current ? 'rhythm-fill rhythm-fill--current' : 'rhythm-fill'}
+                style={{ height: `${Math.round((w.presentDays / 7) * 100)}%` }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="stats-axis" aria-hidden="true">
+        <span>{formatDayShort(first.weekStart, lang)}</span>
+        {weeks.length > 1 && <span>{formatDayShort(last.weekStart, lang)}</span>}
+      </div>
+      <p className="muted">{t('progress.rhythm.hint')}</p>
+    </section>
+  );
+}
+
+/** Grid row per feel level — fresh on top, pain at the bottom (no red: token rule). */
+const FEEL_ROW: Record<Feel, number> = { fresh: 1, ok: 2, tired: 3, pain: 4 };
+
+/**
+ * Feel-before trend (stats, 2026-07-17) — the last answered feel checks as emoji
+ * dots on four levels, chronological. Reads the ANSWER, never the execution;
+ * pain-downgraded days are included by design (that answer is the signal).
+ */
+function FeelCard({ trend }: { trend: FeelPoint[] }) {
+  const t = useT();
+  const lang = useLang();
+  const first = trend[0];
+  const last = trend[trend.length - 1];
+  if (first === undefined || last === undefined) return null;
+  return (
+    <section className="card">
+      <h2>{t('progress.feel.title')}</h2>
+      <p className="sr-only">
+        {trend
+          .map((p) => t('progress.feel.srPoint', { date: formatDayShort(p.date, lang), feel: t(`today.feel.${p.feel}`) }))
+          .join('; ')}
+      </p>
+      <div
+        className="feel-grid"
+        aria-hidden="true"
+        style={{ gridTemplateColumns: `repeat(${trend.length}, 1fr)` }}
+      >
+        {trend.map((p, i) => (
+          <span key={p.date} className="feel-dot" style={{ gridColumn: i + 1, gridRow: FEEL_ROW[p.feel] }}>
+            {FEEL_EMOJI[p.feel]}
+          </span>
+        ))}
+      </div>
+      <div className="stats-axis" aria-hidden="true">
+        <span>{formatDayShort(first.date, lang)}</span>
+        {trend.length > 1 && <span>{formatDayShort(last.date, lang)}</span>}
+      </div>
+      <p className="muted">{t('progress.feel.hint')}</p>
+    </section>
+  );
+}
+
+/** Block history funnel (PRD §6) — per-variant summary (stats, 2026-07-17) above
+ * the chronological list, one row per gate test, newest first (like the journal). */
+function BlocksCard({
+  log,
+  summary,
+  today,
+}: {
+  log: readonly GateLogItem[];
+  summary: readonly VariantGateSummary[];
+  today: ISODate;
+}) {
   const t = useT();
   const lang = useLang();
   return (
     <section className="card">
       <h2>{t('progress.blocks.title')}</h2>
+      {/* Summary earns its place only once it aggregates something — with a single
+          test it would merely duplicate the one row below. */}
+      {log.length > 1 && (
+        <ul className="blocks-summary">
+          {summary.map((s) => (
+            <li key={s.variant} className="blocks-summary-row">
+              <span className="blocks-result">
+                {t('progress.blocks.summaryVariant', { variant: t(`variant.${s.variant}`), n: s.tests })}
+              </span>
+              <span className="blocks-chips">
+                {s.outcomes.map((o) => (
+                  <span key={o.type} className="badge">
+                    {t('progress.blocks.chip', { count: o.count, label: summaryOutcomeLabel(o.type, t) })}
+                  </span>
+                ))}
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
       <ul className="blocks-list">
         {[...log].reverse().map((item) => (
           // At most one gate test per date (entries are keyed by date) — safe key.
@@ -318,6 +454,27 @@ function BlocksCard({ log, today }: { log: readonly GateLogItem[]; today: ISODat
       </ul>
     </section>
   );
+}
+
+/** Chip labels of the summary — like outcomeLabel, but the advance verdict loses
+ * its target-variant param (the aggregate has no single target to name). */
+function summaryOutcomeLabel(type: GateOutcome['type'], t: ReturnType<typeof useT>): string {
+  switch (type) {
+    case 'variant-advance':
+      return t('progress.blocks.advanceShort');
+    case 'goal':
+      return t('progress.blocks.goal');
+    case 'calibrated':
+      return t('progress.blocks.calibrated');
+    case 'new-block':
+      return t('progress.blocks.newBlock');
+    case 'consolidation':
+      return t('progress.blocks.consolidation');
+    case 'regen':
+      return t('progress.blocks.regen');
+    case 'step-down':
+      return t('progress.blocks.stepDown');
+  }
 }
 
 function outcomeLabel(outcome: GateOutcome, t: ReturnType<typeof useT>): string {

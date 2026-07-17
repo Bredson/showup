@@ -235,8 +235,22 @@ export const pl = {
   'progress.curve.srPoint': '{variant}: {value}',
   'progress.curve.srSegment': '{variant}: od {from} do {to}',
 
+  // Progress — weekly presence rhythm (stats 2026-07-17; presence, never volume)
+  'progress.rhythm.title': 'Rytm tygodniowy',
+  'progress.rhythm.hint': 'Dni obecności w tygodniu — każdy ukończony dzień się liczy, także te najlżejsze.',
+  'progress.rhythm.srWeek': 'tydzień od {date}: obecność {n} z 7',
+  'progress.rhythm.srCurrent': 'bieżący tydzień, w toku: obecność {n} z 7',
+
+  // Progress — feel-before trend (stats 2026-07-17; a trend, not a grade)
+  'progress.feel.title': 'Samopoczucie przed treningiem',
+  'progress.feel.hint': 'Twoje odpowiedzi sprzed sesji i testów — trend, nie ocena.',
+  'progress.feel.srPoint': '{date}: {feel}',
+
   // Progress — block history funnel (PRD §6; short no-guilt labels — the gate's own verdicts)
   'progress.blocks.title': 'Historia bloków',
+  'progress.blocks.summaryVariant': '{variant} — testy: {n}',
+  'progress.blocks.chip': '{count}× {label}',
+  'progress.blocks.advanceShort': 'Awans',
   'progress.blocks.result': '{result} ({variant})',
   'progress.blocks.goal': 'Cel: 100 pompek',
   'progress.blocks.advance': 'Awans: {variant}',

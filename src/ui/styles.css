@@ -744,6 +744,109 @@ button.cal-dot::after {
   flex-shrink: 0;
 }
 
+/* Progress — stats (2026-07-17): weekly rhythm bars + feel-before trend.
+   Anti-pressure by construction: no target line, no red, zero bars are just empty tracks. */
+.rhythm-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.rhythm-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.rhythm-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  min-height: 1em;
+  line-height: 1;
+}
+
+.rhythm-track {
+  width: 100%;
+  max-width: 22px;
+  height: 96px;
+  display: flex;
+  align-items: flex-end;
+  background: var(--surface-alt);
+  border-radius: var(--radius-pill);
+  overflow: hidden;
+}
+
+.rhythm-fill {
+  width: 100%;
+  background: var(--primary);
+  border-radius: var(--radius-pill);
+}
+
+/* The week still in progress — softer tone, "being drawn", never judged. */
+.rhythm-fill--current {
+  background: var(--primary-soft);
+}
+
+/* Shared first/last labels under a stats strip (rhythm bars, feel grid). */
+.stats-axis {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.feel-grid {
+  display: grid;
+  grid-template-rows: repeat(4, 26px);
+  align-items: center;
+  justify-items: center;
+  margin-top: 8px;
+  /* Level guides so a lone dot still reads as a position on a scale. */
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 25px,
+    var(--surface-alt) 25px 26px
+  );
+}
+
+.feel-dot {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+/* Progress — per-variant gate summary above the block-history list. */
+.blocks-summary {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0 0 12px;
+  border-bottom: 1px solid var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.blocks-summary-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.blocks-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.blocks-chips .badge {
+  margin: 0;
+}
+
 /* Journal (ux-spec §5) — reverse-chronological list of emotion + reflection rows */
 .journal-list {
   list-style: none;
